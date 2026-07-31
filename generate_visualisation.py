@@ -145,178 +145,312 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contributions de la France à la Conférence du désarmement</title>
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bleu: #000091;
-  --rouge: #e1000f;
-  --bleu-clair: #e8edff;
-  --gris: #f6f6f6;
-  --gris-fonce: #3a3a3a;
-  --blanc: #ffffff;
-  --ombre: 0 2px 8px rgba(0,0,0,.08);
-  --rayon: 8px;
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: rgba(40,35,20,0.12);
+  --border2: rgba(40,35,20,0.22);
+  --text: #1a1814;
+  --text2: #6b6458;
+  --accent: #2c5f8a;
+  --accent2: #1a7a5e;
+  --ac-vc: #8a2c2c;
+  --gold: #b07d2a;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: "Marianne", "Segoe UI", system-ui, sans-serif;
-  background: var(--gris);
-  color: var(--gris-fonce);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
   line-height: 1.5;
+  min-height: 100vh;
 }
 header {
-  background: linear-gradient(135deg, var(--bleu) 70%, var(--rouge));
-  color: var(--blanc);
-  padding: 2rem 1.5rem 1.5rem;
-}
-header h1 { font-size: 1.6rem; font-weight: 700; }
-.badge { display: none; }
-.legend-pills {
+  background:
+    linear-gradient(rgba(255,255,255,0.55), rgba(247,245,240,0.82)),
+    url('https://www.geneve.ch/sites/default/files/styles/max_1280/public/2023-08/palais-nations-cover-02.jpg.webp?itok=dLlVoecQ') center/cover,
+    linear-gradient(135deg, #b8cfe0 0%, #d4e4ef 35%, #e8dfd0 100%);
+  color: var(--text);
+  padding: 2.5rem 2rem 2rem;
+  min-height: 220px;
   display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--border);
 }
-.legend-pills button {
-  border: 2px solid;
-  padding: .35rem .8rem;
-  border-radius: 999px;
-  font-size: .78rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: var(--blanc);
-  transition: opacity .2s;
+header h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.85rem;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  background: rgba(255,255,255,0.82);
+  padding: 0.55rem 1rem;
+  width: fit-content;
+  max-width: 900px;
+  line-height: 1.25;
+  box-shadow: var(--shadow);
+  border-radius: 6px;
 }
-.legend-pills button.inactive { opacity: .3; }
-.chart-box .chart-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  margin-bottom: 1rem;
-  padding-bottom: .5rem;
-  border-bottom: 2px solid var(--bleu-clair);
-}
-.chart-box .chart-header h2 {
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-.chart-container.tall { height: 400px; }
-.chart-container.pie-tall { height: 420px; }
 nav.tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
-  padding: 1rem 1.5rem 0;
-  background: var(--blanc);
-  border-bottom: 2px solid var(--bleu-clair);
+  gap: 0;
+  padding: 0 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 }
 nav.tabs button {
   border: none;
   background: transparent;
-  padding: .6rem 1rem;
+  padding: 0.85rem 1.15rem;
   cursor: pointer;
-  font-size: .9rem;
-  font-weight: 600;
-  color: var(--bleu);
-  border-bottom: 3px solid transparent;
-  border-radius: var(--rayon) var(--rayon) 0 0;
+  font-size: 0.83rem;
+  font-weight: 400;
+  color: var(--text2);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  font-family: inherit;
 }
+nav.tabs button:hover { color: var(--accent); }
 nav.tabs button.active {
-  background: var(--bleu-clair);
-  border-bottom-color: var(--bleu);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 500;
 }
-main { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem 2.5rem;
+}
 .panel { display: none; }
-.panel.active { display: block; }
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-.card {
-  background: var(--blanc);
-  border-radius: var(--rayon);
-  padding: 1.2rem;
-  box-shadow: var(--ombre);
-  border-left: 4px solid var(--bleu);
-}
-.card.red { border-left-color: var(--rouge); }
-.card h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: #666; }
-.card .value { font-size: 1.6rem; font-weight: 700; color: var(--bleu); margin-top: .3rem; }
-.card.red .value { color: var(--rouge); }
-.card .sub { font-size: .8rem; color: #888; margin-top: .2rem; }
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+.panel.active {
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
 }
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.kpi-row.compact {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 260px));
+  justify-content: start;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow);
+}
+.kpi-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+.kpi-val {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.65rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.1;
+}
+.kpi-sub { font-size: 0.75rem; color: var(--text2); margin-top: 0.3rem; }
+.kpi.accent .kpi-val { color: var(--accent); }
+.kpi.accent2 .kpi-val { color: var(--accent2); }
+.kpi.vc .kpi-val { color: var(--ac-vc); }
+.toolbar-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+}
+.toolbar-panel label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.toolbar-panel .kpi-row.compact {
+  margin-left: auto;
+}
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+.charts-row > .chart-box { min-width: 0; }
 .chart-box {
-  background: var(--blanc);
-  border-radius: var(--rayon);
-  padding: 1.2rem;
-  box-shadow: var(--ombre);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  box-shadow: var(--shadow);
 }
 .chart-box h2 {
-  font-size: 1rem;
-  color: var(--bleu);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
   margin-bottom: 1rem;
-  padding-bottom: .5rem;
-  border-bottom: 2px solid var(--bleu-clair);
 }
-.chart-container { position: relative; height: 320px; }
+.chart-box.full { grid-column: 1 / -1; }
+.chart-container { position: relative; height: 300px; }
+.chart-container.tall { height: 340px; }
+.chart-container.pie-tall { height: 300px; }
+.legend-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
+}
+.legend-pills button {
+  border: 1.5px solid;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--surface);
+  transition: opacity 0.15s, background 0.15s;
+  font-family: inherit;
+  color: var(--text);
+}
+.legend-pills button:hover { background: var(--surface2); }
+.legend-pills button.inactive { opacity: 0.35; }
+.filters, .toolbar-panel select, .toolbar-panel input, .filters select, .filters input {
+  font-family: inherit;
+  font-size: 0.88rem;
+  padding: 6px 10px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+.filters select:focus, .filters input:focus,
+.toolbar-panel select:focus { border-color: var(--accent); }
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: .75rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem 1rem;
   align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  box-shadow: var(--shadow);
 }
-.filters label { font-size: .85rem; font-weight: 600; }
-.filters select, .filters input {
-  padding: .45rem .7rem;
-  border: 1px solid #ccc;
-  border-radius: var(--rayon);
-  font-size: .9rem;
+.filters label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.export-btn {
+  margin-left: auto;
+  font-family: inherit;
+  font-size: 0.83rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.export-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: .88rem;
-  background: var(--blanc);
-  border-radius: var(--rayon);
-  overflow: hidden;
-  box-shadow: var(--ombre);
+  font-size: 0.85rem;
 }
-thead { background: var(--bleu); color: var(--blanc); }
-th, td { padding: .65rem .8rem; text-align: left; vertical-align: top; }
-tbody tr:nth-child(even) { background: #fafafa; }
-tbody tr:hover { background: var(--bleu-clair); }
-tbody tr.breakdown { color: #666; font-style: italic; }
-tbody tr.category-row { background: #eef1ff; font-weight: 700; }
+thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 500;
+  color: var(--text2);
+  padding: 0.65rem 0.8rem;
+  text-align: left;
+  border-bottom: 2px solid var(--border2);
+  background: var(--surface2);
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
+tbody tr:hover { background: var(--bg); }
+tbody tr.breakdown { color: var(--text2); font-style: italic; }
+tbody tr.category-row { background: var(--surface2); font-weight: 500; }
+th, td { padding: 0.65rem 0.8rem; vertical-align: top; }
 .amount { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .legend-note {
-  font-size: .8rem;
-  color: #666;
-  margin-top: .75rem;
-  padding: .75rem;
-  background: var(--bleu-clair);
-  border-radius: var(--rayon);
+  font-size: 0.74rem;
+  color: var(--text2);
+  margin-top: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--surface2);
+  border-radius: 6px;
+  border-left: 3px solid var(--gold);
+}
+.table-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+.table-wrap h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
 }
 footer {
   text-align: center;
-  padding: 2rem 1rem;
-  font-size: .8rem;
-  color: #888;
+  padding: 1.75rem 2rem;
+  font-size: 0.75rem;
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+  margin-top: 1rem;
+  background: var(--surface2);
+}
+@media (max-width: 960px) {
+  .charts-row { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
-  header h1 { font-size: 1.25rem; }
-  .chart-container { height: 260px; }
+  header h1 { font-size: 1.35rem; }
+  main, nav.tabs { padding-left: 1rem; padding-right: 1rem; }
+  .kpi-row { grid-template-columns: 1fr; }
+  .toolbar-panel .kpi-row.compact { margin-left: 0; width: 100%; }
+  .chart-container, .chart-container.tall, .chart-container.pie-tall { height: 260px; }
 }
 </style>
 </head>
@@ -334,8 +468,8 @@ footer {
 
 <main>
   <section id="vue-ensemble" class="panel active">
-    <div class="cards" id="kpi-cards"></div>
-    <div class="grid-2">
+    <div class="kpi-row" id="kpi-cards"></div>
+    <div class="charts-row">
       <div class="chart-box">
         <h2>Évolution des totaux volontaires (€)</h2>
         <div class="chart-container"><canvas id="chart-totals-vol"></canvas></div>
@@ -346,40 +480,44 @@ footer {
         <p class="legend-note">Les contributions obligatoires sont exprimées en USD et les volontaires en EUR — comparaison indicative.</p>
       </div>
     </div>
-    <div class="chart-box">
+    <div class="chart-box full">
       <h2>Contributions obligatoires par convention (USD)</h2>
-      <div class="chart-container" style="height:380px"><canvas id="chart-mandatory-overview"></canvas></div>
+      <div class="chart-container tall"><canvas id="chart-mandatory-overview"></canvas></div>
     </div>
   </section>
 
   <section id="obligatoires" class="panel">
-    <div class="filters">
-      <label for="year-mandatory">Année :</label>
-      <select id="year-mandatory"></select>
+    <div class="toolbar-panel">
+      <label for="year-mandatory">Année
+        <select id="year-mandatory"></select>
+      </label>
+      <div class="kpi-row compact" id="kpi-mandatory"></div>
     </div>
-    <div class="cards" id="kpi-mandatory"></div>
-    <div class="chart-box">
-      <h2>Évolution par convention (USD)</h2>
-      <div id="mandatory-legend-pills" class="legend-pills"></div>
-      <div class="chart-container tall"><canvas id="chart-mandatory-lines"></canvas></div>
+    <div class="charts-row">
+      <div class="chart-box">
+        <h2>Évolution par convention (USD)</h2>
+        <div id="mandatory-legend-pills" class="legend-pills"></div>
+        <div class="chart-container tall"><canvas id="chart-mandatory-lines"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h2 id="mandatory-bar-title">Montants 2026 par convention (USD)</h2>
+        <div class="chart-container tall"><canvas id="chart-mandatory-year"></canvas></div>
+      </div>
     </div>
-    <div class="chart-box" style="margin-top:1.5rem">
-      <h2 id="mandatory-bar-title">Montants 2026 par convention (USD)</h2>
-      <div class="chart-container"><canvas id="chart-mandatory-year"></canvas></div>
-    </div>
-    <div class="chart-box" style="margin-top:1.5rem;overflow-x:auto">
+    <div class="table-wrap">
       <h2>Tableau des contributions obligatoires</h2>
       <table id="table-mandatory"></table>
     </div>
   </section>
 
   <section id="volontaires" class="panel">
-    <div class="filters">
-      <label for="year-vol">Année :</label>
-      <select id="year-vol"></select>
+    <div class="toolbar-panel">
+      <label for="year-vol">Année
+        <select id="year-vol"></select>
+      </label>
+      <div class="kpi-row compact" id="kpi-voluntary"></div>
     </div>
-    <div class="cards" id="kpi-voluntary"></div>
-    <div class="grid-2">
+    <div class="charts-row">
       <div class="chart-box">
         <h2>Répartition par catégorie</h2>
         <div id="vol-legend-pills" class="legend-pills"></div>
@@ -387,10 +525,10 @@ footer {
       </div>
       <div class="chart-box">
         <h2>Principaux bénéficiaires</h2>
-        <div class="chart-container"><canvas id="chart-vol-benef"></canvas></div>
+        <div class="chart-container pie-tall"><canvas id="chart-vol-benef"></canvas></div>
       </div>
     </div>
-    <div class="chart-box" style="margin-top:1.5rem">
+    <div class="chart-box full">
       <h2>Évolution des catégories volontaires (€)</h2>
       <div class="chart-container tall"><canvas id="chart-evol-categories"></canvas></div>
     </div>
@@ -408,9 +546,9 @@ footer {
       </select>
       <label for="filter-search">Recherche :</label>
       <input type="search" id="filter-search" placeholder="Organisme, convention…">
-      <button type="button" id="export-csv" style="margin-left:auto;padding:.45rem 1rem;background:var(--bleu);color:#fff;border:none;border-radius:var(--rayon);cursor:pointer;font-weight:600">Exporter CSV</button>
+      <button type="button" id="export-csv" class="export-btn">Exporter CSV</button>
     </div>
-    <div style="overflow-x:auto">
+    <div class="table-wrap">
       <table id="table-details">
         <thead>
           <tr>
@@ -439,9 +577,18 @@ __CHART_JS__
 const DATA = __DATA_JSON__;
 
 const COLORS = [
-  '#000091','#e1000f','#0063cb','#ff9575','#7ab1e8','#929292',
-  '#6a6af4','#ffb7ae','#465f9d','#d64d00','#9c9c9c','#8585f6'
+  '#2c5f8a','#1a7a5e','#8a2c2c','#b07d2a','#5a7a9a','#3d8b6e',
+  '#a05050','#c49a3c','#6b8cae','#2e6b52','#9c7a5a','#4a6d8c'
 ];
+
+const CHART_DEFAULTS = {
+  color: '#6b6458',
+  borderColor: 'rgba(40,35,20,0.12)',
+  font: { family: "'Segoe UI', system-ui, sans-serif" }
+};
+Chart.defaults.color = CHART_DEFAULTS.color;
+Chart.defaults.borderColor = CHART_DEFAULTS.borderColor;
+Chart.defaults.font.family = CHART_DEFAULTS.font.family;
 
 const fmtEUR = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const fmtUSD = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
@@ -522,10 +669,10 @@ function buildPieLegendPills(containerId, labels, colors, chart) {
   const evolMand = mand2024 ? ((mand2026 - mand2024) / mand2024 * 100) : 0;
 
   document.getElementById('kpi-cards').innerHTML = `
-    <div class="card"><h3>Contributions volontaires ${lastYear}</h3><div class="value">${fmtEUR(totalVolLast)}</div><div class="sub">Hors lignes « dont »</div></div>
-    <div class="card red"><h3>Contributions obligatoires 2026</h3><div class="value">${fmtUSD(mand2026)}</div></div>
-    <div class="card"><h3>Évolution volontaire ${firstYear}→${lastYear}</h3><div class="value">${evolVol >= 0 ? '+' : ''}${evolVol.toFixed(0)}%</div><div class="sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
-    <div class="card red"><h3>Évolution contributions obligatoires 2024→2026</h3><div class="value">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>
+    <div class="kpi accent"><div class="kpi-label">Contributions volontaires ${lastYear}</div><div class="kpi-val">${fmtEUR(totalVolLast)}</div><div class="kpi-sub">Hors lignes « dont »</div></div>
+    <div class="kpi vc"><div class="kpi-label">Contributions obligatoires 2026</div><div class="kpi-val">${fmtUSD(mand2026)}</div></div>
+    <div class="kpi accent2"><div class="kpi-label">Évolution volontaire ${firstYear}→${lastYear}</div><div class="kpi-val">${evolVol >= 0 ? '+' : ''}${evolVol.toFixed(0)}%</div><div class="kpi-sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
+    <div class="kpi vc"><div class="kpi-label">Évolution obligatoires 2024→2026</div><div class="kpi-val">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="kpi-sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>
   `;
 })();
 
@@ -538,7 +685,7 @@ function buildPieLegendPills(containerId, labels, colors, chart) {
     type: 'bar',
     data: {
       labels: years,
-      datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: '#000091' }]
+      datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: COLORS[0] }]
     },
     options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
   });
@@ -553,8 +700,8 @@ function buildPieLegendPills(containerId, labels, colors, chart) {
     data: {
       labels: years,
       datasets: [
-        { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: '#000091' },
-        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: '#e1000f' }
+        { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: COLORS[0] },
+        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: COLORS[2] }
       ]
     },
     options: {
@@ -602,7 +749,7 @@ yearMandatorySelect.value = '2026';
 function updateMandatoryKPIAndBar(year) {
   const total = mandatoryTotalYear(parseInt(year));
   document.getElementById('kpi-mandatory').innerHTML = `
-    <div class="card red"><h3>Total ${year} (USD)</h3><div class="value">${fmtUSD(total)}</div></div>
+    <div class="kpi vc"><div class="kpi-label">Total ${year} (USD)</div><div class="kpi-val">${fmtUSD(total)}</div></div>
   `;
   document.getElementById('mandatory-bar-title').textContent = `Montants ${year} par convention (USD)`;
 
@@ -682,7 +829,7 @@ function renderVoluntaryYear(year) {
   const yd = DATA.voluntary.find(v => v.year === year);
   const total = getGrandTotalVol(year);
   document.getElementById('kpi-voluntary').innerHTML = `
-    <div class="card"><h3>Total ${year}</h3><div class="value">${fmtEUR(total)}</div></div>
+    <div class="kpi accent"><div class="kpi-label">Total ${year}</div><div class="kpi-val">${fmtEUR(total)}</div></div>
   `;
 
   const catLabels = yd.categories.map(c => c.name);
@@ -721,7 +868,7 @@ function renderVoluntaryYear(year) {
     type: 'bar',
     data: {
       labels: sorted.map(s => s[0]),
-      datasets: [{ data: sorted.map(s => s[1]), backgroundColor: '#000091' }]
+      datasets: [{ data: sorted.map(s => s[1]), backgroundColor: COLORS[0] }]
     },
     options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { x: { ticks: { callback: v => fmtEUR(v) } } } }
   });
