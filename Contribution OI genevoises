@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="https://www.systeme-de-design.gouv.fr/v1.14/asset/core/favicon/favicon/apple_touch_icon_8ffa1fa80c.png">
+<title>Contributions aux OI â€” 2017â€“2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: rgba(40,35,20,0.12);
+    --border2: rgba(40,35,20,0.22);
+    --text: #1a1814;
+    --text2: #6b6458;
+    --accent: #2c5f8a;
+    --accent2: #1a7a5e;
+    --ac-vc: #8a2c2c;
+    --ac-total: #2c5f8a;
+    --gold: #b07d2a;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  header { background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('https://www.geneve.ch/sites/default/files/styles/max_1280/public/2023-08/palais-nations-cover-02.jpg.webp?itok=dLlVoecQ') center/cover; color: #000000; padding: 3rem 2rem 2rem; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.5px; margin-bottom: 0; background: rgba(255,255,255,0.7); padding: 0.5rem 1rem; width: fit-content; }
+  header p { font-size: .9rem; color: #000000; font-weight: 500; background: rgba(255,255,255,0.7); padding: 0.2rem 1rem 0.5rem; width: fit-content; }
+
+  .toolbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: .9rem 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .toolbar label { font-size: .78rem; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; display: flex; flex-direction: column; gap: 4px; }
+  select, input { font-family: inherit; font-size: .88rem; padding: 6px 10px; border: 1px solid var(--border2); border-radius: 6px; background: var(--bg); color: var(--text); cursor: pointer; outline: none; }
+  select:focus, input:focus { border-color: var(--accent); }
+  .sep { width: 1px; height: 28px; background: var(--border); }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 2rem; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; box-shadow: var(--shadow); }
+  .kpi-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text2); font-weight: 500; margin-bottom: .5rem; }
+  .kpi-val { font-family: 'DM Serif Display', serif; font-size: 1.75rem; font-weight: 400; color: var(--text); }
+  .kpi-sub { font-size: .75rem; color: var(--text2); margin-top: .3rem; }
+  .kpi-ac .kpi-val { color: var(--accent2); }
+  .kpi-vc .kpi-val { color: var(--ac-vc); }
+
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 780px) { .charts-row { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; }
+  .card h2 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 1.2rem; color: var(--text); }
+  .card-full { grid-column: 1 / -1; }
+
+  .legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: .78rem; color: var(--text2); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 500; color: var(--text2); padding: .6rem .8rem; text-align: right; border-bottom: 2px solid var(--border2); white-space: nowrap; }
+  thead th:first-child { text-align: left; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+  tbody tr:hover { background: var(--bg); }
+  tbody td { padding: .65rem .8rem; text-align: right; white-space: nowrap; }
+  tbody td:first-child { text-align: left; font-weight: 500; color: var(--text); }
+  .total-row td { font-weight: 500; background: var(--surface2); border-top: 2px solid var(--border2); }
+  .bar-cell { position: relative; }
+  .bar-inner { height: 6px; border-radius: 3px; background: var(--accent); opacity: .7; margin-top: 4px; }
+
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1.2rem; }
+  .tab { padding: .5rem 1.1rem; font-size: .83rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text2); font-weight: 400; margin-bottom: -1px; transition: all .15s; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+  .fx-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  .fx-table th { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 500; color: var(--text2); padding: .5rem .8rem; border-bottom: 2px solid var(--border2); text-align: right; }
+  .fx-table th:first-child { text-align: left; }
+  .fx-table td { padding: .55rem .8rem; border-bottom: 1px solid var(--border); text-align: right; }
+  .fx-table td:first-child { text-align: left; font-weight: 500; }
+
+  /* Comparative chart donor colors */
+  .donor-legend { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: .76rem; color: var(--text2); }
+  .donor-legend span { display: flex; align-items: center; gap: 5px; }
+
+  /* Multi-select donor dropdown */
+  .donor-dropdown { position: relative; }
+  .donor-btn {
+    font-family: inherit; font-size: .88rem; padding: 6px 28px 6px 10px;
+    border: 1px solid var(--border2); border-radius: 6px; background: var(--bg);
+    color: var(--text); cursor: pointer; outline: none; white-space: nowrap;
+    min-width: 160px; text-align: left; position: relative;
+  }
+  .donor-btn::after {
+    content: 'â–¾'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    font-size: .75rem; color: var(--text2);
+  }
+  .donor-btn:focus, .donor-btn.open { border-color: var(--accent); }
+  .donor-panel {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0;
+    background: var(--surface); border: 1px solid var(--border2); border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12); z-index: 200; min-width: 200px;
+    padding: 6px 0;
+  }
+  .donor-panel.open { display: block; }
+  .donor-panel-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px; font-size: .85rem; cursor: pointer; color: var(--text);
+    transition: background .12s;
+  }
+  .donor-panel-item:hover { background: var(--surface2); }
+  .donor-panel-item input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+  .donor-panel-sep { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+  .donor-panel-actions {
+    display: flex; gap: 6px; padding: 6px 14px 4px;
+    font-size: .76rem;
+  }
+  .donor-panel-actions button {
+    border: none; background: none; color: var(--accent); cursor: pointer;
+    font-family: inherit; font-size: .76rem; padding: 2px 4px; border-radius: 4px;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  .donor-panel-actions button:hover { color: var(--text); }
+
+  .export-btn {
+    font-family: inherit; font-size: .83rem; font-weight: 500;
+    padding: 7px 14px; border: 1px solid var(--border2); border-radius: 6px;
+    background: var(--surface); color: var(--accent); cursor: pointer;
+    white-space: nowrap; align-self: flex-end; transition: all .15s;
+  }
+  .export-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .null-cell {
+    background: #fff8e8 !important;
+    color: #7a5800 !important;
+    font-style: italic;
+  }
+  .null-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: .78rem; color: #a06800; font-weight: 500; font-style: normal;
+    white-space: nowrap;
+  }
+  .null-badge::before { content: 'âš '; font-style: normal; }
+  .chart-null-notice, .table-null-notice {
+    display: none;
+    margin-top: .5rem;
+    font-size: .74rem;
+    color: #a06800;
+    background: #fff8e8;
+    border: 1px solid #e8c96b;
+    border-radius: 6px;
+    padding: .35rem .75rem;
+    gap: 5px;
+    align-items: center;
+  }
+  .chart-null-notice.visible, .table-null-notice.visible { display: flex; }
+  .chart-null-notice::before, .table-null-notice::before { content: 'âš '; font-size: .88rem; }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: .75rem;
+  color: #000000;
+  font-weight: 700;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+   background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
+              url('https://upload.wikimedia.org/wikipedia/fr/thumb/5/50/Bloc_Marianne.svg/3840px-Bloc_Marianne.svg.png');
+  background-size: cover;
+  background-position: center;
+}
+ .footer-text {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.3rem 1rem;
+  display: inline-block;
+}
+  .admin-trigger {
+    position: absolute; right: 1.5rem; bottom: 1.2rem;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.9); border: 1px solid var(--border2);
+    color: var(--text2); font-size: .78rem; font-weight: 500;
+    cursor: pointer; padding: 7px 14px; border-radius: 6px;
+    font-family: inherit; letter-spacing: .02em;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: all .15s;
+  }
+  .admin-trigger:hover { color: var(--accent); border-color: var(--accent); background: #fff; }
+  .admin-trigger-icon { font-size: .9rem; line-height: 1; }
+  footer { position: relative; }
+
+  .admin-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(26,24,20,0.55); backdrop-filter: blur(3px);
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .admin-overlay.open { display: flex; }
+  .admin-panel {
+    background: var(--surface); border-radius: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    width: 100%; max-width: 960px; max-height: 92vh; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .admin-header {
+    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .admin-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; }
+  .admin-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text2); line-height: 1; padding: 4px; }
+  .admin-body { overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .admin-login { text-align: center; padding: 2rem 1rem; }
+  .admin-login input { width: 220px; margin: .8rem auto; display: block; text-align: center; }
+  .admin-login button {
+    background: var(--accent); color: #fff; border: none; border-radius: 6px;
+    padding: 8px 24px; font-family: inherit; font-size: .88rem; cursor: pointer;
+  }
+  .admin-login .err { color: var(--ac-vc); font-size: .82rem; margin-top: .5rem; display: none; }
+
+  .admin-section h3 { font-size: .95rem; font-weight: 500; margin-bottom: .8rem; color: var(--text); }
+  .admin-controls { display: flex; flex-wrap: wrap; gap: .8rem; align-items: flex-end; margin-bottom: 1rem; }
+  .admin-controls label { font-size: .78rem; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; display: flex; flex-direction: column; gap: 4px; }
+  .admin-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+  .admin-table th { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 500; color: var(--text2); padding: .5rem .6rem; border-bottom: 2px solid var(--border2); text-align: right; background: var(--surface2); white-space: nowrap; }
+  .admin-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--surface2); z-index: 1; }
+  .admin-table td { padding: 3px; border-bottom: 1px solid var(--border); }
+  .admin-table td:first-child { font-weight: 500; padding-left: .6rem; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+  .admin-table input { width: 90px; font-size: .78rem; padding: 4px 6px; text-align: right; border: 1px solid transparent; border-radius: 4px; background: transparent; }
+  .admin-table input:focus { border-color: var(--accent); background: var(--bg); outline: none; }
+  .admin-table input.changed { background: rgba(44,95,138,0.08); border-color: var(--accent); }
+
+  .admin-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 6px;
+    padding: 7px 16px; font-family: inherit; font-size: .83rem; cursor: pointer;
+  }
+  .admin-btn:hover { opacity: .9; }
+  .admin-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+  .admin-btn.danger { background: var(--ac-vc); }
+  .admin-btn-row { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+  .admin-export textarea {
+    width: 100%; min-height: 140px; font-family: 'Courier New', monospace; font-size: .72rem;
+    padding: .8rem; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg);
+    color: var(--text); resize: vertical; line-height: 1.4;
+  }
+
+  .admin-tutorial { background: var(--surface2); border-radius: 8px; padding: 1.2rem 1.4rem; }
+  .admin-tutorial h3 { margin-bottom: 1rem; }
+  .admin-steps { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: .9rem; }
+  .admin-steps li { counter-increment: step; padding-left: 2.2rem; position: relative; font-size: .85rem; line-height: 1.5; color: var(--text); }
+  .admin-steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: .75rem; font-weight: 500; display: flex; align-items: center; justify-content: center;
+  }
+  .admin-steps code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: .8rem; }
+  .admin-badge { display: inline-block; background: var(--accent); color: #fff; font-size: .7rem; padding: 2px 8px; border-radius: 10px; margin-left: .5rem; vertical-align: middle; }
+
+/* â”€â”€ SECTION SANTÃ‰ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.sante-section {
+  background: var(--surface);
+  border-top: 3px solid #1a7a5e;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+.sante-section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: .3rem;
+}
+.sante-section .sante-subtitle {
+  font-size: .82rem;
+  color: var(--text2);
+  margin-bottom: 1.5rem;
+}
+.sante-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.sante-controls label {
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sante-controls select {
+  font-family: inherit;
+  font-size: .88rem;
+  padding: 6px 10px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
+.sante-controls select:focus { border-color: #1a7a5e; }
+.entity-picker { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.entity-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: .78rem; font-weight: 500; cursor: pointer;
+  border: 2px solid transparent; transition: all .15s; user-select: none;
+}
+.entity-chip input { display: none; }
+.entity-chip.checked { color: #fff; }
+.entity-chip:not(.checked) {
+  background: var(--surface2) !important;
+  color: var(--text2);
+  border-color: var(--border2);
+}
+.sante-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.sante-pie-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+}
+.sante-pie-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: .3rem;
+}
+.sante-pie-card .pie-year-label { font-size: .76rem; color: var(--text2); margin-bottom: 1rem; }
+.sante-pie-wrap { position: relative; width: 100%; height: 240px; }
+.sante-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: .8rem; padding-top: .6rem;
+  border-top: 1px solid var(--border);
+  font-size: .8rem; color: var(--text2);
+}
+.sante-total-row strong { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--text); }
+.sante-legend-grid { display: flex; flex-wrap: wrap; gap: .4rem .8rem; margin-top: .6rem; }
+.sante-legend-item { display: flex; align-items: center; gap: 5px; font-size: .73rem; color: var(--text2); }
+.sante-legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.sante-table-wrap { overflow-x: auto; margin-top: 1.5rem; }
+.sante-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.sante-table thead th {
+  font-size: .71rem; text-transform: uppercase; letter-spacing: .07em;
+  font-weight: 500; color: var(--text2); padding: .5rem .7rem;
+  text-align: right; border-bottom: 2px solid var(--border2); white-space: nowrap;
+}
+.sante-table thead th:first-child { text-align: left; }
+.sante-table tbody tr { border-bottom: 1px solid var(--border); }
+.sante-table tbody tr:hover { background: var(--surface2); }
+.sante-table tbody td { padding: .55rem .7rem; text-align: right; white-space: nowrap; }
+.sante-table tbody td:first-child { text-align: left; font-weight: 500; }
+.sante-table .sante-total-row-tr td {
+  background: var(--surface2); font-weight: 600; border-top: 2px solid var(--border2);
+}
+.sante-section-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, #1a7a5e33, #1a7a5e, #1a7a5e33);
+  margin: 2.5rem 0 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Contributions aux Organisations Internationales genevoises</h1>
+  <p>2017 â€“ 2025 &nbsp;Â·&nbsp; Contributions Assessed (AC) &amp; Voluntary (VC) &nbsp;Â·&nbsp; Valeurs en USD</p>
+</header>
+
+<div class="toolbar">
+  <label>Pays donateur
+    <div class="donor-dropdown">
+      <button type="button" class="donor-btn" id="donorBtn" onclick="toggleDonorPanel()">
+        <span id="donorBtnLabel">France</span>
+      </button>
+      <div class="donor-panel" id="donorPanel">
+        <div class="donor-panel-actions">
+          <button onclick="selectAllDonors()">Tout sÃ©lectionner</button>
+          <button onclick="selectNoneDonors()">Tout dÃ©sÃ©lectionner</button>
+        </div>
+        <hr class="donor-panel-sep">
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Canada"> Canada</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Chine"> Chine</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="France" checked> France</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Allemagne"> Allemagne</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Japon"> Japon</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="NorvÃ¨ge"> NorvÃ¨ge</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="CorÃ©e du Sud"> CorÃ©e du Sud</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Royaume-Uni"> Royaume-Uni</label>
+        <label class="donor-panel-item"><input type="checkbox" name="donor" value="Etats-Unis"> Ã‰tats-Unis</label>
+      </div>
+    </div>
+  </label>
+  <div class="sep"></div>
+  <label>Organisation
+    <select id="orgSelect">
+      <option value="all">Toutes les organisations</option>
+      <option value="OIT">OIT</option>
+      <option value="OIM">OIM</option>
+      <option value="UIT">UIT</option>
+      <option value="HCR">HCR</option>
+      <option value="HCDH">HCDH</option>
+      <option value="OMS">OMS</option>
+      <option value="CICR">CICR</option>
+    </select>
+  </label>
+  <div class="sep"></div>
+  <label>Type
+    <select id="typeSelect">
+      <option value="TOTAL">Total AC + VC</option>
+      <option value="AC">Assessed (AC) seulement</option>
+      <option value="VC">Voluntary (VC) seulement</option>
+    </select>
+  </label>
+  <div class="sep"></div>
+  <label>PÃ©riode de
+    <select id="yearFrom"></select>
+  </label>
+  <label>Ã 
+    <select id="yearTo"></select>
+  </label>
+  <div class="sep"></div>
+  <button type="button" class="export-btn" onclick="exportCsv()">Exporter CSV</button>
+</div>
+
+<main>
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="charts-row">
+    <div class="card card-full">
+      <h2 id="chartTitle">Ã‰volution des contributions dans le temps</h2>
+      <div class="legend" id="lineLegend"></div>
+      <div style="position:relative;width:100%;height:340px;">
+        <canvas id="lineChart" role="img" aria-label="Ã‰volution des contributions par annÃ©e"></canvas>
+      </div>
+      <div class="chart-null-notice" id="lineNullNotice">Certaines valeurs sont manquantes (donnÃ©es non encore disponibles) â€” affichÃ©es âš  N/D dans le tableau</div>
+    </div>
+    <div class="card" id="pieCard">
+      <h2>RÃ©partition par organisation <span id="pieYear" style="color:var(--text2);font-size:.85rem;font-family:'DM Sans',sans-serif;"></span></h2>
+      <div style="position:relative;width:100%;height:280px;">
+        <canvas id="pieChart" role="img" aria-label="RÃ©partition des contributions par organisation"></canvas>
+      </div>
+      <div class="chart-null-notice" id="pieNullNotice">Des donnÃ©es manquantes ont Ã©tÃ© exclues de ce graphique</div>
+    </div>
+    <div class="card">
+      <h2 id="barTitle">Part AC vs VC par organisation <span id="stackYear" style="color:var(--text2);font-size:.85rem;font-family:'DM Sans',sans-serif;"></span></h2>
+      <div id="stackHeight" style="position:relative;width:100%;">
+        <canvas id="barChart" role="img" aria-label="Comparaison AC et VC par organisation"></canvas>
+      </div>
+      <div class="chart-null-notice" id="barNullNotice">Des donnÃ©es manquantes ont Ã©tÃ© exclues de ce graphique</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Tableau dÃ©taillÃ©</h2>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('data')">DonnÃ©es par annÃ©e</div>
+      <div class="tab" onclick="switchTab('fx')">Taux de change</div>
+    </div>
+    <div id="tabData">
+      <div style="overflow-x:auto;"><table id="dataTable"></table></div>
+      <div class="table-null-notice" id="tableNullNotice">Certaines valeurs sont manquantes (donnÃ©es non encore disponibles) â€” indiquÃ©es par âš  N/D</div>
+    </div>
+    <div id="tabFx" style="display:none;">
+      <table class="fx-table" id="fxTable"></table>
+    </div>
+  </div>
+</main>
+
+<div class="sante-section-divider"></div>
+<section class="sante-section" id="sante">
+  <h2>Contributions franÃ§aises â€” OI Genevoises &amp; Fonds verticaux</h2>
+  <p class="sante-subtitle">France (AC + VC) Â· 2023â€“2025 Â· DonnÃ©es en USD Â· SÃ©lectionnez les entitÃ©s Ã  comparer</p>
+
+  <div class="sante-controls">
+    <label>AnnÃ©e(s)
+      <select id="santePieMode" onchange="updateSante()">
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="total" selected>Total 3 ans (2023â€“2025)</option>
+      </select>
+    </label>
+    <button type="button" class="export-btn" onclick="exportSanteCsv()">Exporter CSV</button>
+  </div>
+
+  <div style="margin-bottom:.5rem;font-size:.78rem;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;">OI genevoises</div>
+  <div class="entity-picker" id="santeONUpicker">
+    <label class="entity-chip aggregate-chip" id="chip-totalONU">
+      <input type="checkbox" id="sc-totalONU" onchange="toggleAggregate('onu', this.parentElement, this)">Total OI genevoises
+   </label>
+  </div>
+  <div style="margin-bottom:.5rem;margin-top:.8rem;font-size:.78rem;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;">Fonds verticaux santÃ©</div>
+  <div class="entity-picker" id="santeFondsPicker">
+    <label class="entity-chip aggregate-chip" id="chip-totalFonds">
+      <input type="checkbox" id="sc-totalFonds" onchange="toggleAggregate('fonds', this.parentElement, this)">Total fonds verticaux
+   </label>
+  </div>
+
+  <div class="sante-charts-grid" id="santeChartsGrid"></div>
+  <div class="sante-table-wrap">
+    <table class="sante-table" id="santeTable"></table>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-text">Source : UNSCEB et rapports annuels des OI 2025	| 	Mission permanente de la France auprÃ¨s de l'Office des Nations Unies Ã  GenÃ¨ve</span>
+  <button type="button" class="admin-trigger" onclick="openAdmin()" title="Administration des donnÃ©es">
+    <span class="admin-trigger-icon" aria-hidden="true">&#9881;</span> Espace admin
+  </button>
+</footer>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Administration des donnÃ©es</h2>
+      <button type="button" class="admin-close" onclick="closeAdmin()" aria-label="Fermer">&times;</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
+
+<script>
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// BLOC DE DONNÃ‰ES â€” Remplacez tout ce bloc pour mettre Ã  jour la page
+// Structure: data[type][donor][org][year] = value (USD)
+// type: 'AC' | 'VC' | 'TOTAL'
+// santeData[entitÃ©][annÃ©e] = contributions France AC+VC (section SantÃ©)
+// null = donnÃ©e non encore disponible (distinct de 0)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const PAGEBLOCK = {
+  data: {"AC": {"Canada": {"OIT": {"2017": 11316333.33, "2018": 11362283, "2019": 11258675.79, "2020": 11089232.82, "2021": 12244622.88, "2022": 11470324, "2023": 10930206, "2024": 12603741, "2025": 12694577.24}, "OIM": {"2017": 1556497, "2018": 1631265, "2019": 1664220.87, "2020": 1567224.62, "2021": 1730514.16, "2022": 1670035, "2023": 1940793, "2024": 2531437, "2025": 2938547.707}, "UIT": {"2017": 4226993.87, "2018": 4188449.85, "2019": 4240000, "2020": 3961494.9, "2021": 3822950.82, "2022": 3789815.818, "2023": 4189221.56, "2024": 3882352.94, "2025": 4219413.528}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 13058858, "2018": 14104180, "2019": 14039299, "2020": 13389833, "2021": 14103453.99, "2022": 13053066, "2023": 13024034, "2024": 15631772, "2025": 15089630}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Chine": {"OIT": {"2017": 30688100.2, "2018": 30812709, "2019": 30531741.64, "2020": 48695314.87, "2021": 53768892.41, "2022": 50368770, "2023": 63448407, "2024": 73163062, "2025": 73690352.86}, "OIM": {"2017": 4220800, "2018": 4423636, "2019": 4512941.24, "2020": 6881716.92, "2021": 7598724.8, "2022": 7333309, "2023": 11265850, "2024": 14694180, "2025": 17057320.55}, "UIT": {"2017": 4552147.24, "2018": 6466926.3, "2019": 6523076.92, "2020": 7202718.01, "2021": 6950819.672, "2022": 6890574.215, "2023": 7616766.47, "2024": 7058823.53, "2025": 7671660.96}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 35411951, "2018": 38246553, "2019": 38070587, "2020": 58794800, "2021": 61928300.91, "2022": 57316054, "2023": 75596876, "2024": 90733289, "2025": 87586470}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "France": {"OIT": {"2017": 18825701.43, "2018": 18902142, "2019": 18729782.17, "2020": 17957664.62, "2021": 19828678.37, "2022": 18574795, "2023": 17960626, "2024": 20710598, "2025": 17326858}, "OIM": {"2017": 2589182, "2018": 2713590, "2019": 2768395.14, "2020": 2537757.95, "2021": 2802167.61, "2022": 2704173, "2023": 3188897, "2024": 4159313, "2025": 4737214}, "UIT": {"2017": 6828220.86, "2018": 6777032.68, "2019": 6849230.77, "2020": 7562853.91, "2021": 7298360.656, "2022": 7235102.925, "2023": 7997604.79, "2024": 7411764.71, "2025": 8055244.008}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 23822541, "2018": 26213781, "2019": 23366540, "2020": 21681351, "2021": 22836863.31, "2022": 21136040, "2023": 21399454, "2024": 25684170, "2025": 24793390}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Allemagne": {"OIT": {"2017": 24754964.21, "2018": 24855482, "2019": 24628835.87, "2020": 24704459.49, "2021": 27278423.56, "2022": 25553449, "2023": 25419276, "2024": 29311248, "2025": 29522495.83}, "OIM": {"2017": 3404422, "2018": 3568070, "2019": 3640112.46, "2020": 3491037.95, "2021": 3854770.1, "2022": 3719978, "2023": 4513038, "2024": 5886463, "2025": 6833133.942}, "UIT": {"2017": 8128834.36, "2018": 8059745.44, "2019": 8153846.15, "2020": 9003397.51, "2021": 8688524.59, "2022": 8613217.768, "2023": 9520958.08, "2024": 8823529.41, "2025": 9589576.2}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 28563111, "2018": 30849472, "2019": 30707538, "2020": 29825931, "2021": 31415525.75, "2022": 29075778, "2023": 30285334, "2024": 36349227, "2025": 35088550}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Japon": {"OIT": {"2017": 37504236.2, "2018": 37656521, "2019": 37313148.94, "2020": 34739505.64, "2021": 38359023.78, "2022": 35933357, "2023": 33414249, "2024": 38530340, "2025": 38808030.59}, "OIM": {"2017": 5157942, "2018": 5405877, "2019": 5514882.47, "2020": 4909250.26, "2021": 5420746.32, "2022": 5231185, "2023": 5932473, "2024": 7737828, "2025": 8982237.58}, "UIT": {"2017": 9754601.23, "2018": 9693844.99, "2019": 9784615.38, "2020": 10804077.01, "2021": 10426229.51, "2022": 10335861.32, "2023": 11425149.7, "2024": 10588235.29, "2025": 11507491.44}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 43275532, "2018": 46739668, "2019": 46524626, "2020": 41942409, "2021": 44177759.57, "2022": 40887522, "2023": 39810522, "2024": 47781595, "2025": 46124430}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Norv\u00e8ge": {"OIT": {"2017": 3288010.23, "2018": 3301362, "2019": 3271258.36, "2020": 3057141.54, "2021": 3375665.91, "2022": 3162202, "2023": 2822978, "2024": 3255207, "2025": 3278667.659}, "OIM": {"2017": 452400, "2018": 474146, "2019": 483694.02, "2020": 432247.18, "2021": 477283.13, "2022": 460554, "2023": 501464, "2024": 654031, "2025": 759213.3821}, "UIT": {"2017": 1625766.87, "2018": 1623024.32, "2019": 1630769.23, "2020": 1800679.5, "2021": 1737704.918, "2022": 1722643.554, "2023": 1904191.62, "2024": 1764705.88, "2025": 1917915.24}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 3795927, "2018": 4099774, "2019": 4080911, "2020": 3692733, "2021": 3889539.802, "2022": 3599864, "2023": 3365037, "2024": 4038803, "2025": 3898720}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Cor\u00e9e du Sud": {"OIT": {"2017": 7900520.45, "2018": 7932600, "2019": 7860266.46, "2020": 9195751.8, "2021": 10153859.57, "2022": 9511772, "2023": 10705698, "2024": 12344859, "2025": 8443721.962}, "OIM": {"2017": 1086491, "2018": 1138718, "2019": 1161689.97, "2020": 1299528.21, "2021": 1434926.39, "2022": 1384765, "2023": 1900934, "2024": 2479444, "2025": 2878192.482}, "UIT": {"2017": 3251533.74, "2018": 3235980.24, "2019": 3261538.46, "2020": 3601359, "2021": 3475409.836, "2022": 3445287.107, "2023": 3808383.23, "2024": 3529411.76, "2025": 3835830.48}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 9115857, "2018": 9845547, "2019": 9800250, "2020": 11102694, "2021": 11694420.19, "2022": 10823450, "2023": 12756417, "2024": 15310573, "2025": 14779570}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Royaume-Uni": {"OIT": {"2017": 17292070.55, "2018": 17362285, "2019": 17203966.57, "2020": 18525303.59, "2021": 20455459.8, "2022": 19161941, "2023": 18197607, "2024": 20983862, "2025": 21135094.23}, "OIM": {"2017": 2378165, "2018": 2492428, "2019": 2542765.96, "2020": 2618023.59, "2021": 2890796.15, "2022": 2789675, "2023": 3231023, "2024": 4214261, "2025": 4892004.69}, "UIT": {"2017": 3251533.74, "2018": 3242021.28, "2019": 3261538.46, "2020": 3601359, "2021": 3475409.836, "2022": 3445287.107, "2023": 3808383.23, "2024": 3529411.76, "2025": 3835830.48}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 19952882, "2018": 21550015, "2019": 21450866, "2020": 22367002, "2021": 23559067.38, "2022": 21804446, "2023": 21682038, "2024": 26023219, "2025": 25120670}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}, "Etats-Unis": {"OIT": {"2017": 85201692.23, "2018": 85547652, "2019": 84767582.57, "2020": 89200410.26, "2021": 98494224.24, "2022": 92265858, "2023": 91466154, "2024": 105470635, "2025": 0}, "OIM": {"2017": 11722587, "2018": 12286128, "2019": 12533867.27, "2020": 12611309.74, "2021": 13925285.39, "2022": 13438868, "2023": 16248070, "2024": 21192563, "2025": 24600783.96}, "UIT": {"2017": 9754601.23, "2018": 9687132.73, "2019": 9784615.38, "2020": 10804077.01, "2021": 10426229.51, "2022": 10335861.32, "2023": 11425149.7, "2024": 12352941.18, "2025": 13425406.68}, "HCR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "HCDH": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}, "OMS": {"2017": 109254146, "2018": 119545955, "2019": 118995943, "2020": 118497832, "2021": 124813264, "2022": 109020103, "2023": 113165200, "2024": 134994873, "2025": 0}, "CICR": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 0, "2024": 0, "2025": 0}}}, "TOTAL": {"Canada": {"OIT": {"2017": 14718963.33, "2018": 18307738.78, "2019": 19765543.14, "2020": 12868391.07, "2021": 14304371.8, "2022": 15836564, "2023": 16454862, "2024": 20718481, "2025": 29444985.24}, "OIM": {"2017": 68348877, "2018": 70372891, "2019": 71331136.95, "2020": 43585785.83, "2021": 68916024.13, "2022": 133403590, "2023": 215893383, "2024": 175880982, "2025": 137326647.7}, "UIT": {"2017": 4226993.87, "2018": 4188449.85, "2019": 4240000, "2020": 3961494.9, "2021": 3822950.82, "2022": 3911572.048, "2023": 4227176.05, "2024": 3899936.74, "2025": null}, "HCR": {"2017": 61723580.01, "2018": 25971862.44, "2019": 93202601.31, "2020": 73359012.97, "2021": 54850520.05, "2022": 124231811, "2023": 31282697, "2024": 90676747, "2025": 84423014}, "HCDH": {"2017": 4718048, "2018": 8386287, "2019": 5525752, "2020": 9619194, "2021": 6518740, "2022": 6902097, "2023": 5947066, "2024": 6537219, "2025": 8589245}, "OMS": {"2017": 49065114, "2018": 43898168.95, "2019": 43305094, "2020": 39564747, "2021": 174786224, "2022": 100589430, "2023": 82598789, "2024": 75345302, "2025": 73178774}, "CICR": {"2017": 66310316, "2018": 65255393, "2019": 53369338, "2020": 58685591, "2021": 72245110, "2022": 78777110, "2023": 59182970, "2024": 57572005, "2025": 63010439}}, "Chine": {"OIT": {"2017": 31346687.2, "2018": 31380296.38, "2019": 31088666.91, "2020": 49252616.73, "2021": 54519702.76, "2022": 51780506, "2023": 65706993, "2024": 76076584, "2025": 76346629.86}, "OIM": {"2017": 5203288, "2018": 4544676, "2019": 4670058.94, "2020": 7456343.92, "2021": 7997760.8, "2022": 7653802, "2023": 12112314, "2024": 15389980, "2025": 17553820.55}, "UIT": {"2017": 5035788.34, "2018": 6958819.08, "2019": 7074744.34, "2020": 8486069.09, "2021": 7283278.688, "2022": 8239772.482, "2023": 9004938.93, "2024": 9253802.44, "2025": null}, "HCR": {"2017": 12025215, "2018": 1308593.66, "2019": 1863103.28, "2020": 3113008.09, "2021": 3068644, "2022": 2213179, "2023": 2740075, "2024": 4940734, "2025": 11432922}, "HCDH": {"2017": 100000, "2018": 800000, "2019": 800000, "2020": 800000, "2021": 800000, "2022": 800000, "2023": 4000000, "2024": 4000000, "2025": 4900000}, "OMS": {"2017": 45996450, "2018": 44561685, "2019": 45654444, "2020": 89664799, "2021": 84025676.48, "2022": 70184752, "2023": 79566399, "2024": 94950381, "2025": 90546985}, "CICR": {"2017": 2678139, "2018": 695255, "2019": 694444, "2020": 746720, "2021": 776707, "2022": 754398, "2023": 812475, "2024": 841069, "2025": null}}, "France": {"OIT": {"2017": 24062430.43, "2018": 22469275.86, "2019": 22264491.68, "2020": 23537797.17, "2021": 24352881.75, "2022": 24824199, "2023": 22930856, "2024": 25774490, "2025": 22074243}, "OIM": {"2017": 11131229, "2018": 11873134, "2019": 14627640.17, "2020": 13710596.05, "2021": 27656605.95, "2022": 26592047, "2023": 31749464, "2024": 28469220, "2025": 17300214}, "UIT": {"2017": 6828220.86, "2018": 6777032.68, "2019": 7026927.09, "2020": 7562853.91, "2021": 7298360.656, "2022": 7235102.925, "2023": 8005943.71, "2024": 7419360.71, "2025": null}, "HCR": {"2017": 39564845.48, "2018": 39446150.73, "2019": 40707432.3, "2020": 45938755.36, "2021": 99439133.34, "2022": 99155075, "2023": 120377690, "2024": 141317263, "2025": 57085392}, "HCDH": {"2017": 2275313, "2018": 2555168, "2019": 3119443, "2020": 3316011, "2021": 5304878, "2022": 4276058, "2023": 11429965, "2024": 5446623, "2025": 0}, "OMS": {"2017": 37320556, "2018": 36506520.92, "2019": 36133872, "2020": 76036224, "2021": 69158552.62, "2022": 93415998, "2023": 65355809, "2024": 69212622, "2025": 46724686}, "CICR": {"2017": 19655939, "2018": 25157255, "2019": 35322698, "2020": 36786297, "2021": 49574739, "2022": 60582511, "2023": 77982118, "2024": 60954472, "2025": 49719252}}, "Allemagne": {"OIT": {"2017": 42935005.21, "2018": 42543455.71, "2019": 45480497.51, "2020": 55554085.66, "2021": 68682588.58, "2022": 57041814, "2023": 54943558, "2024": 71143540, "2025": 80648076.83}, "OIM": {"2017": 110634691, "2018": 95308982, "2019": 108343632.5, "2020": 151763142.4, "2021": 238515215.2, "2022": 275327982, "2023": 283415391, "2024": 155753143, "2025": 146796333.9}, "UIT": {"2017": 8128834.36, "2018": 8285703.49, "2019": 8320919.03, "2020": 9341007.93, "2021": 8959659.016, "2022": 8751267.605, "2023": 12898487.42, "2024": 10737118.76, "2025": null}, "HCR": {"2017": 571456508.4, "2018": 426123333.4, "2019": 359945040.7, "2020": 525971769.4, "2021": 483834483.7, "2022": 535315019, "2023": 280512180, "2024": 350924283, "2025": 163047583}, "HCDH": {"2017": 9143552, "2018": 9806471, "2019": 8411296, "2020": 10254726, "2021": 15987824, "2022": 16031714, "2023": 26790473, "2024": 22891886, "2025": 7050390}, "OMS": {"2017": 118577061, "2018": 185943644, "2019": 174533303, "2020": 635473523, "2021": 641712990.2, "2022": 689520612, "2023": 259534105, "2024": 198804824, "2025": 176080717}, "CICR": {"2017": 198698913, "2018": 178249020, "2019": 181904702, "2020": 273289067, "2021": 270748689, "2022": 216635984, "2023": 289348112, "2024": 199726029, "2025": 91963734}}, "Japon": {"OIT": {"2017": 44028217.2, "2018": 42365333.99, "2019": 43258156.62, "2020": 40745060.99, "2021": 45910461.95, "2022": 49304017, "2023": 46886809, "2024": 52153911, "2025": 51495706.59}, "OIM": {"2017": 46332348, "2018": 43782303, "2019": 40955633.49, "2020": 56252137.93, "2021": 73465327.2, "2022": 79597463, "2023": 68127219, "2024": 59205764, "2025": 68187037.58}, "UIT": {"2017": 10158465.24, "2018": 10236803.73, "2019": 10644149.87, "2020": 11132724.8, "2021": 10691938.8, "2022": 10798383.53, "2023": 13226795.21, "2024": 13314254.16, "2025": null}, "HCR": {"2017": 152549919.3, "2018": 120342342.1, "2019": 132621044.3, "2020": 119209242, "2021": 140349551.1, "2022": 275899085, "2023": 93362619, "2024": 115017965, "2025": 81318969}, "HCDH": {"2017": 109325, "2018": 1937444, "2019": 117133, "2020": 65000, "2021": 258340, "2022": 280350, "2023": 1763471, "2024": 1214520, "2025": 613528}, "OMS": {"2017": 90001600, "2018": 133819600.3, "2019": 101477784, "2020": 138901401, "2021": 86369299.57, "2022": 71933564, "2023": 65132785, "2024": 84356587, "2025": 49887126}, "CICR": {"2017": 41820534, "2018": 25779551, "2019": 26144955, "2020": 27685022, "2021": 55813356, "2022": 53836690, "2023": 46665216, "2024": 38944435, "2025": 29973253}}, "Norv\u00e8ge": {"OIT": {"2017": 21171766.23, "2018": 15526911.86, "2019": 15578166.87, "2020": 23193562.12, "2021": 10123166.51, "2022": 14201045, "2023": 13538657, "2024": 11616672, "2025": 7679615.659}, "OIM": {"2017": 20775412, "2018": 21434196, "2019": 18776814.16, "2020": 13070800.99, "2021": 20463830.82, "2022": 37741639, "2023": 51590711, "2024": 28567772, "2025": 24987613.38}, "UIT": {"2017": 1625766.87, "2018": 1623024.32, "2019": 1630769.23, "2020": 2945214.04, "2021": 2394320.219, "2022": 2732933.912, "2023": 2780821.56, "2024": 2729415.09, "2025": null}, "HCR": {"2017": 103498017.6, "2018": 101147924.4, "2019": 95274015.15, "2020": 33400894, "2021": 108275900.9, "2022": 181048798, "2023": 129003128, "2024": 122693517, "2025": 128823547}, "HCDH": {"2017": 15559270, "2018": 22174972, "2019": 18835881, "2020": 20599006, "2021": 19779429, "2022": 19777215, "2023": 19777215, "2024": 21099728, "2025": 20471294}, "OMS": {"2017": 46861399, "2018": 47366128.39, "2019": 50197891, "2020": 81756776, "2021": 89812469.43, "2022": 54835822, "2023": 72480560, "2024": 56116398, "2025": 58202760}, "CICR": {"2017": 71284578, "2018": 70633575, "2019": 74014110, "2020": 67354909, "2021": 95009918, "2022": 90962669, "2023": 141804729, "2024": 94816587, "2025": 109647041}}, "Cor\u00e9e du Sud": {"OIT": {"2017": 9946202.45, "2018": 10449665.35, "2019": 10268109.74, "2020": 12055239.96, "2021": 14917482.06, "2022": 16478023, "2023": 19558818, "2024": 20199903, "2025": 16390837.96}, "OIM": {"2017": 7435084, "2018": 7026722, "2019": 8568996.49, "2020": 17809452.65, "2021": 23598174.88, "2022": 22253701, "2023": 29797312, "2024": 49735314, "2025": 47711892.48}, "UIT": {"2017": 4341664.62, "2018": 3837779.41, "2019": 4491261.43, "2020": 4838719.13, "2021": 3869708.197, "2022": 4168693.391, "2023": 4887342.51, "2024": 4731627.08, "2025": null}, "HCR": {"2017": 34099306.95, "2018": 23132454.56, "2019": 20265082.2, "2020": 30825877.39, "2021": 24497318.59, "2022": 29504183, "2023": 38015956, "2024": 81834494, "2025": 67906851}, "HCDH": {"2017": 1300000, "2018": 1881796, "2019": 2500000, "2020": 1601416, "2021": 2114000, "2022": 1653000, "2023": 1995000, "2024": 4900000, "2025": 4198948}, "OMS": {"2017": 35202209, "2018": 37908336.14, "2019": 37023272, "2020": 53544914, "2021": 31535473.69, "2022": 32894403, "2023": 33878691, "2024": 41294394, "2025": 43767709}, "CICR": {"2017": 4814974, "2018": 4131990, "2019": 4061500, "2020": 2815716, "2021": 3849842, "2022": 10958896, "2023": 7873403, "2024": 24294925, "2025": 9990008}}, "Royaume-Uni": {"OIT": {"2017": 27882038.55, "2018": 24442299.77, "2019": 23523551.63, "2020": 27256046.06, "2021": 31026175, "2022": 33048643, "2023": 29310845, "2024": 26460280, "2025": 27101046.23}, "OIM": {"2017": 82133720, "2018": 77821470, "2019": 82836157.74, "2020": 122163104.2, "2021": 83828537.01, "2022": 100591311, "2023": 98720491, "2024": 156986132, "2025": 189623804.7}, "UIT": {"2017": 3251533.74, "2018": 3242021.28, "2019": 3276923.08, "2020": 3601359, "2021": 3826963.934, "2022": 3445287.107, "2023": 4462383.23, "2024": 4232689.23, "2025": null}, "HCR": {"2017": 243238878.6, "2018": 52322760.86, "2019": 122453501.4, "2020": 70473021.74, "2021": 60813572.85, "2022": 100345103, "2023": 106213166, "2024": 81364098, "2025": 126532476}, "HCDH": {"2017": 7201458, "2018": 8813612, "2019": 8532030, "2020": 9151148, "2021": 8315278, "2022": 9289668, "2023": 6830527, "2024": 14549122, "2025": 9761279}, "OMS": {"2017": 191424711, "2018": 239959165.6, "2019": 248148581, "2020": 293624393, "2021": 213809723.1, "2022": 194556437, "2023": 218311781, "2024": 271980360, "2025": 101449556}, "CICR": {"2017": 216349857, "2018": 210224013, "2019": 213167468, "2020": 222600339, "2021": 167490214, "2022": 168141102, "2023": 165272512, "2024": 242465602, "2025": 224909460}}, "Etats-Unis": {"OIT": {"2017": 115415700.2, "2018": 119432603.4, "2019": 121698986.4, "2020": 119873147.4, "2021": 137836982.5, "2022": 131922837, "2023": 133286219, "2024": 152775511, "2025": 24783041}, "OIM": {"2017": 486997812, "2018": 569415073, "2019": 591693223.8, "2020": 630122073.7, "2021": 681596293, "2022": 967389784, "2023": 1403889778, "2024": 1545457940, "2025": 769459284}, "UIT": {"2017": 9754601.23, "2018": 9745779.49, "2019": 9784615.38, "2020": 10804077.01, "2021": 10426229.51, "2022": 10335861.32, "2023": 11764058.68, "2024": 12417512.77, "2025": null}, "HCR": {"2017": 1442360238, "2018": 1589776543, "2019": 1706832053, "2020": 1973251228, "2021": 1947206682, "2022": 2195608503, "2023": 1917853989, "2024": 2041118369, "2025": 811800604}, "HCDH": {"2017": 20160912, "2018": 18427371, "2019": 18200211, "2020": 27937650, "2021": 26737641, "2022": 27727882, "2023": 32937654, "2024": 36028662, "2025": 0}, "OMS": {"2017": 511197425, "2018": 407494153.9, "2019": 466216482, "2020": 232293490, "2021": 482386325.7, "2022": 852855999, "2023": 486905452, "2024": 588434854, "2025": 0}, "CICR": {"2017": 413386145, "2018": 472263451, "2019": 481498129, "2020": 523970305, "2021": 594711751, "2022": 638663183, "2023": 561058271, "2024": 563283398, "2025": 375418796}}}, "VC": {"Canada": {"OIT": {"2017": 3402630, "2018": 6945455.78, "2019": 8506867.35, "2020": 1779158.25, "2021": 2059748.92, "2022": 4366240, "2023": 5524656, "2024": 8114740, "2025": 16750408}, "OIM": {"2017": 66792380, "2018": 68741626, "2019": 69666916.08, "2020": 42018561.21, "2021": 67185509.97, "2022": 131733555, "2023": 213952590, "2024": 173349545, "2025": 134388100}, "UIT": {"2017": 0, "2018": 0, "2019": 0, "2020": 0, "2021": 0, "2022": 121756.2297, "2023": 37954.49, "2024": 17584, "2025": null}, "HCR": {"2017": 61723580.01, "2018": 25971862.44, "2019": 93202601.31, "2020": 73359012.97, "2021": 54850520.05, "2022": 124231811, "2023": 31282697, "2024": 90676747, "2025": 84423014}, "HCDH": {"2017": 4718048, "2018": 8386287, "2019": 5525752, "2020": 9619194, "2021": 6518740, "2022": 6902097, "2023": 5947066, "2024": 6537219, "2025": 8589245}, "OMS": {"2017": 36006256, "2018": 29793988.95, "2019": 29265795, "2020": 26174914, "2021": 160682770, "2022": 87536364, "2023": 69574755, "2024": 59713530, "2025": 58089144}, "CICR": {"2017": 66310316, "2018": 65255393, "2019": 53369338, "2020": 58685591, "2021": 72245110, "2022": 78777110, "2023": 59182970, "2024": 57572005, "2025": 63010439}}, "Chine": {"OIT": {"2017": 658587, "2018": 567587.38, "2019": 556925.27, "2020": 557301.86, "2021": 750810.35, "2022": 1411736, "2023": 2258586, "2024": 2913522, "2025": 2656277}, "OIM": {"2017": 982488, "2018": 121040, "2019": 157117.7, "2020": 574627, "2021": 399036, "2022": 320493, "2023": 846464, "2024": 695800, "2025": 496500}, "UIT": {"2017": 483641.1, "2018": 491892.78, "2019": 551667.42, "2020": 1283351.08, "2021": 332459.0164, "2022": 1349198.267, "2023": 1388172.46, "2024": 2194979, "2025": null}, "HCR": {"2017": 12025215, "2018": 1308593.66, "2019": 1863103.28, "2020": 3113008.09, "2021": 3068644, "2022": 2213179, "2023": 2740075, "2024": 4940734, "2025": 11432922}, "HCDH": {"2017": 100000, "2018": 800000, "2019": 800000, "2020": 800000, "2021": 800000, "2022": 800000, "2023": 4000000, "2024": 4000000, "2025": 4900000}, "OMS": {"2017": 10584499, "2018": 6315132, "2019": 7583857, "2020": 30869999, "2021": 22097375.57, "2022": 12868698, "2023": 3969523, "2024": 4217092, "2025": 2960515}, "CICR": {"2017": 2678139, "2018": 695255, "2019": 694444, "2020": 746720, "2021": 776707, "2022": 754398, "2023": 812475, "2024": 841069, "2025": null}}, "France": {"OIT": {"2017": 5236729, "2018": 3567133.86, "2019": 3534709.51, "2020": 5580132.55, "2021": 4524203.38, "2022": 6249404, "2023": 4970230, "2024": 5063892, "2025": 4747385}, "OIM": {"2017": 8542047, "2018": 9159544, "2019": 11859245.03, "2020": 11172838.1, "2021": 24854438.34, "2022": 23887874, "2023": 28560567, "2024": 24309907, "2025": 12563000}, "UIT": {"2017": 0, "2018": 0, "2019": 177696.32, "2020": 0, "2021": 0, "2022": 0, "2023": 8338.92, "2024": 7596, "2025": null}, "HCR": {"2017": 39564845.48, "2018": 39446150.73, "2019": 40707432.3, "2020": 45938755.36, "2021": 99439133.34, "2022": 99155075, "2023": 120377690, "2024": 141317263, "2025": 57085392}, "HCDH": {"2017": 2275313, "2018": 2555168, "2019": 3119443, "2020": 3316011, "2021": 5304878, "2022": 4276058, "2023": 11429965, "2024": 5446623, "2025": 0}, "OMS": {"2017": 13498015, "2018": 10292739.92, "2019": 12767332, "2020": 54354873, "2021": 46321689.31, "2022": 72279958, "2023": 43956355, "2024": 43528452, "2025": 21931296}, "CICR": {"2017": 19655939, "2018": 25157255, "2019": 35322698, "2020": 36786297, "2021": 49574739, "2022": 60582511, "2023": 77982118, "2024": 60954472, "2025": 49719252}}, "Allemagne": {"OIT": {"2017": 18180041, "2018": 17687973.71, "2019": 20851661.64, "2020": 30849626.17, "2021": 41404165.02, "2022": 31488365, "2023": 29524282, "2024": 41832292, "2025": 51125581}, "OIM": {"2017": 107230269, "2018": 91740912, "2019": 104703520, "2020": 148272104.4, "2021": 234660445.1, "2022": 271608004, "2023": 278902353, "2024": 149866680, "2025": 139963200}, "UIT": {"2017": 0, "2018": 225958.05, "2019": 167072.88, "2020": 337610.42, "2021": 271134.4262, "2022": 138049.8375, "2023": 3377529.34, "2024": 1913589, "2025": null}, "HCR": {"2017": 571456508.4, "2018": 426123333.4, "2019": 359945040.7, "2020": 525971769.4, "2021": 483834483.7, "2022": 535315019, "2023": 280512180, "2024": 350924283, "2025": 163047583}, "HCDH": {"2017": 9143552, "2018": 9806471, "2019": 8411296, "2020": 10254726, "2021": 15987824, "2022": 16031714, "2023": 26790473, "2024": 22891886, "2025": 7050390}, "OMS": {"2017": 90013950, "2018": 155094172, "2019": 143825765, "2020": 605647592, "2021": 610297464.4, "2022": 660444834, "2023": 229248771, "2024": 162455597, "2025": 140992167}, "CICR": {"2017": 198698913, "2018": 178249020, "2019": 181904702, "2020": 273289067, "2021": 270748689, "2022": 216635984, "2023": 289348112, "2024": 199726029, "2025": 91963734}}, "Japon": {"OIT": {"2017": 6523981, "2018": 4708812.99, "2019": 5945007.68, "2020": 6005555.35, "2021": 7551438.17, "2022": 13370660, "2023": 13472560, "2024": 13623571, "2025": 12687676}, "OIM": {"2017": 41174406, "2018": 38376426, "2019": 35440751.02, "2020": 51342887.67, "2021": 68044580.88, "2022": 74366278, "2023": 62194746, "2024": 51467936, "2025": 59204800}, "UIT": {"2017": 403864.01, "2018": 542958.74, "2019": 859534.49, "2020": 328647.79, "2021": 265709.2896, "2022": 462522.2102, "2023": 1801645.51, "2024": 2726018.87, "2025": null}, "HCR": {"2017": 152549919.3, "2018": 120342342.1, "2019": 132621044.3, "2020": 119209242, "2021": 140349551.1, "2022": 275899085, "2023": 93362619, "2024": 115017965, "2025": 81318969}, "HCDH": {"2017": 109325, "2018": 1937444, "2019": 117133, "2020": 65000, "2021": 258340, "2022": 280350, "2023": 1763471, "2024": 1214520, "2025": 613528}, "OMS": {"2017": 46726068, "2018": 87079932.25, "2019": 54953158, "2020": 96958992, "2021": 42191540, "2022": 31046042, "2023": 25322263, "2024": 36574992, "2025": 3762696}, "CICR": {"2017": 41820534, "2018": 25779551, "2019": 26144955, "2020": 27685022, "2021": 55813356, "2022": 53836690, "2023": 46665216, "2024": 38944435, "2025": 29973253}}, "Norv\u00e8ge": {"OIT": {"2017": 17883756, "2018": 12225549.86, "2019": 12306908.51, "2020": 20136420.58, "2021": 6747500.6, "2022": 11038843, "2023": 10715679, "2024": 8361465, "2025": 4400948}, "OIM": {"2017": 20323012, "2018": 20960050, "2019": 18293120.14, "2020": 12638553.81, "2021": 19986547.69, "2022": 37281085, "2023": 51089247, "2024": 27913741, "2025": 24228400}, "UIT": {"2017": 0, "2018": 0, "2019": 0, "2020": 1144534.54, "2021": 656615.3005, "2022": 1010290.358, "2023": 876629.94, "2024": 964709.21, "2025": null}, "HCR": {"2017": 103498017.6, "2018": 101147924.4, "2019": 95274015.15, "2020": 33400894, "2021": 108275900.9, "2022": 181048798, "2023": 129003128, "2024": 122693517, "2025": 128823547}, "HCDH": {"2017": 15559270, "2018": 22174972, "2019": 18835881, "2020": 20599006, "2021": 19779429, "2022": 19777215, "2023": 19777215, "2024": 21099728, "2025": 20471294}, "OMS": {"2017": 43065472, "2018": 43266354.39, "2019": 46116980, "2020": 78064043, "2021": 85922929.63, "2022": 51235958, "2023": 69115523, "2024": 52077595, "2025": 54304040}, "CICR": {"2017": 71284578, "2018": 70633575, "2019": 74014110, "2020": 67354909, "2021": 95009918, "2022": 90962669, "2023": 141804729, "2024": 94816587, "2025": 109647041}}, "Cor\u00e9e du Sud": {"OIT": {"2017": 2045682, "2018": 2517065.35, "2019": 2407843.28, "2020": 2859488.16, "2021": 4763622.49, "2022": 6966251, "2023": 8853120, "2024": 7855044, "2025": 7947116}, "OIM": {"2017": 6348593, "2018": 5888004, "2019": 7407306.52, "2020": 16509924.44, "2021": 22163248.49, "2022": 20868936, "2023": 27896378, "2024": 47255870, "2025": 44833700}, "UIT": {"2017": 1090130.88, "2018": 601799.17, "2019": 1229722.97, "2020": 1237360.13, "2021": 394298.3607, "2022": 723406.2838, "2023": 1078959.28, "2024": 1202215.32, "2025": null}, "HCR": {"2017": 34099306.95, "2018": 23132454.56, "2019": 20265082.2, "2020": 30825877.39, "2021": 24497318.59, "2022": 29504183, "2023": 38015956, "2024": 81834494, "2025": 67906851}, "HCDH": {"2017": 1300000, "2018": 1881796, "2019": 2500000, "2020": 1601416, "2021": 2114000, "2022": 1653000, "2023": 1995000, "2024": 4900000, "2025": 4198948}, "OMS": {"2017": 26086352, "2018": 28062789.14, "2019": 27223022, "2020": 42442220, "2021": 19841053.5, "2022": 22070953, "2023": 21122274, "2024": 25983821, "2025": 28988139}, "CICR": {"2017": 4814974, "2018": 4131990, "2019": 4061500, "2020": 2815716, "2021": 3849842, "2022": 10958896, "2023": 7873403, "2024": 24294925, "2025": 9990008}}, "Royaume-Uni": {"OIT": {"2017": 10589968, "2018": 7080014.77, "2019": 6319585.06, "2020": 8730742.47, "2021": 10570715.2, "2022": 13886702, "2023": 11113238, "2024": 5476418, "2025": 5965952}, "OIM": {"2017": 79755555, "2018": 75329042, "2019": 80293391.78, "2020": 119545080.6, "2021": 80937740.86, "2022": 97801636, "2023": 95489468, "2024": 152771871, "2025": 184731800}, "UIT": {"2017": 0, "2018": 0, "2019": 15384.62, "2020": 0, "2021": 351554.0984, "2022": 0, "2023": 654000, "2024": 703277.47, "2025": null}, "HCR": {"2017": 243238878.6, "2018": 52322760.86, "2019": 122453501.4, "2020": 70473021.74, "2021": 60813572.85, "2022": 100345103, "2023": 106213166, "2024": 81364098, "2025": 126532476}, "HCDH": {"2017": 7201458, "2018": 8813612, "2019": 8532030, "2020": 9151148, "2021": 8315278, "2022": 9289668, "2023": 6830527, "2024": 14549122, "2025": 9761279}, "OMS": {"2017": 171471829, "2018": 218409150.6, "2019": 226697715, "2020": 271257391, "2021": 190250655.8, "2022": 172751991, "2023": 196629743, "2024": 245957141, "2025": 76328886}, "CICR": {"2017": 216349857, "2018": 210224013, "2019": 213167468, "2020": 222600339, "2021": 167490214, "2022": 168141102, "2023": 165272512, "2024": 242465602, "2025": 224909460}}, "Etats-Unis": {"OIT": {"2017": 30214008, "2018": 33884951.37, "2019": 36931403.86, "2020": 30672737.09, "2021": 39342758.26, "2022": 39656979, "2023": 41820065, "2024": 47304876, "2025": 24783041}, "OIM": {"2017": 475275225, "2018": 557128945, "2019": 579159356.5, "2020": 617510764, "2021": 667671007.7, "2022": 953950916, "2023": 1387641708, "2024": 1524265377, "2025": 744858500}, "UIT": {"2017": 0, "2018": 58646.76, "2019": 0, "2020": 0, "2021": 0, "2022": 0, "2023": 338908.98, "2024": 64571.59, "2025": null}, "HCR": {"2017": 1442360238, "2018": 1589776543, "2019": 1706832053, "2020": 1973251228, "2021": 1947206682, "2022": 2195608503, "2023": 1917853989, "2024": 2041118369, "2025": 811800604}, "HCDH": {"2017": 20160912, "2018": 18427371, "2019": 18200211, "2020": 27937650, "2021": 26737641, "2022": 27727882, "2023": 32937654, "2024": 36028662, "2025": 0}, "OMS": {"2017": 401943279, "2018": 287948198.9, "2019": 347220539, "2020": 113795658, "2021": 357573061.7, "2022": 743835896, "2023": 373740252, "2024": 453439981, "2025": 0}, "CICR": {"2017": 413386145, "2018": 472263451, "2019": 481498129, "2020": 523970305, "2021": 594711751, "2022": 638663183, "2023": 561058271, "2024": 563283398, "2025": 375418796}}}},
+  fxData: [
+  {year:2026,eurUsd:1.170124,eurChf:0.918078,chfUsd:1.274614},
+  {year:2025,eurUsd:1.129983,eurChf:0.937031,chfUsd:1.206236},
+  {year:2024,eurUsd:1.082393,eurChf:0.952629,chfUsd:1.13658},
+  {year:2023,eurUsd:1.081269,eurChf:0.971797,chfUsd:1.112979},
+  {year:2022,eurUsd:1.053049,eurChf:1.004709,chfUsd:1.047775},
+  {year:2021,eurUsd:1.18274,eurChf:1.081147,chfUsd:1.093953},
+  {year:2020,eurUsd:1.142196,eurChf:1.070523,chfUsd:1.066743},
+  {year:2019,eurUsd:1.119475,eurChf:1.112449,chfUsd:1.00644},
+  {year:2018,eurUsd:1.180955,eurChf:1.154958,chfUsd:1.022434},
+  {year:2017,eurUsd:1.129686,eurChf:1.111711,chfUsd:1.015909}
+],
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+  orgs: ["OIT", "OIM", "UIT", "HCR", "HCDH", "OMS", "CICR"],
+  donors: ["Canada", "Chine", "France", "Allemagne", "Japon", "Norv\u00e8ge", "Cor\u00e9e du Sud", "Royaume-Uni", "Etats-Unis"],
+  orgColors: ["#2c5f8a", "#8a2c2c", "#1a7a5e", "#b07d2a", "#6b3fa0", "#2c7a8a", "#c0392b"],
+  donorColors: ["#2c5f8a", "#c9414b", "#1a7a5e", "#b07d2a", "#6b3fa0", "#e07020", "#2c7a8a", "#e91e8c", "#111111"],
+  santeData: {
+  "OMS": {
+    2023: 65355809,
+    2024: 69212622,
+    2025: 8386287
+  },
+  "OIT": {
+    2023: 22930856,
+    2024: 25774490,
+    2025: 8386287
+  },
+  "OIM": {
+    2023: 31749464,
+    2024: 28469220,
+    2025: 43898169
+  },
+  "UIT": {
+    2023: 8005944,
+    2024: 7419361,
+    2025: 8055244
+  },
+  "HCR": {
+    2023: 120377690,
+    2024: 141317263,
+    2025: 4544676
+  },
+  "HCDH": {
+    2023: 11429965,
+    2024: 5446623,
+    2025: 6958819
+  },
+  "OMPI": {
+    2023: 330563,
+    2024: 330319,
+    2025: 345092
+  },
+  "OMC": {
+    2023: 10288500,
+    2024: 10434145,
+    2025: 10900799
+  },
+  "OMM": {
+    2023: 12010006,
+    2024: 3668195,
+    2025: 3493070
+  },
+  "BCAH": {
+    2023: 39637800,
+    2024: 16774100,
+    2025: 9327450
+  },
+  "CICR": {
+    2023: 80142000,
+    2024: 46696930,
+    2025: 31091500
+  },
+  "GAVI": {
+    2023: 112998300,
+    2024: 112998300,
+    2025: 112998300
+  },
+  "Fond Mondial": {
+    2023: 528564332,
+    2024: 528564332,
+    2025: 528564332
+  },
+  "UNITAID": {
+    2023: 96048555,
+    2024: 96048555,
+    2025: 96048555
+  }
+},
+  santeONU: ["OMS", "OIT", "OIM", "UIT", "HCR", "HCDH", "OMPI", "OMC", "OMM", "BCAH", "CICR"],
+  santeFonds: ["GAVI", "Fond Mondial", "UNITAID"],
+  santeColors: ["#2c7a8a", "#1a7a5e", "#b07d2a", "#8a2c2c", "#6b3fa0", "#2c5f8a", "#c9414b", "#e07020", "#3a9e6b", "#7a5c2c", "#5a2c8a", "#2c8a5f", "#8a6b2c", "#4a7a2c"],
+  santeYears: [2023, 2024, 2025]
+};
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+let data, fxData, years, orgs, donors, orgColors, donorColors;
+let santeData, santeONU, santeFonds, santeColors, santeYears;
+function loadFromPageblock() {
+  ({ data, fxData, years, orgs, donors, orgColors, donorColors,
+     santeData, santeONU, santeFonds, santeColors, santeYears } = PAGEBLOCK);
+}
+loadFromPageblock();
+let lineChart = null, pieChart = null, barChart = null, compareChart = null;
+
+// â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function getCheckedDonors() {
+  return [...document.querySelectorAll('input[name="donor"]:checked')].map(el => el.value);
+}
+function getDonor()  {
+  const checked = getCheckedDonors();
+  if (checked.length === donors.length) return 'all';
+  if (checked.length === donors.length - 1 && !checked.includes('Etats-Unis')) return 'allExceptUS';
+  if (checked.length === 1) return checked[0];
+  return 'multi';
+}
+function getOrg()    { return document.getElementById('orgSelect').value; }
+function getType()   { return document.getElementById('typeSelect').value; }
+function getYearFrom(){ return parseInt(document.getElementById('yearFrom').value); }
+function getYearTo() { return parseInt(document.getElementById('yearTo').value); }
+function filteredYears() { return years.filter(y => y >= getYearFrom() && y <= getYearTo()); }
+
+function fmt(n)  { if (!n || isNaN(n)) return 'â€”'; return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(Math.round(n)); }
+function fmtM(n) { if (!n || isNaN(n)) return 'â€”'; const m = n/1e6; if (m>=1000) return (m/1000).toFixed(1)+' Md'; return m.toFixed(1)+' M'; }
+
+// Get value for a single donor+org+year combo (0 si absent ou null pour les agrÃ©gats)
+function getVal(donor, org, year, type) {
+  const d = data[type]?.[donor]?.[org]?.[String(year)];
+  return (d == null || isNaN(d)) ? 0 : d;
+}
+
+// VÃ©rifie si la valeur brute est null (donnÃ©e manquante, distincte de zÃ©ro)
+function isNullVal(donor, org, year, type) {
+  const d = data[type]?.[donor]?.[org]?.[String(year)];
+  return d === null || d === undefined;
+}
+
+function chartVal(donor, org, year, type) {
+  return isNullVal(donor, org, year, type) ? null : Math.round(getVal(donor, org, year, type));
+}
+
+// Sum across orgs for a donor/year/type
+function getDonorTotal(donor, orgFilter, year, type) {
+  const orgList = orgFilter === 'all' ? orgs : [orgFilter];
+  return orgList.reduce((s, o) => s + getVal(donor, o, year, type), 0);
+}
+
+// Active donors to display
+function getActiveDonors() {
+  const checked = getCheckedDonors();
+  return checked.length > 0 ? checked : donors;
+}
+
+// Active orgs to display
+function getActiveOrgs() {
+  return getOrg() === 'all' ? orgs : [getOrg()];
+}
+
+// â”€â”€ KPI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function animateKPICounters() {
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    document.querySelectorAll('#kpiRow .kpi-val[data-final]').forEach(el => { el.textContent = el.dataset.final; });
+    return;
+  }
+  document.querySelectorAll('#kpiRow .kpi-val[data-target]').forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const isM    = el.dataset.fmt === 'M';
+    const dur    = 600;
+    const steps  = 30;
+    const delay  = parseInt(el.dataset.delay || 0);
+    let step = 0;
+    setTimeout(() => {
+      const interval = setInterval(() => {
+        step++;
+        const progress = step / steps;
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const cur = target * ease;
+        if (isM) {
+          const m = cur / 1e6;
+          el.textContent = (m >= 1000 ? (m/1000).toFixed(1) + ' Md' : m.toFixed(1) + ' M') + ' ' + suffix;
+        } else {
+          el.textContent = Math.round(cur) + suffix;
+        }
+        if (step >= steps) {
+          clearInterval(interval);
+          el.textContent = el.dataset.final;
+        }
+      }, dur / steps);
+    }, delay);
+  });
+}
+
+function ordinalFr(n) {
+  if (n === 1) return '1er';
+  return `${n}Ã¨me`;
+}
+
+function typeRankLabel(type) {
+  if (type === 'TOTAL') return 'total';
+  return type;
+}
+
+function updateKPI() {
+  const fy = filteredYears();
+  const activeDonors = getActiveDonors();
+  const type = getType();
+  const orgF = getOrg();
+  const multiPeriod = fy.length > 1;
+  const firstY = fy[0];
+  const lastY  = fy[fy.length-1];
+
+  // Totals for last year only
+  let lastAC = 0, lastVC = 0;
+  activeDonors.forEach(d => {
+    (orgF === 'all' ? orgs : [orgF]).forEach(o => {
+      lastAC += getVal(d, o, lastY, 'AC');
+      lastVC += getVal(d, o, lastY, 'VC');
+    });
+  });
+
+  // Totals for first year only (for % evolution)
+  let firstAC = 0, firstVC = 0;
+  activeDonors.forEach(d => {
+    (orgF === 'all' ? orgs : [orgF]).forEach(o => {
+      firstAC += getVal(d, o, firstY, 'AC');
+      firstVC += getVal(d, o, firstY, 'VC');
+    });
+  });
+
+  // Cumulative totals over full period
+  let totalAC = 0, totalVC = 0;
+  fy.forEach(y => {
+    activeDonors.forEach(d => {
+      (orgF === 'all' ? orgs : [orgF]).forEach(o => {
+        totalAC += getVal(d, o, y, 'AC');
+        totalVC += getVal(d, o, y, 'VC');
+      });
+    });
+  });
+
+  let lastTotal = lastAC + lastVC;
+  let firstTotal = firstAC + firstVC;
+
+  // Last year for selected type only
+  let lastTyped = 0, firstTyped = 0;
+  activeDonors.forEach(d => { lastTyped  += getDonorTotal(d, orgF, lastY, type); });
+  activeDonors.forEach(d => { firstTyped += getDonorTotal(d, orgF, firstY, type); });
+
+  function pctBadge(cur, ref) {
+    if (!multiPeriod || ref === 0) return '';
+    const pct = Math.round((cur - ref) / ref * 100);
+    const sign = pct >= 0 ? '+' : '';
+    const color = pct >= 0 ? 'var(--accent2)' : 'var(--ac-vc)';
+    return `<div class="kpi-sub" style="color:${color};font-weight:500;">${sign}${pct}% depuis ${firstY}</div>`;
+  }
+
+  function kpiVal(value, cssClass) {
+    const final = fmtM(value) + ' USD';
+    return `<div class="kpi-val ${cssClass||''}" data-target="${value}" data-fmt="M" data-suffix="USD" data-final="${final}">${final}</div>`;
+  }
+
+  const donorLabel = (() => {
+    const checked = getCheckedDonors();
+    if (checked.length === donors.length) return `${donors.length} pays`;
+    if (checked.length === 0) return 'Aucun pays';
+    if (checked.length === 1) return checked[0];
+    return `${checked.length} pays`;
+  })();
+
+  const checkedDonors = getCheckedDonors();
+  let rankCard = '';
+  if (checkedDonors.length === 1 && orgF !== 'all') {
+    const donor = checkedDonors[0];
+    const scores = donors.map(d => {
+      if (isNullVal(d, orgF, lastY, type)) return null;
+      const val = getVal(d, orgF, lastY, type);
+      return val > 0 ? { donor: d, val } : null;
+    }).filter(Boolean).sort((a, b) => b.val - a.val);
+    const pos = scores.findIndex(x => x.donor === donor);
+    if (pos >= 0) {
+      const rank = pos + 1;
+      const label = ordinalFr(rank);
+      const typeLbl = typeRankLabel(type);
+      rankCard = `
+    <div class="kpi" style="border-left:3px solid var(--accent);">
+      <div class="kpi-label">Classement Â· ${lastY}</div>
+      <div class="kpi-val" style="font-size:1.25rem;line-height:1.35;">${donor} : ${label} donateur ${typeLbl} au ${orgF} en ${lastY}</div>
+      <div class="kpi-sub">Classement Ã©tabli uniquement sur les ${donors.length} pays retenus dans cette page</div>
+    </div>`;
+    }
+  }
+
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Total cumulÃ© (${firstY}â€“${lastY})</div>
+      ${kpiVal(totalAC + totalVC)}
+      <div class="kpi-sub">${donorLabel} Â· AC + VC</div>
+    </div>
+    <div class="kpi kpi-ac">
+      <div class="kpi-label">AC â€” ${lastY}</div>
+      ${kpiVal(lastAC)}
+      ${pctBadge(lastAC, firstAC)}
+      <div class="kpi-sub">${lastAC+lastVC > 0 ? Math.round(lastAC/(lastAC+lastVC)*100) : 0}% du total ${lastY}</div>
+    </div>
+    <div class="kpi kpi-vc">
+      <div class="kpi-label">VC â€” ${lastY}</div>
+      ${kpiVal(lastVC)}
+      ${pctBadge(lastVC, firstVC)}
+      <div class="kpi-sub">${lastAC+lastVC > 0 ? Math.round(lastVC/(lastAC+lastVC)*100) : 0}% du total ${lastY}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">${type} â€” ${lastY}</div>
+      ${kpiVal(lastTyped)}
+      ${pctBadge(lastTyped, firstTyped)}
+      <div class="kpi-sub">${orgF === 'all' ? orgs.length + ' organisations' : orgF}</div>
+    </div>
+    ${rankCard}
+  `;
+
+  animateKPICounters();
+}
+
+// â”€â”€ LINE CHART â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updateLineChart() {
+  const fy = filteredYears();
+  const activeDonors = getActiveDonors();
+  const type = getType();
+  const orgF = getOrg();
+
+  const singleDonor = getCheckedDonors().length === 1;
+
+  let datasets = [];
+
+  if (singleDonor) {
+    // Single donor: show AC / VC / Total lines per org (or single total if org selected)
+    if (orgF === 'all') {
+      // One line per org
+      const activeOrgs = orgs;
+      activeOrgs.forEach((o, i) => {
+        const vals = fy.map(y => chartVal(getDonor(), o, y, type));
+        datasets.push({ label: o, data: vals, borderColor: orgColors[i], backgroundColor: orgColors[i]+'18', tension: 0.3, pointRadius: 4, pointHoverRadius: 6, borderWidth: 2, spanGaps: false });
+      });
+    } else {
+      const acData = fy.map(y => chartVal(getDonor(), orgF, y, 'AC'));
+      const vcData = fy.map(y => chartVal(getDonor(), orgF, y, 'VC'));
+      const totData = fy.map(y => chartVal(getDonor(), orgF, y, 'TOTAL'));
+      if (type !== 'VC') datasets.push({ label: 'AC', data: acData, borderColor: '#2c5f8a', backgroundColor: 'rgba(44,95,138,0.08)', tension: 0.3, pointRadius: 4, borderWidth: 2 });
+      if (type !== 'AC') datasets.push({ label: 'VC', data: vcData, borderColor: '#8a2c2c', backgroundColor: 'rgba(138,44,44,0.08)', tension: 0.3, pointRadius: 4, borderWidth: 2 });
+      if (type === 'TOTAL') datasets.push({ label: 'Total', data: totData, borderColor: '#b07d2a', backgroundColor: 'rgba(176,125,42,0.05)', tension: 0.3, pointRadius: 4, borderWidth: 2, borderDash: [6,3] });
+    }
+  } else {
+    // All donors (or allExceptUS): one line per donor showing total across orgs
+    activeDonors.forEach((d) => {
+      const i = donors.indexOf(d);
+      const vals = fy.map(y => {
+        if (orgF !== 'all') return chartVal(d, orgF, y, type);
+        const total = getDonorTotal(d, orgF, y, type);
+        const hasNull = orgs.some(o => isNullVal(d, o, y, type));
+        if (hasNull && total === 0) return null;
+        return total || null;
+      });
+      datasets.push({ label: d, data: vals, borderColor: donorColors[i], backgroundColor: donorColors[i]+'18', tension: 0.3, pointRadius: 4, pointHoverRadius: 6, borderWidth: 2, spanGaps: false });
+    });
+  }
+
+  let hasNullLine = false;
+  activeDonors.forEach(d => {
+    getActiveOrgs().forEach(o => {
+      fy.forEach(y => { if (isNullVal(d, o, y, type)) hasNullLine = true; });
+    });
+  });
+  const lineNotice = document.getElementById('lineNullNotice');
+  if (lineNotice) lineNotice.classList.toggle('visible', hasNullLine);
+
+  // Legend
+  const legendEl = document.getElementById('lineLegend');
+  legendEl.innerHTML = datasets.map((ds,i) => `<span><span class="dot" style="background:${ds.borderColor}"></span>${ds.label}</span>`).join('');
+
+  if (lineChart) lineChart.destroy();
+  lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: { labels: fy, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => {
+        if (ctx.raw === null || ctx.raw === undefined) return `${ctx.dataset.label}: âš  DonnÃ©e manquante`;
+        return `${ctx.dataset.label}: ${fmt(ctx.raw)} USD`;
+      } } } },
+      scales: {
+        y: { ticks: { callback: v => fmtM(v), font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+  document.getElementById('chartTitle').textContent =
+    `Ã‰volution â€” ${(() => { const c = getCheckedDonors(); return c.length === donors.length ? 'tous les pays' : c.length === 1 ? c[0] : c.length + ' pays'; })()} Â· ${getOrg() === 'all' ? 'toutes OI' : getOrg()} Â· ${type}`;
+}
+
+// â”€â”€ PIE CHART â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updatePieChart() {
+  const fy = filteredYears();
+  const type = getType();
+  const lastY = fy[fy.length-1];
+  const activeDonors = getActiveDonors();
+
+  document.getElementById('pieYear').textContent = `(${lastY})`;
+  document.getElementById('stackYear').textContent = `(${lastY})`;
+
+  // Distribution by org for last year
+  const labels = [], vals = [], colors = [];
+  let hasNullPie = false;
+  orgs.forEach((o, i) => {
+    let v = 0;
+    activeDonors.forEach(d => {
+      v += getVal(d, o, lastY, type);
+      if (isNullVal(d, o, lastY, type)) hasNullPie = true;
+    });
+    if (v > 0) { labels.push(o); vals.push(Math.round(v)); colors.push(orgColors[i]); }
+  });
+  const pieNotice = document.getElementById('pieNullNotice');
+  if (pieNotice) pieNotice.classList.toggle('visible', hasNullPie);
+
+  if (pieChart) pieChart.destroy();
+  pieChart = new Chart(document.getElementById('pieChart'), {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 1, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, padding: 8 } },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${fmtM(ctx.raw)} USD` } }
+      }
+    }
+  });
+}
+
+// â”€â”€ BAR CHART â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updateBarChart() {
+  const fy = filteredYears();
+  const lastY = fy[fy.length-1];
+  const activeDonors = getActiveDonors();
+
+  const filteredOrgs = orgs.filter(o => {
+    let v = 0;
+    activeDonors.forEach(d => { v += getVal(d, o, lastY, 'TOTAL'); });
+    return v > 0;
+  });
+
+  let hasNullBar = false;
+  const acVals = filteredOrgs.map(o => { let v=0; activeDonors.forEach(d => { v += getVal(d,o,lastY,'AC'); if(isNullVal(d,o,lastY,'AC')) hasNullBar=true; }); return Math.round(v); });
+  const vcVals = filteredOrgs.map(o => { let v=0; activeDonors.forEach(d => { v += getVal(d,o,lastY,'VC'); if(isNullVal(d,o,lastY,'VC')) hasNullBar=true; }); return Math.round(v); });
+  const barNotice = document.getElementById('barNullNotice');
+  if (barNotice) barNotice.classList.toggle('visible', hasNullBar);
+
+  const h = Math.max(240, filteredOrgs.length * 38 + 60);
+  document.getElementById('stackHeight').style.height = h + 'px';
+
+  if (barChart) barChart.destroy();
+  barChart = new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: filteredOrgs,
+      datasets: [
+        { label: 'AC', data: acVals, backgroundColor: 'rgba(44,95,138,0.75)', borderRadius: 2 },
+        { label: 'VC', data: vcVals, backgroundColor: 'rgba(138,44,44,0.75)', borderRadius: 2 }
+      ]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmt(ctx.raw)} USD` } } },
+      scales: {
+        x: { stacked: true, ticks: { callback: v => fmtM(v), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        y: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+  document.getElementById('barTitle').innerHTML = `Part AC vs VC par organisation <span id="stackYear" style="color:var(--text2);font-size:.85rem;font-family:'DM Sans',sans-serif;">(${lastY})</span>`;
+}
+
+// â”€â”€ TABLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updateTable() {
+  const fy = filteredYears();
+  const activeDonors = getActiveDonors();
+  const type = getType();
+  const activeOrgs = getActiveOrgs();
+
+  // Rows = donors Ã— orgs if multi-donor, else just orgs for single donor
+  const singleDonor = getCheckedDonors().length === 1;
+
+  const maxVals = {};
+  fy.forEach(y => {
+    let max = 0;
+    activeDonors.forEach(d => {
+      activeOrgs.forEach(o => { const v = getVal(d,o,y,type); if(v>max) max=v; });
+    });
+    maxVals[y] = max;
+  });
+
+  let html = `<thead><tr><th>${singleDonor ? 'Organisation' : 'Pays Â· Organisation'}</th>`;
+  fy.forEach(y => { html += `<th>${y}</th>`; });
+  html += `</tr></thead><tbody>`;
+
+  const totals = {}; fy.forEach(y => { totals[y] = 0; });
+  let hasNullTable = false;
+
+  activeDonors.forEach(donor => {
+    activeOrgs.forEach(org => {
+      let cells = '';
+      let rowTotal = 0;
+      fy.forEach(y => {
+        const isNull = isNullVal(donor, org, y, type);
+        if (isNull) hasNullTable = true;
+        const v = getVal(donor, org, y, type);
+        totals[y] += v;
+        rowTotal += v;
+        const pct = maxVals[y] > 0 ? Math.round(v / maxVals[y] * 100) : 0;
+        if (isNull) {
+          cells += `<td class="bar-cell null-cell"><span class="null-badge">N/D</span></td>`;
+        } else {
+          cells += `<td class="bar-cell"><div>${fmtM(v)}</div><div class="bar-inner" style="width:${pct}%"></div></td>`;
+        }
+      });
+      const label = singleDonor ? org : `${donor} Â· ${org}`;
+      html += `<tr><td>${label}</td>${cells}</tr>`;
+    });
+  });
+
+  html += `<tr class="total-row"><td>Total</td>`;
+  fy.forEach(y => { html += `<td><b>${fmtM(totals[y])}</b></td>`; });
+  html += `</tr></tbody>`;
+  document.getElementById('dataTable').innerHTML = html;
+  const tableNotice = document.getElementById('tableNullNotice');
+  if (tableNotice) tableNotice.classList.toggle('visible', hasNullTable);
+}
+
+// â”€â”€ FX TABLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updateFxTable() {
+  let html = `<thead><tr><th>AnnÃ©e</th><th>EUR / USD</th><th>EUR / CHF</th><th>CHF / USD</th></tr></thead><tbody>`;
+  fxData.forEach(r => {
+    html += `<tr><td>${r.year}</td><td>${r.eurUsd.toFixed(6)}</td><td>${r.eurChf.toFixed(6)}</td><td>${r.chfUsd.toFixed(6)}</td></tr>`;
+  });
+  html += `</tbody>`;
+  document.getElementById('fxTable').innerHTML = html;
+}
+
+// â”€â”€ TABS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i===0 && tab==='data') || (i===1 && tab==='fx')));
+  document.getElementById('tabData').style.display = tab==='data' ? '' : 'none';
+  document.getElementById('tabFx').style.display   = tab==='fx'   ? '' : 'none';
+}
+
+// â”€â”€ CSV EXPORT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function csvEscape(val) {
+  const s = String(val ?? '');
+  return (s.includes(';') || s.includes('"') || s.includes('\n')) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function exportCsv() {
+  const fy = filteredYears();
+  const activeDonors = getActiveDonors();
+  const activeOrgs = getActiveOrgs();
+  const type = getType();
+  const typeLabel = document.getElementById('typeSelect').selectedOptions[0].textContent;
+  const orgLabel = getOrg() === 'all' ? 'Toutes les organisations' : getOrg();
+  const donorLabel = (() => {
+    const c = getCheckedDonors();
+    if (c.length === donors.length) return 'Tous les pays';
+    if (c.length === 0) return 'Aucun pays';
+    if (c.length <= 3) return c.join(', ');
+    return `${c.length} pays`;
+  })();
+
+  const lines = [
+  `Type;${csvEscape(typeLabel)}`,
+  `Pays donateurs;${csvEscape(donorLabel)}`,
+  `Organisation;${csvEscape(orgLabel)}`,
+  `PÃ©riode;${fy[0]} â€“ ${fy[fy.length - 1]}`,
+  `Devise;USD`,
+  '',
+  ['Pays donateur', 'Organisation', ...fy.map(String)].join(';')
+  ];
+
+  const totals = fy.map(() => 0);
+  activeDonors.forEach(donor => {
+    activeOrgs.forEach(org => {
+      const vals = fy.map((y, i) => {
+        if (isNullVal(donor, org, y, type)) return 'N/D';
+        const v = getVal(donor, org, y, type);
+        totals[i] += v;
+        return v === 0 ? '0' : String(v);
+      });
+      lines.push([csvEscape(donor), csvEscape(org), ...vals].join(';'));
+    });
+  });
+  lines.push(['Total', '', ...totals.map(t => t === 0 ? '0' : String(t))].join(';'));
+
+  const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `contributions-OI_${type}_${fy[0]}-${fy[fy.length - 1]}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// â”€â”€ UPDATE ALL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function update() {
+  updateKPI();
+  updateLineChart();
+  updatePieChart();
+  updateBarChart();
+  updateTable();
+}
+
+// â”€â”€ DONOR DROPDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function toggleDonorPanel() {
+  const panel = document.getElementById('donorPanel');
+  const btn   = document.getElementById('donorBtn');
+  const isOpen = panel.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.donor-dropdown')) {
+    document.getElementById('donorPanel').classList.remove('open');
+    document.getElementById('donorBtn').classList.remove('open');
+  }
+});
+
+function updateDonorLabel() {
+  const checked = getCheckedDonors();
+  const label = document.getElementById('donorBtnLabel');
+  if (checked.length === 0) label.textContent = 'Aucun pays';
+  else if (checked.length === donors.length) label.textContent = 'Tous les pays';
+  else if (checked.length === 1) label.textContent = checked[0];
+  else label.textContent = `${checked.length} pays sÃ©lectionnÃ©s`;
+}
+
+function selectAllDonors() {
+  document.querySelectorAll('input[name="donor"]').forEach(cb => cb.checked = true);
+  updateDonorLabel(); update();
+}
+
+function selectNoneDonors() {
+  document.querySelectorAll('input[name="donor"]').forEach(cb => cb.checked = false);
+  updateDonorLabel(); update();
+}
+
+// â”€â”€ ADMIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const ADMIN_PASSWORD = 'admin2026';
+let adminAuthenticated = false;
+let adminWorkingData = null;
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  renderAdminPanel();
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+
+function renderAdminPanel() {
+  const body = document.getElementById('adminBody');
+  if (!adminAuthenticated) {
+    body.innerHTML = `
+      <div class="admin-login">
+        <p style="color:var(--text2);font-size:.88rem;">AccÃ¨s rÃ©servÃ© â€” saisissez le mot de passe</p>
+        <input type="password" id="adminPwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkAdminPassword()">
+        <button type="button" onclick="checkAdminPassword()">AccÃ©der</button>
+        <p class="err" id="adminPwdErr">Mot de passe incorrect</p>
+      </div>`;
+    return;
+  }
+  if (!adminWorkingData) adminWorkingData = deepClone(PAGEBLOCK);
+  if (document.getElementById('adminContribTable')) collectAdminFormData();
+  body.innerHTML = buildAdminHTML();
+}
+
+function checkAdminPassword() {
+  const pwd = document.getElementById('adminPwd').value;
+  if (pwd === ADMIN_PASSWORD) {
+    adminAuthenticated = true;
+    adminWorkingData = deepClone(PAGEBLOCK);
+    renderAdminPanel();
+  } else {
+    document.getElementById('adminPwdErr').style.display = 'block';
+  }
+}
+
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+function buildAdminHTML() {
+  const wd = adminWorkingData;
+  const types = ['AC', 'VC', 'TOTAL'];
+  const type = document.getElementById('adminType')?.value || 'AC';
+  const donor = document.getElementById('adminDonor')?.value || wd.donors[0];
+
+  let tableHtml = `<thead><tr><th>Organisation</th>`;
+  wd.years.forEach(y => { tableHtml += `<th>${y}</th>`; });
+  tableHtml += `</tr></thead><tbody>`;
+  wd.orgs.forEach(org => {
+    tableHtml += `<tr><td>${org}</td>`;
+    wd.years.forEach(y => {
+      const val = wd.data[type]?.[donor]?.[org]?.[String(y)];
+      const display = (val == null) ? '' : val;
+      tableHtml += `<td><input type="text" data-type="${type}" data-donor="${donor}" data-org="${org}" data-year="${y}" value="${display}" onchange="adminCellChange(this)"></td>`;
+    });
+    tableHtml += `</tr>`;
+  });
+  tableHtml += `</tbody>`;
+
+  let fxHtml = `<thead><tr><th>AnnÃ©e</th><th>EUR/USD</th><th>EUR/CHF</th><th>CHF/USD</th></tr></thead><tbody>`;
+  wd.fxData.forEach((r, i) => {
+    fxHtml += `<tr>
+      <td>${r.year}</td>
+      <td><input type="text" data-fx="${i}" data-field="eurUsd" value="${r.eurUsd}" onchange="adminFxChange(this)"></td>
+      <td><input type="text" data-fx="${i}" data-field="eurChf" value="${r.eurChf}" onchange="adminFxChange(this)"></td>
+      <td><input type="text" data-fx="${i}" data-field="chfUsd" value="${r.chfUsd}" onchange="adminFxChange(this)"></td>
+    </tr>`;
+  });
+  fxHtml += `</tbody>`;
+
+  const santeEntities = [...wd.santeONU, ...wd.santeFonds];
+  let santeHtml = `<thead><tr><th>EntitÃ©</th>`;
+  wd.santeYears.forEach(y => { santeHtml += `<th>${y}</th>`; });
+  santeHtml += `</tr></thead><tbody>`;
+  santeEntities.forEach(entity => {
+    santeHtml += `<tr><td>${entity}</td>`;
+    wd.santeYears.forEach(y => {
+      const val = wd.santeData[entity]?.[y] ?? wd.santeData[entity]?.[String(y)] ?? '';
+      santeHtml += `<td><input type="text" data-sante-entity="${entity}" data-sante-year="${y}" value="${val}" onchange="adminSanteCellChange(this)"></td>`;
+    });
+    santeHtml += `</tr>`;
+  });
+  santeHtml += `</tbody>`;
+
+  return `
+    <div class="admin-section">
+      <h3>Contributions <span class="admin-badge">${wd.years[0]}â€“${wd.years[wd.years.length-1]}</span></h3>
+      <div class="admin-controls">
+        <label>Type
+          <select id="adminType" onchange="renderAdminPanel()">
+            ${types.map(t => `<option value="${t}" ${t===type?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </label>
+        <label>Pays donateur
+          <select id="adminDonor" onchange="renderAdminPanel()">
+            ${wd.donors.map(d => `<option value="${d}" ${d===donor?'selected':''}>${d}</option>`).join('')}
+          </select>
+        </label>
+        <button type="button" class="admin-btn secondary" onclick="adminAddYear()">+ Ajouter une annÃ©e</button>
+        <button type="button" class="admin-btn secondary" onclick="adminPreview()">PrÃ©visualiser</button>
+      </div>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminContribTable">${tableHtml}</table></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Taux de change</h3>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminFxTable">${fxHtml}</table></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Section SantÃ© â€” France (AC + VC) <span class="admin-badge">${wd.santeYears[0]}â€“${wd.santeYears[wd.santeYears.length-1]}</span></h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.8rem;">OI genevoises et fonds verticaux santÃ© (OMS, CICR, GAVI, etc.)</p>
+      <div class="admin-btn-row" style="margin-bottom:.8rem;">
+        <button type="button" class="admin-btn secondary" onclick="adminAddSanteYear()">+ Ajouter une annÃ©e (SantÃ©)</button>
+      </div>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminSanteTable">${santeHtml}</table></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>Exporter le bloc de donnÃ©es</h3>
+      <p style="font-size:.84rem;color:var(--text2);margin-bottom:.8rem;">GÃ©nÃ©rez le nouveau bloc Ã  copier-coller dans le fichier HTML source.</p>
+      <div class="admin-btn-row" style="margin-bottom:.8rem;">
+        <button type="button" class="admin-btn" onclick="adminGenerateExport()">GÃ©nÃ©rer le bloc</button>
+        <button type="button" class="admin-btn secondary" onclick="adminCopyExport()">Copier</button>
+        <button type="button" class="admin-btn secondary" onclick="adminDownloadExport()">TÃ©lÃ©charger (.txt)</button>
+      </div>
+      <textarea id="adminExport" readonly placeholder="Cliquez sur Â« GÃ©nÃ©rer le bloc Â» pour afficher le code Ã  copierâ€¦"></textarea>
+    </div>
+
+    <div class="admin-section admin-tutorial">
+      <h3>Tutoriel â€” Mettre Ã  jour la page en 4 Ã©tapes</h3>
+      <ol class="admin-steps">
+        <li><strong>GÃ©nÃ©rez le bloc</strong> ci-dessus aprÃ¨s avoir modifiÃ© les donnÃ©es, puis cliquez sur <strong>Copier</strong> ou <strong>TÃ©lÃ©charger (.txt)</strong>.</li>
+        <li>Ouvrez le fichier HTML de la page (<code>[Visualisation] CONTRIBUTIONS OI 2017-25 VF.html</code>) dans un Ã©diteur de texte (Bloc-notes, VS Code, etc.).</li>
+        <li>RepÃ©rez dans le fichier la section qui commence par <code>// â•â•â• BLOC DE DONNÃ‰ES</code> et se termine par <code>loadFromPageblock();</code> (tout en haut du code JavaScript, juste aprÃ¨s <code>&lt;script&gt;</code>). <strong>SÃ©lectionnez et supprimez cette section entiÃ¨re</strong>, puis collez le bloc exportÃ© Ã  la mÃªme place.</li>
+        <li>Enregistrez le fichier et rouvrez la page dans votre navigateur. Les graphiques et tableaux afficheront les nouvelles donnÃ©es.</li>
+      </ol>
+      <p style="font-size:.75rem;color:var(--text2);margin-bottom:.0rem;text-align:right;">Carl Petersen - Me contacter si nÃ©cessaire</p>
+    </div>`;
+}
+
+function adminCellChange(input) {
+  const { type, donor, org, year } = input.dataset;
+  const raw = input.value.trim();
+  const val = raw === '' ? null : parseFloat(raw.replace(/\s/g, '').replace(',', '.'));
+  if (raw !== '' && isNaN(val)) { input.classList.add('changed'); return; }
+  if (!adminWorkingData.data[type]) adminWorkingData.data[type] = {};
+  if (!adminWorkingData.data[type][donor]) adminWorkingData.data[type][donor] = {};
+  if (!adminWorkingData.data[type][donor][org]) adminWorkingData.data[type][donor][org] = {};
+  adminWorkingData.data[type][donor][org][year] = val;
+  input.classList.add('changed');
+}
+
+function adminFxChange(input) {
+  const idx = parseInt(input.dataset.fx);
+  const field = input.dataset.field;
+  const val = parseFloat(input.value.replace(',', '.'));
+  if (!isNaN(val)) adminWorkingData.fxData[idx][field] = val;
+  input.classList.add('changed');
+}
+
+function adminSanteCellChange(input) {
+  const entity = input.dataset.santeEntity;
+  const year = parseInt(input.dataset.santeYear);
+  const raw = input.value.trim();
+  const val = raw === '' ? 0 : parseFloat(raw.replace(/\s/g, '').replace(',', '.'));
+  if (raw !== '' && isNaN(val)) { input.classList.add('changed'); return; }
+  if (!adminWorkingData.santeData[entity]) adminWorkingData.santeData[entity] = {};
+  adminWorkingData.santeData[entity][year] = val;
+  input.classList.add('changed');
+}
+
+function adminAddYear() {
+  const lastYear = adminWorkingData.years[adminWorkingData.years.length - 1];
+  const newYear = prompt('NumÃ©ro de la nouvelle annÃ©e :', String(lastYear + 1));
+  if (!newYear) return;
+  const y = parseInt(newYear);
+  if (isNaN(y) || adminWorkingData.years.includes(y)) { alert('AnnÃ©e invalide ou dÃ©jÃ  existante.'); return; }
+
+  adminWorkingData.years.push(y);
+  adminWorkingData.years.sort((a, b) => a - b);
+
+  ['AC', 'VC', 'TOTAL'].forEach(type => {
+    adminWorkingData.donors.forEach(donor => {
+      adminWorkingData.orgs.forEach(org => {
+        if (!adminWorkingData.data[type]?.[donor]?.[org]) {
+          if (!adminWorkingData.data[type]) adminWorkingData.data[type] = {};
+          if (!adminWorkingData.data[type][donor]) adminWorkingData.data[type][donor] = {};
+          if (!adminWorkingData.data[type][donor][org]) adminWorkingData.data[type][donor][org] = {};
+        }
+        if (adminWorkingData.data[type][donor][org][String(y)] === undefined)
+          adminWorkingData.data[type][donor][org][String(y)] = 0;
+      });
+    });
+  });
+
+  const prevFx = adminWorkingData.fxData.find(r => r.year === lastYear) || adminWorkingData.fxData[0];
+  adminWorkingData.fxData.unshift({ year: y, eurUsd: prevFx.eurUsd, eurChf: prevFx.eurChf, chfUsd: prevFx.chfUsd });
+
+  renderAdminPanel();
+}
+
+function adminAddSanteYear() {
+  const lastYear = adminWorkingData.santeYears[adminWorkingData.santeYears.length - 1];
+  const newYear = prompt('NumÃ©ro de la nouvelle annÃ©e (section SantÃ©) :', String(lastYear + 1));
+  if (!newYear) return;
+  const y = parseInt(newYear);
+  if (isNaN(y) || adminWorkingData.santeYears.includes(y)) { alert('AnnÃ©e invalide ou dÃ©jÃ  existante.'); return; }
+  adminWorkingData.santeYears.push(y);
+  adminWorkingData.santeYears.sort((a, b) => a - b);
+  [...adminWorkingData.santeONU, ...adminWorkingData.santeFonds].forEach(entity => {
+    if (!adminWorkingData.santeData[entity]) adminWorkingData.santeData[entity] = {};
+    if (adminWorkingData.santeData[entity][y] === undefined) adminWorkingData.santeData[entity][y] = 0;
+  });
+  renderAdminPanel();
+}
+
+function adminPreview() {
+  collectAdminFormData();
+  Object.assign(PAGEBLOCK, deepClone(adminWorkingData));
+  loadFromPageblock();
+  rebuildYearSelects();
+  updateFxTable();
+  update();
+  if (typeof updateSante === 'function') updateSante();
+  alert('PrÃ©visualisation appliquÃ©e. N\'oubliez pas d\'exporter et de coller le bloc dans le fichier HTML pour rendre les changements permanents.');
+}
+
+function rebuildYearSelects() {
+  const yf = document.getElementById('yearFrom');
+  const yt = document.getElementById('yearTo');
+  const curFrom = parseInt(yf.value) || years[0];
+  const curTo = parseInt(yt.value) || years[years.length - 1];
+  yf.innerHTML = ''; yt.innerHTML = '';
+  years.forEach(y => {
+    yf.innerHTML += `<option value="${y}" ${y===curFrom?'selected':''}>${y}</option>`;
+    yt.innerHTML += `<option value="${y}" ${y===curTo?'selected':''}>${y}</option>`;
+  });
+}
+
+function formatPagblockExport(wd) {
+  const dataStr = JSON.stringify(wd.data, null, 2);
+  const fxStr = JSON.stringify(wd.fxData, null, 2)
+    .replace(/"year"/g, 'year').replace(/"eurUsd"/g, 'eurUsd').replace(/"eurChf"/g, 'eurChf').replace(/"chfUsd"/g, 'chfUsd');
+  let santeStr = JSON.stringify(wd.santeData, null, 2);
+  santeStr = santeStr.replace(/"(\d{4})"/g, '$1');
+  return `// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// BLOC DE DONNÃ‰ES â€” Remplacez tout ce bloc pour mettre Ã  jour la page
+// Structure: data[type][donor][org][year] = value (USD)
+// type: 'AC' | 'VC' | 'TOTAL'
+// santeData[entitÃ©][annÃ©e] = contributions France AC+VC (section SantÃ©)
+// null = donnÃ©e non encore disponible (distinct de 0)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const PAGEBLOCK = {
+  data: ${dataStr},
+  fxData: ${fxStr},
+  years: ${JSON.stringify(wd.years)},
+  orgs: ${JSON.stringify(wd.orgs)},
+  donors: ${JSON.stringify(wd.donors)},
+  orgColors: ${JSON.stringify(wd.orgColors)},
+  donorColors: ${JSON.stringify(wd.donorColors)},
+  santeData: ${santeStr},
+  santeONU: ${JSON.stringify(wd.santeONU)},
+  santeFonds: ${JSON.stringify(wd.santeFonds)},
+  santeColors: ${JSON.stringify(wd.santeColors)},
+  santeYears: ${JSON.stringify(wd.santeYears)}
+};
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+let data, fxData, years, orgs, donors, orgColors, donorColors;
+let santeData, santeONU, santeFonds, santeColors, santeYears;
+function loadFromPageblock() {
+  ({ data, fxData, years, orgs, donors, orgColors, donorColors,
+     santeData, santeONU, santeFonds, santeColors, santeYears } = PAGEBLOCK);
+}
+loadFromPageblock();
+`;
+}
+
+function adminGenerateExport() {
+  collectAdminFormData();
+  document.getElementById('adminExport').value = formatPagblockExport(adminWorkingData);
+}
+
+function collectAdminFormData() {
+  document.querySelectorAll('#adminContribTable input').forEach(input => adminCellChange(input));
+  document.querySelectorAll('#adminFxTable input[data-fx]').forEach(input => adminFxChange(input));
+  document.querySelectorAll('#adminSanteTable input').forEach(input => adminSanteCellChange(input));
+}
+
+function adminCopyExport() {
+  const ta = document.getElementById('adminExport');
+  if (!ta.value) { adminGenerateExport(); }
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => alert('Bloc copiÃ© dans le presse-papiers !')).catch(() => {
+    document.execCommand('copy');
+    alert('Bloc copiÃ© dans le presse-papiers !');
+  });
+}
+
+function adminDownloadExport() {
+  if (!document.getElementById('adminExport').value) adminGenerateExport();
+  const blob = new Blob([document.getElementById('adminExport').value], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bloc-donnees-contributions-OI.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+document.getElementById('adminOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAdmin();
+});
+
+// â”€â”€ SECTION SANTÃ‰ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const COLOR_ONU_AGG   = '#2c7a8a';
+const COLOR_FONDS_AGG = '#1a7a5e';
+let onuAggregated = true;
+let fondsAggregated = true;
+const onuChecked = new Set();
+const fondsChecked = new Set();
+let santePieChart = null;
+
+function santeGetVal(entity, year) {
+  return santeData[entity]?.[year] || santeData[entity]?.[String(year)] || 0;
+}
+function santeGetTotal(entity) {
+  return santeYears.reduce((s, y) => s + santeGetVal(entity, y), 0);
+}
+function santeGetAmount(entity) {
+  const mode = document.getElementById('santePieMode').value;
+  return mode === 'total' ? santeGetTotal(entity) : santeGetVal(entity, parseInt(mode));
+}
+function santeGroupTotal(group) {
+  const list = group === 'onu' ? santeONU : santeFonds;
+  return list.reduce((s, e) => s + santeGetAmount(e), 0);
+}
+function santeLabel() {
+  const mode = document.getElementById('santePieMode').value;
+  return mode === 'total' ? `Total ${santeYears[0]}â€“${santeYears[santeYears.length-1]}` : String(mode);
+}
+
+function isSanteNull(entity, year) {
+  const d = santeData[entity]?.[year] ?? santeData[entity]?.[String(year)];
+  return d === null || d === undefined;
+}
+
+function getSanteExportEntities() {
+  const entities = [];
+  if (onuAggregated) {
+    entities.push({ label: 'Total OI genevoises', isAggregate: true, group: 'onu' });
+  } else {
+    santeONU.forEach(e => { if (onuChecked.has(e)) entities.push({ label: e, isAggregate: false, group: 'onu' }); });
+  }
+  if (fondsAggregated) {
+    entities.push({ label: 'Total fonds verticaux', isAggregate: true, group: 'fonds' });
+  } else {
+    santeFonds.forEach(e => { if (fondsChecked.has(e)) entities.push({ label: e, isAggregate: false, group: 'fonds' }); });
+  }
+  return entities;
+}
+
+function exportSanteCsv() {
+  const entities = getSanteExportEntities();
+  const onuLabel = onuAggregated ? 'Total OI genevoises' : (onuChecked.size ? [...onuChecked].join(', ') : 'Aucune');
+  const fondsLabel = fondsAggregated ? 'Total fonds verticaux' : (fondsChecked.size ? [...fondsChecked].join(', ') : 'Aucun');
+
+  const lines = [
+    'Section;SantÃ© â€” Contributions franÃ§aises OI genevoises & fonds verticaux',
+    'Type;AC + VC',
+    'Pays;France',
+    `OI genevoises;${csvEscape(onuLabel)}`,
+    `Fonds verticaux;${csvEscape(fondsLabel)}`,
+    `PÃ©riode;${santeYears[0]} â€“ ${santeYears[santeYears.length - 1]}`,
+    'Devise;USD',
+    '',
+    ['EntitÃ©', 'Groupe', ...santeYears.map(String), 'Total'].join(';')
+  ];
+
+  const totals = santeYears.map(() => 0);
+  let grandTotal = 0;
+
+  entities.forEach(item => {
+    const yearVals = {};
+    santeYears.forEach(y => { yearVals[y] = 0; });
+    if (item.isAggregate) {
+      const list = item.group === 'onu' ? santeONU : santeFonds;
+      list.forEach(e => santeYears.forEach(y => { yearVals[y] += santeGetVal(e, y); }));
+    } else {
+      santeYears.forEach(y => { yearVals[y] = santeGetVal(item.label, y); });
+    }
+    const rowTotal = santeYears.reduce((s, y) => s + yearVals[y], 0);
+    santeYears.forEach((y, i) => { totals[i] += yearVals[y]; });
+    grandTotal += rowTotal;
+
+    const vals = santeYears.map(y => {
+      if (!item.isAggregate && isSanteNull(item.label, y)) return 'N/D';
+      return yearVals[y] === 0 ? '0' : String(yearVals[y]);
+    });
+    const group = item.isAggregate
+      ? (item.group === 'onu' ? 'OI genevoises' : 'Fonds verticaux')
+      : (santeFonds.includes(item.label) ? 'Fonds verticaux' : 'OI genevoises');
+    lines.push([csvEscape(item.label), csvEscape(group), ...vals, rowTotal === 0 ? '0' : String(rowTotal)].join(';'));
+  });
+
+  if (entities.length > 0) {
+    lines.push(['Total sÃ©lection', '', ...totals.map(t => t === 0 ? '0' : String(t)), grandTotal === 0 ? '0' : String(grandTotal)].join(';'));
+  }
+
+  const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `contributions-sante-france_${santeYears[0]}-${santeYears[santeYears.length - 1]}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function toggleAggregate(group, chipEl, cb) {
+  if (group === 'onu') onuAggregated = cb.checked;
+  else fondsAggregated = cb.checked;
+  chipEl.classList.toggle('checked', cb.checked);
+  chipEl.style.background = cb.checked ? (group === 'onu' ? COLOR_ONU_AGG : COLOR_FONDS_AGG) : '';
+  chipEl.style.borderColor = cb.checked ? (group === 'onu' ? COLOR_ONU_AGG : COLOR_FONDS_AGG) : '';
+  renderDetailChips();
+  updateSante();
+}
+
+function renderDetailChips() {
+  const onuPicker = document.getElementById('santeONUpicker');
+  const fondsPicker = document.getElementById('santeFondsPicker');
+  onuPicker.querySelectorAll('.detail-chip').forEach(c => c.remove());
+  fondsPicker.querySelectorAll('.detail-chip').forEach(c => c.remove());
+
+  if (!onuAggregated) {
+    santeONU.forEach((e, i) => {
+      const color = santeColors[(2 + i) % santeColors.length];
+      const checked = onuChecked.has(e);
+      const chip = document.createElement('label');
+      chip.className = 'entity-chip detail-chip' + (checked ? ' checked' : '');
+      chip.style.background = checked ? color : '';
+      chip.style.borderColor = checked ? color : '';
+      chip.innerHTML = `<input type="checkbox" value="${e}" ${checked?'checked':''}>${e}`;
+      chip.querySelector('input').addEventListener('change', function() {
+        if (this.checked) onuChecked.add(e); else onuChecked.delete(e);
+        chip.classList.toggle('checked', this.checked);
+        chip.style.background = this.checked ? color : '';
+        chip.style.borderColor = this.checked ? color : '';
+        updateSante();
+      });
+      onuPicker.appendChild(chip);
+    });
+  }
+
+  if (!fondsAggregated) {
+    santeFonds.forEach((e, i) => {
+      const color = santeColors[(8 + i) % santeColors.length];
+      const checked = fondsChecked.has(e);
+      const chip = document.createElement('label');
+      chip.className = 'entity-chip detail-chip' + (checked ? ' checked' : '');
+      chip.style.background = checked ? color : '';
+      chip.style.borderColor = checked ? color : '';
+      chip.innerHTML = `<input type="checkbox" value="${e}" ${checked?'checked':''}>${e}`;
+      chip.querySelector('input').addEventListener('change', function() {
+        if (this.checked) fondsChecked.add(e); else fondsChecked.delete(e);
+        chip.classList.toggle('checked', this.checked);
+        chip.style.background = this.checked ? color : '';
+        chip.style.borderColor = this.checked ? color : '';
+        updateSante();
+      });
+      fondsPicker.appendChild(chip);
+    });
+  }
+}
+
+function updateSante() {
+  const grid = document.getElementById('santeChartsGrid');
+  grid.innerHTML = '';
+  const subtitle = `France AC+VC Â· ${santeLabel()}`;
+  const labels = [], vals = [], colors = [], tableEntities = [];
+
+  if (onuAggregated) {
+    const v = santeGroupTotal('onu');
+    if (v > 0) { labels.push('Total OI genevoises'); vals.push(v); colors.push(COLOR_ONU_AGG); }
+    tableEntities.push({ label: 'Total OI genevoises', isAggregate: true, group: 'onu' });
+  } else {
+    santeONU.forEach((e, i) => {
+      if (onuChecked.has(e)) {
+        const v = santeGetAmount(e);
+        labels.push(e); vals.push(v); colors.push(santeColors[(2+i) % santeColors.length]);
+        tableEntities.push({ label: e, isAggregate: false, group: 'onu' });
+      }
+    });
+  }
+
+  if (fondsAggregated) {
+    const v = santeGroupTotal('fonds');
+    if (v > 0) { labels.push('Total fonds verticaux'); vals.push(v); colors.push(COLOR_FONDS_AGG); }
+    tableEntities.push({ label: 'Total fonds verticaux', isAggregate: true, group: 'fonds' });
+  } else {
+    santeFonds.forEach((e, i) => {
+      if (fondsChecked.has(e)) {
+        const v = santeGetAmount(e);
+        labels.push(e); vals.push(v); colors.push(santeColors[(8+i) % santeColors.length]);
+        tableEntities.push({ label: e, isAggregate: false, group: 'fonds' });
+      }
+    });
+  }
+
+  if (labels.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text2);font-size:.85rem;padding:1rem 0;">Aucune entitÃ© sÃ©lectionnÃ©e.</p>';
+    updateSanteTable(tableEntities);
+    return;
+  }
+
+  const total = vals.reduce((a,b)=>a+b,0);
+  const card = document.createElement('div');
+  card.className = 'sante-pie-card';
+  card.innerHTML = `
+    <h3>RÃ©partition des contributions</h3>
+    <div class="pie-year-label">${subtitle}</div>
+    <div class="sante-pie-wrap"><canvas id="santePie1"></canvas></div>
+    <div class="sante-total-row"><span>Total</span><strong>${fmtM(total)} USD</strong></div>
+    <div class="sante-legend-grid" id="leg-santePie1"></div>`;
+  grid.appendChild(card);
+
+  const legEl = card.querySelector('#leg-santePie1');
+  labels.forEach((l,i) => {
+    const pct = total > 0 ? Math.round(vals[i]/total*100) : 0;
+    legEl.innerHTML += `<span class="sante-legend-item"><span class="sante-legend-dot" style="background:${colors[i]}"></span>${l} (${pct}%)</span>`;
+  });
+
+  if (santePieChart) { try { santePieChart.destroy(); } catch(e){} }
+  santePieChart = new Chart(document.getElementById('santePie1'), {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${fmt(ctx.raw)} USD (${total>0?Math.round(ctx.raw/total*100):0}%)` } }
+      }
+    }
+  });
+  updateSanteTable(tableEntities);
+}
+
+function updateSanteTable(entities) {
+  const yearCols = [...santeYears, 'Total'];
+  let html = `<thead><tr><th>EntitÃ©</th>`;
+  yearCols.forEach(y => html += `<th>${y === 'Total' ? 'Total' : y}</th>`);
+  html += `</tr></thead><tbody>`;
+
+  const totals = {};
+  santeYears.forEach(y => { totals[y] = 0; });
+  totals.Total = 0;
+
+  entities.forEach(item => {
+    const yearVals = {};
+    santeYears.forEach(y => { yearVals[y] = 0; });
+    if (item.isAggregate) {
+      const list = item.group === 'onu' ? santeONU : santeFonds;
+      list.forEach(e => santeYears.forEach(y => { yearVals[y] += santeGetVal(e, y); }));
+    } else {
+      santeYears.forEach(y => { yearVals[y] = santeGetVal(item.label, y); });
+    }
+    const tot = santeYears.reduce((s, y) => s + yearVals[y], 0);
+    santeYears.forEach(y => { totals[y] += yearVals[y]; });
+    totals.Total += tot;
+    const badge = item.isAggregate
+      ? `<span style="color:#fff;font-size:.65rem;font-weight:700;background:${item.group==='onu'?COLOR_ONU_AGG:COLOR_FONDS_AGG};border-radius:4px;padding:1px 5px;margin-right:5px;">${item.group==='onu'?'OI':'VF'}</span>`
+      : (santeFonds.includes(item.label) ? '<span style="color:#1a7a5e;font-size:.7rem;font-weight:600;margin-right:4px;">VF</span>' : '');
+    html += `<tr><td>${badge}${item.label}</td>`;
+    santeYears.forEach(y => { html += `<td>${fmt(yearVals[y])}</td>`; });
+    html += `<td><strong>${fmt(tot)}</strong></td></tr>`;
+  });
+
+  if (entities.length > 0) {
+    html += `<tr class="sante-total-row-tr"><td>Total sÃ©lection</td>`;
+    santeYears.forEach(y => { html += `<td>${fmt(totals[y])}</td>`; });
+    html += `<td><strong>${fmt(totals.Total)}</strong></td></tr>`;
+  }
+  html += '</tbody>';
+  document.getElementById('santeTable').innerHTML = html;
+}
+
+function initSante() {
+  onuAggregated = document.getElementById('sc-totalONU').checked;
+  fondsAggregated = document.getElementById('sc-totalFonds').checked;
+  if (!onuAggregated) santeONU.forEach(e => onuChecked.add(e));
+  if (!fondsAggregated) santeFonds.forEach(e => fondsChecked.add(e));
+  document.getElementById('santePieMode').addEventListener('change', updateSante);
+  renderDetailChips();
+  updateSante();
+}
+
+// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function init() {
+  const yf = document.getElementById('yearFrom');
+  const yt = document.getElementById('yearTo');
+  yf.innerHTML = ''; yt.innerHTML = '';
+  years.forEach(y => {
+    yf.innerHTML += `<option value="${y}">${y}</option>`;
+    yt.innerHTML += `<option value="${y}" ${y===2025?'selected':''}>${y}</option>`;
+  });
+
+  // Wire checkbox changes
+  document.querySelectorAll('input[name="donor"]').forEach(cb => {
+    cb.addEventListener('change', () => { updateDonorLabel(); update(); });
+  });
+
+  ['orgSelect','typeSelect','yearFrom','yearTo'].forEach(id => {
+    document.getElementById(id).addEventListener('change', update);
+  });
+
+  updateDonorLabel();
+  updateFxTable();
+  update();
+  initSante();
+}
+
+init();
+</script>
+</body>
+</html>
