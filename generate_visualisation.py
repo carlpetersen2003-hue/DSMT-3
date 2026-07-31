@@ -167,17 +167,42 @@ header {
   color: var(--blanc);
   padding: 2rem 1.5rem 1.5rem;
 }
-header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: .4rem; }
-header p { opacity: .9; font-size: .95rem; max-width: 900px; }
-.badge {
-  display: inline-block;
-  background: rgba(255,255,255,.15);
-  border: 1px solid rgba(255,255,255,.3);
-  border-radius: 999px;
-  padding: .2rem .75rem;
-  font-size: .8rem;
-  margin-top: .75rem;
+header h1 { font-size: 1.6rem; font-weight: 700; }
+.badge { display: none; }
+.legend-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1rem;
 }
+.legend-pills button {
+  border: 2px solid;
+  padding: .35rem .8rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--blanc);
+  transition: opacity .2s;
+}
+.legend-pills button.inactive { opacity: .3; }
+.chart-box .chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid var(--bleu-clair);
+}
+.chart-box .chart-header h2 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.chart-container.tall { height: 400px; }
+.chart-container.pie-tall { height: 420px; }
 nav.tabs {
   display: flex;
   flex-wrap: wrap;
@@ -298,15 +323,12 @@ footer {
 <body>
 <header>
   <h1>Contributions de la représentation de la France auprès de la Conférence du désarmement</h1>
-  <p>Visualisation interactive des contributions obligatoires et volontaires (DSMT), et de leur évolution dans le temps.</p>
-  <span class="badge">Fichier autonome — fonctionne hors ligne</span>
 </header>
 
 <nav class="tabs" role="tablist">
   <button class="active" data-tab="vue-ensemble" role="tab">Vue d'ensemble</button>
   <button data-tab="obligatoires" role="tab">Contributions obligatoires</button>
   <button data-tab="volontaires" role="tab">Contributions volontaires</button>
-  <button data-tab="evolution" role="tab">Évolution temporelle</button>
   <button data-tab="details" role="tab">Tableau détaillé</button>
 </nav>
 
@@ -315,12 +337,13 @@ footer {
     <div class="cards" id="kpi-cards"></div>
     <div class="grid-2">
       <div class="chart-box">
-        <h2>Répartition des contributions volontaires par catégorie</h2>
-        <div class="chart-container"><canvas id="chart-categories"></canvas></div>
-      </div>
-      <div class="chart-box">
         <h2>Évolution des totaux volontaires (€)</h2>
         <div class="chart-container"><canvas id="chart-totals-vol"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h2>Comparaison obligatoire vs volontaire</h2>
+        <div class="chart-container"><canvas id="chart-compare"></canvas></div>
+        <p class="legend-note">Les contributions obligatoires sont exprimées en USD et les volontaires en EUR — comparaison indicative.</p>
       </div>
     </div>
     <div class="chart-box">
@@ -330,18 +353,21 @@ footer {
   </section>
 
   <section id="obligatoires" class="panel">
-    <div class="cards" id="kpi-mandatory"></div>
-    <div class="grid-2">
-      <div class="chart-box">
-        <h2>Évolution par convention (USD)</h2>
-        <div class="chart-container"><canvas id="chart-mandatory-lines"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h2>Montants 2026 par convention (USD)</h2>
-        <div class="chart-container"><canvas id="chart-mandatory-2026"></canvas></div>
-      </div>
+    <div class="filters">
+      <label for="year-mandatory">Année :</label>
+      <select id="year-mandatory"></select>
     </div>
-    <div class="chart-box" style="margin-top:1rem;overflow-x:auto">
+    <div class="cards" id="kpi-mandatory"></div>
+    <div class="chart-box">
+      <h2>Évolution par convention (USD)</h2>
+      <div id="mandatory-legend-pills" class="legend-pills"></div>
+      <div class="chart-container tall"><canvas id="chart-mandatory-lines"></canvas></div>
+    </div>
+    <div class="chart-box" style="margin-top:1.5rem">
+      <h2 id="mandatory-bar-title">Montants 2026 par convention (USD)</h2>
+      <div class="chart-container"><canvas id="chart-mandatory-year"></canvas></div>
+    </div>
+    <div class="chart-box" style="margin-top:1.5rem;overflow-x:auto">
       <h2>Tableau des contributions obligatoires</h2>
       <table id="table-mandatory"></table>
     </div>
@@ -356,30 +382,17 @@ footer {
     <div class="grid-2">
       <div class="chart-box">
         <h2>Répartition par catégorie</h2>
-        <div class="chart-container"><canvas id="chart-vol-pie"></canvas></div>
+        <div id="vol-legend-pills" class="legend-pills"></div>
+        <div class="chart-container pie-tall"><canvas id="chart-vol-pie"></canvas></div>
       </div>
       <div class="chart-box">
         <h2>Principaux bénéficiaires</h2>
         <div class="chart-container"><canvas id="chart-vol-benef"></canvas></div>
       </div>
     </div>
-  </section>
-
-  <section id="evolution" class="panel">
-    <div class="grid-2">
-      <div class="chart-box">
-        <h2>Évolution des catégories volontaires (€)</h2>
-        <div class="chart-container" style="height:400px"><canvas id="chart-evol-categories"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h2>Comparaison obligatoire vs volontaire</h2>
-        <div class="chart-container" style="height:400px"><canvas id="chart-compare"></canvas></div>
-        <p class="legend-note">Les contributions obligatoires sont exprimées en USD et les volontaires en EUR — comparaison indicative.</p>
-      </div>
-    </div>
     <div class="chart-box" style="margin-top:1.5rem">
-      <h2>Évolution des principaux organismes volontaires</h2>
-      <div class="chart-container" style="height:380px"><canvas id="chart-evol-orgs"></canvas></div>
+      <h2>Évolution des catégories volontaires (€)</h2>
+      <div class="chart-container tall"><canvas id="chart-evol-categories"></canvas></div>
     </div>
   </section>
 
@@ -452,26 +465,48 @@ document.querySelectorAll('nav.tabs button').forEach(btn => {
 });
 
 // --- KPI helpers ---
-function getVoluntaryTotal(year) {
-  const yd = DATA.voluntary.find(v => v.year === year);
-  if (!yd) return null;
-  const totalRow = yd.items.find(i => false);
-  const cats = yd.categories.filter(c => c.amount != null);
-  return cats.reduce((s,c) => s + c.amount, 0);
-}
-
 function getGrandTotalVol(year) {
   const yd = DATA.voluntary.find(v => v.year === year);
   if (!yd) return null;
-  const allItems = [...yd.items];
-  const totalLabels = ['TOTAL'];
-  // Use category sums for hors JEA if available
-  const catSum = yd.categories.reduce((s,c) => s + (c.amount||0), 0);
-  return catSum;
+  return yd.categories.reduce((s,c) => s + (c.amount||0), 0);
 }
 
-function mandatoryTotal2026() {
-  return DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i['2026 ($)'])||0), 0);
+function mandatoryTotalYear(year) {
+  const col = year + ' ($)';
+  return DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i[col])||0), 0);
+}
+
+const MANDATORY_YEARS = ['2023','2024','2025','2026'];
+
+function buildLegendPills(containerId, labels, colors, chart) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = labels.map((label, i) =>
+    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
+  ).join('');
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const meta = chart.getDatasetMeta(idx);
+      meta.hidden = !meta.hidden;
+      btn.classList.toggle('inactive', meta.hidden);
+      chart.update();
+    });
+  });
+}
+
+function buildPieLegendPills(containerId, labels, colors, chart) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = labels.map((label, i) =>
+    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
+  ).join('');
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      chart.toggleDataVisibility(idx);
+      btn.classList.toggle('inactive', !chart.getDataVisibility(idx));
+      chart.update();
+    });
+  });
 }
 
 // --- Vue d'ensemble KPIs ---
@@ -481,29 +516,17 @@ function mandatoryTotal2026() {
   const firstYear = Math.min(...years);
   const totalVolLast = getGrandTotalVol(lastYear);
   const totalVolFirst = getGrandTotalVol(firstYear);
-  const mand2026 = mandatoryTotal2026();
-  const evol = totalVolFirst ? ((totalVolLast - totalVolFirst) / totalVolFirst * 100) : 0;
+  const mand2026 = mandatoryTotalYear(2026);
+  const evolVol = totalVolFirst ? ((totalVolLast - totalVolFirst) / totalVolFirst * 100) : 0;
+  const mand2024 = mandatoryTotalYear(2024);
+  const evolMand = mand2024 ? ((mand2026 - mand2024) / mand2024 * 100) : 0;
 
   document.getElementById('kpi-cards').innerHTML = `
     <div class="card"><h3>Contributions volontaires ${lastYear}</h3><div class="value">${fmtEUR(totalVolLast)}</div><div class="sub">Hors lignes « dont »</div></div>
-    <div class="card red"><h3>Contributions obligatoires 2026</h3><div class="value">${fmtUSD(mand2026)}</div><div class="sub">6 conventions</div></div>
-    <div class="card"><h3>Évolution volontaire ${firstYear}→${lastYear}</h3><div class="value">${evol >= 0 ? '+' : ''}${evol.toFixed(0)}%</div><div class="sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
-    <div class="card"><h3>Années couvertes</h3><div class="value">${years.join(', ')}</div><div class="sub">Données DSMT</div></div>
+    <div class="card red"><h3>Contributions obligatoires 2026</h3><div class="value">${fmtUSD(mand2026)}</div></div>
+    <div class="card"><h3>Évolution volontaire ${firstYear}→${lastYear}</h3><div class="value">${evolVol >= 0 ? '+' : ''}${evolVol.toFixed(0)}%</div><div class="sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
+    <div class="card red"><h3>Évolution contributions obligatoires 2024→2026</h3><div class="value">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>
   `;
-})();
-
-// --- Chart: categories latest year ---
-(function() {
-  const year = Math.max(...DATA.voluntary.map(v => v.year));
-  const yd = DATA.voluntary.find(v => v.year === year);
-  const labels = yd.categories.map(c => c.name);
-  const values = yd.categories.map(c => c.amount);
-  destroyChart('chart-categories');
-  charts['chart-categories'] = new Chart(document.getElementById('chart-categories'), {
-    type: 'doughnut',
-    data: { labels, datasets: [{ data: values, backgroundColor: COLORS }] },
-    options: { plugins: { legend: { position: 'right' }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } } }
-  });
 })();
 
 // --- Chart: voluntary totals over time ---
@@ -518,6 +541,32 @@ function mandatoryTotal2026() {
       datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: '#000091' }]
     },
     options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
+  });
+})();
+
+// --- Chart: compare obligatoire vs volontaire (vue d'ensemble) ---
+(function() {
+  const years = DATA.voluntary.map(v => v.year);
+  destroyChart('chart-compare');
+  charts['chart-compare'] = new Chart(document.getElementById('chart-compare'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: '#000091' },
+        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: '#e1000f' }
+      ]
+    },
+    options: {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.dataset.label + ': ' + (ctx.dataset.label.includes('€') ? fmtEUR(ctx.raw) : fmtUSD(ctx.raw))
+          }
+        }
+      },
+      scales: { y: { ticks: { callback: v => new Intl.NumberFormat('fr-FR').format(v) } } }
+    }
   });
 })();
 
@@ -542,42 +591,70 @@ function mandatoryTotal2026() {
 })();
 
 // --- Mandatory section ---
-(function() {
-  const mand2026 = mandatoryTotal2026();
-  const nConv = DATA.mandatory.items.length;
+const yearMandatorySelect = document.getElementById('year-mandatory');
+MANDATORY_YEARS.forEach(y => {
+  const opt = document.createElement('option');
+  opt.value = y; opt.textContent = y;
+  yearMandatorySelect.appendChild(opt);
+});
+yearMandatorySelect.value = '2026';
+
+function updateMandatoryKPIAndBar(year) {
+  const total = mandatoryTotalYear(parseInt(year));
   document.getElementById('kpi-mandatory').innerHTML = `
-    <div class="card red"><h3>Total 2026 (USD)</h3><div class="value">${fmtUSD(mand2026)}</div></div>
-    <div class="card"><h3>Conventions</h3><div class="value">${nConv}</div></div>
-    <div class="card"><h3>Plus élevée 2026</h3><div class="value">${shortName([...DATA.mandatory.items].sort((a,b)=>(parseFloat(b['2026 ($)'])||0)-(parseFloat(a['2026 ($)'])||0))[0].name)}</div></div>
+    <div class="card red"><h3>Total ${year} (USD)</h3><div class="value">${fmtUSD(total)}</div></div>
   `;
+  document.getElementById('mandatory-bar-title').textContent = `Montants ${year} par convention (USD)`;
 
-  const years = ['2023 ($)','2024 ($)','2025 ($)','2026 ($)'];
-  destroyChart('chart-mandatory-lines');
-  charts['chart-mandatory-lines'] = new Chart(document.getElementById('chart-mandatory-lines'), {
-    type: 'line',
-    data: {
-      labels: years.map(y => y.replace(' ($)','')),
-      datasets: DATA.mandatory.items.map((item,i) => ({
-        label: shortName(item.name),
-        data: years.map(y => parseFloat(item[y]) || null),
-        borderColor: COLORS[i % COLORS.length],
-        backgroundColor: COLORS[i % COLORS.length] + '33',
-        tension: .3,
-        fill: false,
-      }))
-    },
-    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtUSD(v) } } } }
-  });
-
-  destroyChart('chart-mandatory-2026');
-  charts['chart-mandatory-2026'] = new Chart(document.getElementById('chart-mandatory-2026'), {
+  const col = year + ' ($)';
+  destroyChart('chart-mandatory-year');
+  charts['chart-mandatory-year'] = new Chart(document.getElementById('chart-mandatory-year'), {
     type: 'bar',
     data: {
       labels: DATA.mandatory.items.map(i => shortName(i.name)),
-      datasets: [{ label: '2026 ($)', data: DATA.mandatory.items.map(i => parseFloat(i['2026 ($)'])||0), backgroundColor: COLORS }]
+      datasets: [{ label: year + ' ($)', data: DATA.mandatory.items.map(i => parseFloat(i[col])||0), backgroundColor: COLORS }]
     },
-    options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUSD(ctx.raw) } } }, scales: { x: { ticks: { callback: v => fmtUSD(v) } } } }
+    options: {
+      indexAxis: 'y',
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUSD(ctx.raw) } } },
+      scales: { x: { ticks: { callback: v => fmtUSD(v) } } }
+    }
   });
+}
+
+yearMandatorySelect.addEventListener('change', () => updateMandatoryKPIAndBar(yearMandatorySelect.value));
+updateMandatoryKPIAndBar('2026');
+
+(function() {
+  const yearCols = MANDATORY_YEARS.map(y => y + ' ($)');
+  const convLabels = DATA.mandatory.items.map(i => shortName(i.name));
+
+  destroyChart('chart-mandatory-lines');
+  const lineChart = new Chart(document.getElementById('chart-mandatory-lines'), {
+    type: 'line',
+    data: {
+      labels: MANDATORY_YEARS,
+      datasets: DATA.mandatory.items.map((item,i) => ({
+        label: convLabels[i],
+        data: yearCols.map(y => parseFloat(item[y]) || null),
+        borderColor: COLORS[i % COLORS.length],
+        backgroundColor: COLORS[i % COLORS.length],
+        tension: .3,
+        fill: false,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      }))
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } }
+      },
+      scales: { y: { ticks: { callback: v => fmtUSD(v) } } }
+    }
+  });
+  charts['chart-mandatory-lines'] = lineChart;
+  buildLegendPills('mandatory-legend-pills', convLabels, COLORS, lineChart);
 
   const headers = DATA.mandatory.headers;
   let html = '<thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>';
@@ -604,22 +681,35 @@ yearSelect.value = Math.max(...DATA.voluntary.map(v => v.year));
 function renderVoluntaryYear(year) {
   const yd = DATA.voluntary.find(v => v.year === year);
   const total = getGrandTotalVol(year);
-  const nItems = yd.items.filter(i => !i.is_breakdown && i.amount).length;
   document.getElementById('kpi-voluntary').innerHTML = `
     <div class="card"><h3>Total ${year}</h3><div class="value">${fmtEUR(total)}</div></div>
-    <div class="card"><h3>Catégories</h3><div class="value">${yd.categories.length}</div></div>
-    <div class="card"><h3>Lignes de financement</h3><div class="value">${nItems}</div></div>
   `;
 
+  const catLabels = yd.categories.map(c => c.name);
+  const catValues = yd.categories.map(c => c.amount);
+
   destroyChart('chart-vol-pie');
-  charts['chart-vol-pie'] = new Chart(document.getElementById('chart-vol-pie'), {
-    type: 'pie',
+  const pieChart = new Chart(document.getElementById('chart-vol-pie'), {
+    type: 'doughnut',
     data: {
-      labels: yd.categories.map(c => c.name),
-      datasets: [{ data: yd.categories.map(c => c.amount), backgroundColor: COLORS }]
+      labels: catLabels,
+      datasets: [{ data: catValues, backgroundColor: COLORS }]
     },
-    options: { plugins: { legend: { position: 'right' }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } } }
+    options: {
+      layout: { padding: 10 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: items => catLabels[items[0].dataIndex],
+            label: ctx => fmtEUR(ctx.raw)
+          }
+        }
+      }
+    }
   });
+  charts['chart-vol-pie'] = pieChart;
+  buildPieLegendPills('vol-legend-pills', catLabels, COLORS, pieChart);
 
   const benef = {};
   yd.items.filter(i => !i.is_breakdown && i.amount).forEach(i => {
@@ -639,7 +729,7 @@ function renderVoluntaryYear(year) {
 yearSelect.addEventListener('change', () => renderVoluntaryYear(parseInt(yearSelect.value)));
 renderVoluntaryYear(parseInt(yearSelect.value));
 
-// --- Evolution section ---
+// --- Évolution catégories volontaires (onglet volontaires) ---
 (function() {
   const years = DATA.voluntary.map(v => v.year);
   const allCats = [...new Set(DATA.voluntary.flatMap(v => v.categories.map(c => c.name)))];
@@ -660,47 +750,13 @@ renderVoluntaryYear(parseInt(yearSelect.value));
         spanGaps: true,
       }))
     },
-    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
-  });
-
-  destroyChart('chart-compare');
-  charts['chart-compare'] = new Chart(document.getElementById('chart-compare'), {
-    type: 'bar',
-    data: {
-      labels: years,
-      datasets: [
-        { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: '#000091' },
-        { label: 'Obligatoire 2024-26 (USD)', data: years.map(y => {
-          const col = y + ' ($)';
-          const sum = DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i[col])||0), 0);
-          return sum || null;
-        }), backgroundColor: '#e1000f' }
-      ]
-    },
-    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.dataset.label.includes('€') ? fmtEUR(ctx.raw) : fmtUSD(ctx.raw)) } } } }
-  });
-
-  const orgTotals = {};
-  DATA.voluntary.forEach(v => v.items.filter(i => !i.is_breakdown && i.amount).forEach(i => {
-    orgTotals[i.organisme] = (orgTotals[i.organisme]||0) + i.amount;
-  }));
-  const topOrgs = Object.entries(orgTotals).sort((a,b)=>b[1]-a[1]).slice(0,6).map(e=>e[0]);
-  destroyChart('chart-evol-orgs');
-  charts['chart-evol-orgs'] = new Chart(document.getElementById('chart-evol-orgs'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: topOrgs.map((org, i) => ({
-        label: org,
-        data: years.map(y => {
-          const yd = DATA.voluntary.find(v => v.year === y);
-          return yd.items.filter(it => it.organisme === org && !it.is_breakdown).reduce((s,it) => s + (it.amount||0), 0) || null;
-        }),
-        borderColor: COLORS[i % COLORS.length],
-        tension: .3,
-      }))
-    },
-    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
+    options: {
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12, font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtEUR(ctx.raw) } }
+      },
+      scales: { y: { ticks: { callback: v => fmtEUR(v) } } }
+    }
   });
 })();
 
