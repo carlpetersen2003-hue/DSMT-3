@@ -143,7 +143,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contributions de la France à la Conférence du désarmement</title>
+<title>Contributions de la France auprès de la Conférence du désarmement | Genève</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -208,21 +208,23 @@ nav.tabs {
 nav.tabs button {
   border: none;
   background: transparent;
-  padding: 0.85rem 1.15rem;
+  padding: 1rem 1.35rem;
   cursor: pointer;
-  font-size: 0.83rem;
-  font-weight: 400;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: var(--text2);
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   margin-bottom: -1px;
   transition: all 0.15s;
   font-family: inherit;
+  letter-spacing: 0.01em;
 }
-nav.tabs button:hover { color: var(--accent); }
+nav.tabs button:hover { color: var(--accent); background: rgba(44,95,138,0.04); }
 nav.tabs button.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
-  font-weight: 500;
+  font-weight: 600;
+  background: var(--surface2);
 }
 main {
   max-width: 1200px;
@@ -269,7 +271,7 @@ main {
 .kpi-sub { font-size: 0.75rem; color: var(--text2); margin-top: 0.3rem; }
 .kpi.accent .kpi-val { color: var(--accent); }
 .kpi.accent2 .kpi-val { color: var(--accent2); }
-.kpi.vc .kpi-val { color: var(--ac-vc); }
+.kpi.vc .kpi-val { color: #E8737A; }
 .toolbar-panel {
   display: flex;
   flex-wrap: wrap;
@@ -318,7 +320,7 @@ main {
 .chart-box.full { grid-column: 1 / -1; }
 .chart-container { position: relative; height: 300px; }
 .chart-container.tall { height: 340px; }
-.chart-container.pie-tall { height: 300px; }
+.chart-container.evolution-chart { height: 380px; }
 .legend-pills {
   display: flex;
   flex-wrap: wrap;
@@ -406,7 +408,13 @@ thead th {
 tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
 tbody tr:hover { background: var(--bg); }
 tbody tr.breakdown { color: var(--text2); font-style: italic; }
-tbody tr.category-row { background: var(--surface2); font-weight: 500; }
+tbody tr.category-row {
+  background: #dceaf7;
+  font-weight: 600;
+  color: #1e4d72;
+  border-top: 1px solid #b8d4eb;
+  border-bottom: 1px solid #b8d4eb;
+}
 th, td { padding: 0.65rem 0.8rem; vertical-align: top; }
 .amount { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .legend-note {
@@ -434,13 +442,117 @@ th, td { padding: 0.65rem 0.8rem; vertical-align: top; }
 }
 footer {
   text-align: center;
-  padding: 1.75rem 2rem;
+  padding: 2rem;
   font-size: 0.75rem;
-  color: var(--text2);
+  color: #000;
+  font-weight: 700;
   border-top: 1px solid var(--border);
-  margin-top: 1rem;
-  background: var(--surface2);
+  margin-top: 2rem;
+  position: relative;
+  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)),
+    url('https://upload.wikimedia.org/wikipedia/fr/thumb/5/50/Bloc_Marianne.svg/3840px-Bloc_Marianne.svg.png');
+  background-size: cover;
+  background-position: center;
 }
+.footer-text {
+  background: rgba(255,255,255,0.78);
+  padding: 0.35rem 1rem;
+  display: inline-block;
+  border-radius: 4px;
+}
+.admin-trigger {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+}
+.admin-trigger:hover { color: var(--accent); border-color: var(--accent); background: #fff; }
+.admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(26,24,20,0.55);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.admin-overlay.open { display: flex; }
+.admin-panel {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 960px;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.admin-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.admin-header h2 { font-family: Georgia, serif; font-size: 1.25rem; font-weight: 400; }
+.admin-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text2); line-height: 1; padding: 4px; }
+.admin-body { overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.admin-login { text-align: center; padding: 2rem 1rem; }
+.admin-login input { width: 220px; margin: 0.8rem auto; display: block; text-align: center; padding: 8px; border: 1px solid var(--border2); border-radius: 6px; }
+.admin-login button {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 8px 24px; font-family: inherit; font-size: 0.88rem; cursor: pointer;
+}
+.admin-login .err { color: #E8737A; font-size: 0.82rem; margin-top: 0.5rem; display: none; }
+.admin-section h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.8rem; color: var(--text); }
+.admin-controls { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: flex-end; margin-bottom: 1rem; }
+.admin-controls label { font-size: 0.78rem; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; display: flex; flex-direction: column; gap: 4px; }
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.admin-table th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; color: var(--text2); padding: 0.5rem 0.6rem; border-bottom: 2px solid var(--border2); text-align: right; background: var(--surface2); white-space: nowrap; }
+.admin-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--surface2); z-index: 1; }
+.admin-table td { padding: 3px; border-bottom: 1px solid var(--border); }
+.admin-table td:first-child { font-weight: 500; padding-left: 0.6rem; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+.admin-table input, .admin-table textarea { width: 100%; min-width: 70px; font-size: 0.78rem; padding: 4px 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; font-family: inherit; }
+.admin-table input:focus, .admin-table textarea:focus { border-color: var(--accent); background: var(--bg); outline: none; }
+.admin-table input.changed, .admin-table textarea.changed { background: rgba(44,95,138,0.08); border-color: var(--accent); }
+.admin-btn {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 7px 16px; font-family: inherit; font-size: 0.83rem; cursor: pointer;
+}
+.admin-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.admin-btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.admin-export textarea {
+  width: 100%; min-height: 140px; font-family: 'Courier New', monospace; font-size: 0.72rem;
+  padding: 0.8rem; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg);
+  color: var(--text); resize: vertical; line-height: 1.4;
+}
+.admin-tutorial { background: var(--surface2); border-radius: 8px; padding: 1.2rem 1.4rem; }
+.admin-steps { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 0.9rem; }
+.admin-steps li { counter-increment: step; padding-left: 2.2rem; position: relative; font-size: 0.85rem; line-height: 1.5; }
+.admin-steps li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; justify-content: center;
+}
+.admin-steps code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+.admin-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-left: 0.5rem; vertical-align: middle; }
 @media (max-width: 960px) {
   .charts-row { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -450,13 +562,13 @@ footer {
   main, nav.tabs { padding-left: 1rem; padding-right: 1rem; }
   .kpi-row { grid-template-columns: 1fr; }
   .toolbar-panel .kpi-row.compact { margin-left: 0; width: 100%; }
-  .chart-container, .chart-container.tall, .chart-container.pie-tall { height: 260px; }
+  .chart-container, .chart-container.tall, .chart-container.evolution-chart { height: 260px; }
 }
 </style>
 </head>
 <body>
 <header>
-  <h1>Contributions de la représentation de la France auprès de la Conférence du désarmement</h1>
+  <h1>Contributions de la France auprès de la Conférence du désarmement | Genève</h1>
 </header>
 
 <nav class="tabs" role="tablist">
@@ -519,18 +631,13 @@ footer {
     </div>
     <div class="charts-row">
       <div class="chart-box">
-        <h2>Répartition par catégorie</h2>
-        <div id="vol-legend-pills" class="legend-pills"></div>
-        <div class="chart-container pie-tall"><canvas id="chart-vol-pie"></canvas></div>
+        <h2>Principaux bénéficiaires</h2>
+        <div class="chart-container tall"><canvas id="chart-vol-benef"></canvas></div>
       </div>
       <div class="chart-box">
-        <h2>Principaux bénéficiaires</h2>
-        <div class="chart-container pie-tall"><canvas id="chart-vol-benef"></canvas></div>
+        <h2>Évolution des catégories volontaires (€)</h2>
+        <div class="chart-container evolution-chart"><canvas id="chart-evol-categories"></canvas></div>
       </div>
-    </div>
-    <div class="chart-box full">
-      <h2>Évolution des catégories volontaires (€)</h2>
-      <div class="chart-container tall"><canvas id="chart-evol-categories"></canvas></div>
     </div>
   </section>
 
@@ -567,447 +674,46 @@ footer {
 </main>
 
 <footer>
-  Données issues de <strong>__GENERATED_FROM__</strong> — Généré le __GENERATION_DATE__
+  <span class="footer-text">Données issues de <strong>__GENERATED_FROM__</strong> — Généré le __GENERATION_DATE__</span>
+  <button type="button" class="admin-trigger" onclick="openAdmin()" title="Administration des données">
+    <span aria-hidden="true">&#9881;</span> Espace admin
+  </button>
 </footer>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Administration des données</h2>
+      <button type="button" class="admin-close" onclick="closeAdmin()" aria-label="Fermer">&times;</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
 
 <script>
 __CHART_JS__
 </script>
 <script>
-const DATA = __DATA_JSON__;
-
-const COLORS = [
-  '#2c5f8a','#1a7a5e','#8a2c2c','#b07d2a','#5a7a9a','#3d8b6e',
-  '#a05050','#c49a3c','#6b8cae','#2e6b52','#9c7a5a','#4a6d8c'
-];
-
-const CHART_DEFAULTS = {
-  color: '#6b6458',
-  borderColor: 'rgba(40,35,20,0.12)',
-  font: { family: "'Segoe UI', system-ui, sans-serif" }
-};
-Chart.defaults.color = CHART_DEFAULTS.color;
-Chart.defaults.borderColor = CHART_DEFAULTS.borderColor;
-Chart.defaults.font.family = CHART_DEFAULTS.font.family;
-
-const fmtEUR = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
-const fmtUSD = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
-const shortName = s => s.replace(/^\d+\s*-\s*/,'').split(' - ')[0].trim();
-
-const charts = {};
-
-function destroyChart(id) {
-  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
-}
-
-// --- Tabs ---
-document.querySelectorAll('nav.tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    window.dispatchEvent(new Event('resize'));
-  });
-});
-
-// --- KPI helpers ---
-function getGrandTotalVol(year) {
-  const yd = DATA.voluntary.find(v => v.year === year);
-  if (!yd) return null;
-  return yd.categories.reduce((s,c) => s + (c.amount||0), 0);
-}
-
-function mandatoryTotalYear(year) {
-  const col = year + ' ($)';
-  return DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i[col])||0), 0);
-}
-
-const MANDATORY_YEARS = ['2023','2024','2025','2026'];
-
-function buildLegendPills(containerId, labels, colors, chart) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = labels.map((label, i) =>
-    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
-  ).join('');
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      const meta = chart.getDatasetMeta(idx);
-      meta.hidden = !meta.hidden;
-      btn.classList.toggle('inactive', meta.hidden);
-      chart.update();
-    });
-  });
-}
-
-function buildPieLegendPills(containerId, labels, colors, chart) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = labels.map((label, i) =>
-    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
-  ).join('');
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      chart.toggleDataVisibility(idx);
-      btn.classList.toggle('inactive', !chart.getDataVisibility(idx));
-      chart.update();
-    });
-  });
-}
-
-// --- Vue d'ensemble KPIs ---
-(function renderOverviewKPIs() {
-  const years = DATA.voluntary.map(v => v.year);
-  const lastYear = Math.max(...years);
-  const firstYear = Math.min(...years);
-  const totalVolLast = getGrandTotalVol(lastYear);
-  const totalVolFirst = getGrandTotalVol(firstYear);
-  const mand2026 = mandatoryTotalYear(2026);
-  const evolVol = totalVolFirst ? ((totalVolLast - totalVolFirst) / totalVolFirst * 100) : 0;
-  const mand2024 = mandatoryTotalYear(2024);
-  const evolMand = mand2024 ? ((mand2026 - mand2024) / mand2024 * 100) : 0;
-
-  document.getElementById('kpi-cards').innerHTML = `
-    <div class="kpi accent"><div class="kpi-label">Contributions volontaires ${lastYear}</div><div class="kpi-val">${fmtEUR(totalVolLast)}</div><div class="kpi-sub">Hors lignes « dont »</div></div>
-    <div class="kpi vc"><div class="kpi-label">Contributions obligatoires 2026</div><div class="kpi-val">${fmtUSD(mand2026)}</div></div>
-    <div class="kpi accent2"><div class="kpi-label">Évolution volontaire ${firstYear}→${lastYear}</div><div class="kpi-val">${evolVol >= 0 ? '+' : ''}${evolVol.toFixed(0)}%</div><div class="kpi-sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
-    <div class="kpi vc"><div class="kpi-label">Évolution obligatoires 2024→2026</div><div class="kpi-val">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="kpi-sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>
-  `;
-})();
-
-// --- Chart: voluntary totals over time ---
-(function() {
-  const years = DATA.voluntary.map(v => v.year);
-  const totals = years.map(y => getGrandTotalVol(y));
-  destroyChart('chart-totals-vol');
-  charts['chart-totals-vol'] = new Chart(document.getElementById('chart-totals-vol'), {
-    type: 'bar',
-    data: {
-      labels: years,
-      datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: COLORS[0] }]
-    },
-    options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
-  });
-})();
-
-// --- Chart: compare obligatoire vs volontaire (vue d'ensemble) ---
-(function() {
-  const years = DATA.voluntary.map(v => v.year);
-  destroyChart('chart-compare');
-  charts['chart-compare'] = new Chart(document.getElementById('chart-compare'), {
-    type: 'bar',
-    data: {
-      labels: years,
-      datasets: [
-        { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: COLORS[0] },
-        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: COLORS[2] }
-      ]
-    },
-    options: {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: ctx => ctx.dataset.label + ': ' + (ctx.dataset.label.includes('€') ? fmtEUR(ctx.raw) : fmtUSD(ctx.raw))
-          }
-        }
-      },
-      scales: { y: { ticks: { callback: v => new Intl.NumberFormat('fr-FR').format(v) } } }
-    }
-  });
-})();
-
-// --- Chart: mandatory overview stacked ---
-(function() {
-  const years = ['2023 ($)','2024 ($)','2025 ($)','2026 ($)'];
-  const labels = years.map(y => y.replace(' ($)',''));
-  const datasets = DATA.mandatory.items.map((item, i) => ({
-    label: shortName(item.name),
-    data: years.map(y => parseFloat(item[y]) || null),
-    backgroundColor: COLORS[i % COLORS.length],
-  }));
-  destroyChart('chart-mandatory-overview');
-  charts['chart-mandatory-overview'] = new Chart(document.getElementById('chart-mandatory-overview'), {
-    type: 'bar',
-    data: { labels, datasets },
-    options: {
-      plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } } },
-      scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => fmtUSD(v) } } }
-    }
-  });
-})();
-
-// --- Mandatory section ---
-const yearMandatorySelect = document.getElementById('year-mandatory');
-MANDATORY_YEARS.forEach(y => {
-  const opt = document.createElement('option');
-  opt.value = y; opt.textContent = y;
-  yearMandatorySelect.appendChild(opt);
-});
-yearMandatorySelect.value = '2026';
-
-function updateMandatoryKPIAndBar(year) {
-  const total = mandatoryTotalYear(parseInt(year));
-  document.getElementById('kpi-mandatory').innerHTML = `
-    <div class="kpi vc"><div class="kpi-label">Total ${year} (USD)</div><div class="kpi-val">${fmtUSD(total)}</div></div>
-  `;
-  document.getElementById('mandatory-bar-title').textContent = `Montants ${year} par convention (USD)`;
-
-  const col = year + ' ($)';
-  destroyChart('chart-mandatory-year');
-  charts['chart-mandatory-year'] = new Chart(document.getElementById('chart-mandatory-year'), {
-    type: 'bar',
-    data: {
-      labels: DATA.mandatory.items.map(i => shortName(i.name)),
-      datasets: [{ label: year + ' ($)', data: DATA.mandatory.items.map(i => parseFloat(i[col])||0), backgroundColor: COLORS }]
-    },
-    options: {
-      indexAxis: 'y',
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUSD(ctx.raw) } } },
-      scales: { x: { ticks: { callback: v => fmtUSD(v) } } }
-    }
-  });
-}
-
-yearMandatorySelect.addEventListener('change', () => updateMandatoryKPIAndBar(yearMandatorySelect.value));
-updateMandatoryKPIAndBar('2026');
-
-(function() {
-  const yearCols = MANDATORY_YEARS.map(y => y + ' ($)');
-  const convLabels = DATA.mandatory.items.map(i => shortName(i.name));
-
-  destroyChart('chart-mandatory-lines');
-  const lineChart = new Chart(document.getElementById('chart-mandatory-lines'), {
-    type: 'line',
-    data: {
-      labels: MANDATORY_YEARS,
-      datasets: DATA.mandatory.items.map((item,i) => ({
-        label: convLabels[i],
-        data: yearCols.map(y => parseFloat(item[y]) || null),
-        borderColor: COLORS[i % COLORS.length],
-        backgroundColor: COLORS[i % COLORS.length],
-        tension: .3,
-        fill: false,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-      }))
-    },
-    options: {
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } }
-      },
-      scales: { y: { ticks: { callback: v => fmtUSD(v) } } }
-    }
-  });
-  charts['chart-mandatory-lines'] = lineChart;
-  buildLegendPills('mandatory-legend-pills', convLabels, COLORS, lineChart);
-
-  const headers = DATA.mandatory.headers;
-  let html = '<thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>';
-  DATA.mandatory.items.forEach(item => {
-    html += '<tr>' + headers.map(h => {
-      const v = item[h];
-      if (h.includes('($)') || h.includes('(€)')) return `<td class="amount">${typeof v === 'number' ? (h.includes('€') ? fmtEUR(v) : fmtUSD(v)) : (v||'—')}</td>`;
-      return `<td>${v ?? '—'}</td>`;
-    }).join('') + '</tr>';
-  });
-  html += '</tbody>';
-  document.getElementById('table-mandatory').innerHTML = html;
-})();
-
-// --- Voluntary section ---
-const yearSelect = document.getElementById('year-vol');
-DATA.voluntary.forEach(v => {
-  const opt = document.createElement('option');
-  opt.value = v.year; opt.textContent = v.year;
-  yearSelect.appendChild(opt);
-});
-yearSelect.value = Math.max(...DATA.voluntary.map(v => v.year));
-
-function renderVoluntaryYear(year) {
-  const yd = DATA.voluntary.find(v => v.year === year);
-  const total = getGrandTotalVol(year);
-  document.getElementById('kpi-voluntary').innerHTML = `
-    <div class="kpi accent"><div class="kpi-label">Total ${year}</div><div class="kpi-val">${fmtEUR(total)}</div></div>
-  `;
-
-  const catLabels = yd.categories.map(c => c.name);
-  const catValues = yd.categories.map(c => c.amount);
-
-  destroyChart('chart-vol-pie');
-  const pieChart = new Chart(document.getElementById('chart-vol-pie'), {
-    type: 'doughnut',
-    data: {
-      labels: catLabels,
-      datasets: [{ data: catValues, backgroundColor: COLORS }]
-    },
-    options: {
-      layout: { padding: 10 },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: items => catLabels[items[0].dataIndex],
-            label: ctx => fmtEUR(ctx.raw)
-          }
-        }
-      }
-    }
-  });
-  charts['chart-vol-pie'] = pieChart;
-  buildPieLegendPills('vol-legend-pills', catLabels, COLORS, pieChart);
-
-  const benef = {};
-  yd.items.filter(i => !i.is_breakdown && i.amount).forEach(i => {
-    benef[i.organisme] = (benef[i.organisme]||0) + i.amount;
-  });
-  const sorted = Object.entries(benef).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  destroyChart('chart-vol-benef');
-  charts['chart-vol-benef'] = new Chart(document.getElementById('chart-vol-benef'), {
-    type: 'bar',
-    data: {
-      labels: sorted.map(s => s[0]),
-      datasets: [{ data: sorted.map(s => s[1]), backgroundColor: COLORS[0] }]
-    },
-    options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { x: { ticks: { callback: v => fmtEUR(v) } } } }
-  });
-}
-yearSelect.addEventListener('change', () => renderVoluntaryYear(parseInt(yearSelect.value)));
-renderVoluntaryYear(parseInt(yearSelect.value));
-
-// --- Évolution catégories volontaires (onglet volontaires) ---
-(function() {
-  const years = DATA.voluntary.map(v => v.year);
-  const allCats = [...new Set(DATA.voluntary.flatMap(v => v.categories.map(c => c.name)))];
-  destroyChart('chart-evol-categories');
-  charts['chart-evol-categories'] = new Chart(document.getElementById('chart-evol-categories'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: allCats.map((cat, i) => ({
-        label: cat,
-        data: years.map(y => {
-          const yd = DATA.voluntary.find(v => v.year === y);
-          const c = yd.categories.find(c => c.name === cat);
-          return c ? c.amount : null;
-        }),
-        borderColor: COLORS[i % COLORS.length],
-        tension: .3,
-        spanGaps: true,
-      }))
-    },
-    options: {
-      plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12, font: { size: 11 } } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtEUR(ctx.raw) } }
-      },
-      scales: { y: { ticks: { callback: v => fmtEUR(v) } } }
-    }
-  });
-})();
-
-// --- Details table ---
-const filterYear = document.getElementById('filter-year');
-DATA.voluntary.forEach(v => {
-  const opt = document.createElement('option');
-  opt.value = v.year; opt.textContent = v.year;
-  filterYear.appendChild(opt);
-});
-
-function buildDetailRows() {
-  const rows = [];
-  DATA.mandatory.items.forEach(item => {
-    ['2023 ($)','2024 (€)','2024 ($)','2025 ($)','2026 ($)'].forEach(col => {
-      const v = item[col];
-      if (v == null || v === '') return;
-      const year = col.match(/\d{4}/)[0];
-      rows.push({
-        type: 'Obligatoire', year, category: shortName(item.name), organisme: item.name,
-        amount: v, currency: col.includes('€') ? 'EUR' : 'USD', nature: '', isBreakdown: false
-      });
-    });
-  });
-  DATA.voluntary.forEach(yd => {
-    yd.categories.forEach(c => {
-      if (c.amount != null) rows.push({
-        type: 'Volontaire', year: yd.year, category: c.name, organisme: `— Total catégorie —`,
-        amount: c.amount, currency: 'EUR', nature: '', isBreakdown: false, isCategory: true
-      });
-    });
-    yd.items.forEach(i => {
-      if (i.amount == null) return;
-      rows.push({
-        type: 'Volontaire', year: yd.year, category: i.category || '', organisme: i.organisme,
-        amount: i.amount, currency: 'EUR', nature: i.nature, isBreakdown: i.is_breakdown
-      });
-    });
-  });
-  return rows;
-}
-
-const allRows = buildDetailRows();
-const tbody = document.querySelector('#table-details tbody');
-
-function renderDetails() {
-  const yf = filterYear.value;
-  const tf = document.getElementById('filter-type').value;
-  const q = document.getElementById('filter-search').value.toLowerCase();
-  tbody.innerHTML = allRows.filter(r => {
-    if (yf !== 'all' && String(r.year) !== yf) return false;
-    if (tf === 'mandatory' && r.type !== 'Obligatoire') return false;
-    if (tf === 'voluntary' && r.type !== 'Volontaire') return false;
-    if (q && !(r.organisme + r.category + r.nature).toLowerCase().includes(q)) return false;
-    return true;
-  }).map(r => {
-    const cls = [r.isBreakdown ? 'breakdown' : '', r.isCategory ? 'category-row' : ''].join(' ');
-    const amt = r.currency === 'EUR' ? fmtEUR(r.amount) : fmtUSD(r.amount);
-    return `<tr class="${cls}"><td>${r.type}</td><td>${r.year}</td><td>${r.category}</td><td>${r.organisme}</td><td class="amount">${amt}</td><td>${r.nature}</td></tr>`;
-  }).join('');
-}
-
-['filter-year','filter-type','filter-search'].forEach(id => {
-  document.getElementById(id).addEventListener('input', renderDetails);
-  document.getElementById(id).addEventListener('change', renderDetails);
-});
-renderDetails();
-
-document.getElementById('export-csv').addEventListener('click', () => {
-  const yf = filterYear.value;
-  const tf = document.getElementById('filter-type').value;
-  const q = document.getElementById('filter-search').value.toLowerCase();
-  const filtered = allRows.filter(r => {
-    if (yf !== 'all' && String(r.year) !== yf) return false;
-    if (tf === 'mandatory' && r.type !== 'Obligatoire') return false;
-    if (tf === 'voluntary' && r.type !== 'Volontaire') return false;
-    if (q && !(r.organisme + r.category + r.nature).toLowerCase().includes(q)) return false;
-    return true;
-  });
-  const header = ['Type','Année','Catégorie','Organisme','Montant','Devise','Nature'];
-  const lines = [header.join(';')].concat(filtered.map(r =>
-    [r.type,r.year,r.category,r.organisme,r.amount,r.currency,'"' + (r.nature||'').replace(/"/g,'""') + '"'].join(';')
-  ));
-  const blob = new Blob(['\ufeff' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'contributions_dsmt_export.csv';
-  a.click();
-});
+__APP_SCRIPT__
 </script>
 </body>
 </html>"""
 
 
+APP_SCRIPT_PATH = Path(__file__).parent / "dsmt_app.js"
+
+
 def generate():
     data = build_data()
     chart_js = load_chart_js()
+    app_script = APP_SCRIPT_PATH.read_text(encoding="utf-8")
     if not chart_js:
         print("Attention: Chart.js non trouvé, le fichier nécessitera une connexion.", file=sys.stderr)
 
     from datetime import datetime
 
     html = HTML_TEMPLATE
-    html = html.replace("__DATA_JSON__", json.dumps(data, ensure_ascii=False))
+    html = html.replace("__APP_SCRIPT__", app_script.replace("__DATA_JSON__", json.dumps(data, ensure_ascii=False)))
     html = html.replace("__CHART_JS__", chart_js)
     html = html.replace("__GENERATED_FROM__", data["generated_from"])
     html = html.replace("__GENERATION_DATE__", datetime.now().strftime("%d/%m/%Y"))

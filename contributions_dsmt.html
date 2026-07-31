@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contributions de la France à la Conférence du désarmement</title>
+<title>Contributions de la France auprès de la Conférence du désarmement | Genève</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -68,21 +68,23 @@ nav.tabs {
 nav.tabs button {
   border: none;
   background: transparent;
-  padding: 0.85rem 1.15rem;
+  padding: 1rem 1.35rem;
   cursor: pointer;
-  font-size: 0.83rem;
-  font-weight: 400;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: var(--text2);
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   margin-bottom: -1px;
   transition: all 0.15s;
   font-family: inherit;
+  letter-spacing: 0.01em;
 }
-nav.tabs button:hover { color: var(--accent); }
+nav.tabs button:hover { color: var(--accent); background: rgba(44,95,138,0.04); }
 nav.tabs button.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
-  font-weight: 500;
+  font-weight: 600;
+  background: var(--surface2);
 }
 main {
   max-width: 1200px;
@@ -178,7 +180,7 @@ main {
 .chart-box.full { grid-column: 1 / -1; }
 .chart-container { position: relative; height: 300px; }
 .chart-container.tall { height: 340px; }
-.chart-container.pie-tall { height: 300px; }
+.chart-container.evolution-chart { height: 380px; }
 .legend-pills {
   display: flex;
   flex-wrap: wrap;
@@ -266,7 +268,13 @@ thead th {
 tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
 tbody tr:hover { background: var(--bg); }
 tbody tr.breakdown { color: var(--text2); font-style: italic; }
-tbody tr.category-row { background: var(--surface2); font-weight: 500; }
+tbody tr.category-row {
+  background: #dceaf7;
+  font-weight: 600;
+  color: #1e4d72;
+  border-top: 1px solid #b8d4eb;
+  border-bottom: 1px solid #b8d4eb;
+}
 th, td { padding: 0.65rem 0.8rem; vertical-align: top; }
 .amount { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .legend-note {
@@ -294,13 +302,117 @@ th, td { padding: 0.65rem 0.8rem; vertical-align: top; }
 }
 footer {
   text-align: center;
-  padding: 1.75rem 2rem;
+  padding: 2rem;
   font-size: 0.75rem;
-  color: var(--text2);
+  color: #000;
+  font-weight: 700;
   border-top: 1px solid var(--border);
-  margin-top: 1rem;
-  background: var(--surface2);
+  margin-top: 2rem;
+  position: relative;
+  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)),
+    url('https://upload.wikimedia.org/wikipedia/fr/thumb/5/50/Bloc_Marianne.svg/3840px-Bloc_Marianne.svg.png');
+  background-size: cover;
+  background-position: center;
 }
+.footer-text {
+  background: rgba(255,255,255,0.78);
+  padding: 0.35rem 1rem;
+  display: inline-block;
+  border-radius: 4px;
+}
+.admin-trigger {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+}
+.admin-trigger:hover { color: var(--accent); border-color: var(--accent); background: #fff; }
+.admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(26,24,20,0.55);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.admin-overlay.open { display: flex; }
+.admin-panel {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 960px;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.admin-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.admin-header h2 { font-family: Georgia, serif; font-size: 1.25rem; font-weight: 400; }
+.admin-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text2); line-height: 1; padding: 4px; }
+.admin-body { overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.admin-login { text-align: center; padding: 2rem 1rem; }
+.admin-login input { width: 220px; margin: 0.8rem auto; display: block; text-align: center; padding: 8px; border: 1px solid var(--border2); border-radius: 6px; }
+.admin-login button {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 8px 24px; font-family: inherit; font-size: 0.88rem; cursor: pointer;
+}
+.admin-login .err { color: #E8737A; font-size: 0.82rem; margin-top: 0.5rem; display: none; }
+.admin-section h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.8rem; color: var(--text); }
+.admin-controls { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: flex-end; margin-bottom: 1rem; }
+.admin-controls label { font-size: 0.78rem; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; display: flex; flex-direction: column; gap: 4px; }
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.admin-table th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; color: var(--text2); padding: 0.5rem 0.6rem; border-bottom: 2px solid var(--border2); text-align: right; background: var(--surface2); white-space: nowrap; }
+.admin-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--surface2); z-index: 1; }
+.admin-table td { padding: 3px; border-bottom: 1px solid var(--border); }
+.admin-table td:first-child { font-weight: 500; padding-left: 0.6rem; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+.admin-table input, .admin-table textarea { width: 100%; min-width: 70px; font-size: 0.78rem; padding: 4px 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; font-family: inherit; }
+.admin-table input:focus, .admin-table textarea:focus { border-color: var(--accent); background: var(--bg); outline: none; }
+.admin-table input.changed, .admin-table textarea.changed { background: rgba(44,95,138,0.08); border-color: var(--accent); }
+.admin-btn {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 7px 16px; font-family: inherit; font-size: 0.83rem; cursor: pointer;
+}
+.admin-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.admin-btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.admin-export textarea {
+  width: 100%; min-height: 140px; font-family: 'Courier New', monospace; font-size: 0.72rem;
+  padding: 0.8rem; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg);
+  color: var(--text); resize: vertical; line-height: 1.4;
+}
+.admin-tutorial { background: var(--surface2); border-radius: 8px; padding: 1.2rem 1.4rem; }
+.admin-steps { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 0.9rem; }
+.admin-steps li { counter-increment: step; padding-left: 2.2rem; position: relative; font-size: 0.85rem; line-height: 1.5; }
+.admin-steps li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; justify-content: center;
+}
+.admin-steps code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+.admin-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-left: 0.5rem; vertical-align: middle; }
 @media (max-width: 960px) {
   .charts-row { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -316,7 +428,7 @@ footer {
 </head>
 <body>
 <header>
-  <h1>Contributions de la représentation de la France auprès de la Conférence du désarmement</h1>
+  <h1>Contributions de la France auprès de la Conférence du désarmement | Genève</h1>
 </header>
 
 <nav class="tabs" role="tablist">
@@ -379,18 +491,13 @@ footer {
     </div>
     <div class="charts-row">
       <div class="chart-box">
-        <h2>Répartition par catégorie</h2>
-        <div id="vol-legend-pills" class="legend-pills"></div>
-        <div class="chart-container pie-tall"><canvas id="chart-vol-pie"></canvas></div>
+        <h2>Principaux bénéficiaires</h2>
+        <div class="chart-container tall"><canvas id="chart-vol-benef"></canvas></div>
       </div>
       <div class="chart-box">
-        <h2>Principaux bénéficiaires</h2>
-        <div class="chart-container pie-tall"><canvas id="chart-vol-benef"></canvas></div>
+        <h2>Évolution des catégories volontaires (€)</h2>
+        <div class="chart-container evolution-chart"><canvas id="chart-evol-categories"></canvas></div>
       </div>
-    </div>
-    <div class="chart-box full">
-      <h2>Évolution des catégories volontaires (€)</h2>
-      <div class="chart-container tall"><canvas id="chart-evol-categories"></canvas></div>
     </div>
   </section>
 
@@ -427,8 +534,21 @@ footer {
 </main>
 
 <footer>
-  Données issues de <strong>Suivi_contributions_dsmt.xls</strong> — Généré le 31/07/2026
+  <span class="footer-text">Données issues de <strong>Suivi_contributions_dsmt.xls</strong> — Généré le 31/07/2026</span>
+  <button type="button" class="admin-trigger" onclick="openAdmin()" title="Administration des données">
+    <span aria-hidden="true">&#9881;</span> Espace admin
+  </button>
 </footer>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Administration des données</h2>
+      <button type="button" class="admin-close" onclick="closeAdmin()" aria-label="Fermer">&times;</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
 
 <script>
 /**
@@ -454,30 +574,73 @@ footer {
 
 </script>
 <script>
-const DATA = {"mandatory": {"headers": ["Contributions obligatoires", "2023 ($)", "2024 (€)", "2024 ($)", "2025 ($)", "2026 ($)", "Reliquats ($)", "Montant 2026 à verser", "Date limite de versement souhaitée"], "items": [{"name": "1 - BWC - UNODA (CIABT)", "2023 ($)": 93212.0, "2024 (€)": 85509.76, "2024 ($)": 92423.0, "2025 ($)": 94380.0, "2026 ($)": 86205.0, "Reliquats ($)": 43642.94, "Montant 2026 à verser": 42562.06, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "2 - CCW - UNODA (CCAC)", "2023 ($)": 61777.0, "2024 (€)": 56340.17, "2024 ($)": 61777.0, "2025 ($)": 61237.0, "2026 ($)": 62719.0, "Reliquats ($)": 50197.93, "Montant 2026 à verser": 12521.07, "Date limite de versement souhaitée": "01/02/2026"}, {"name": "3 - APLC - UNODA (Ottawa)", "2023 ($)": 49961.0, "2024 (€)": 65032.75, "2024 ($)": 71497.0, "2025 ($)": 53993.0, "2026 ($)": 58264.0, "Reliquats ($)": 93237.93, "Montant 2026 à verser": 0.0, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "4 - CCM - UNODA (Oslo)", "2023 ($)": 38829.51, "2024 (€)": 47597.03, "2024 ($)": 39547.49, "2025 ($)": 46841.0, "2026 ($)": 67812.0, "Reliquats ($)": 6773.74, "Montant 2026 à verser": 61038.26, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "5 - ATT - UNODA", "2023 ($)": null, "2024 (€)": 40561.58, "2024 ($)": 44475.77, "2025 ($)": 56818.69, "2026 ($)": 68183.69, "Reliquats ($)": null, "Montant 2026 à verser": 68183.69, "Date limite de versement souhaitée": "02/02/2026"}, {"name": "6 - NPT - UNODA", "2023 ($)": null, "2024 (€)": null, "2024 ($)": null, "2025 ($)": 86267.0, "2026 ($)": 268094.0, "Reliquats ($)": null, "Montant 2026 à verser": 268094.0, "Date limite de versement souhaitée": "23/03/2026"}]}, "voluntary": [{"year": 2024, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 348224.0}, {"id": 2, "name": "ASD/DT - CV biologiques", "amount": 80000.0}, {"id": 3, "name": "ASD/Cyber - CV cybersécurité", "amount": 255000.0}, {"id": 4, "name": "ASD/QA - CV espace", "amount": 50000.0}, {"id": 5, "name": "JEA", "amount": 250345.24}, {"id": 6, "name": "CNEMA", "amount": 46000.0}], "items": [{"organisme": "ISU Ottawa", "amount": 50000.0, "nature": "Participation à l’organisation de la Conférence d’examen de la convention d’Ottawa sur l’interdiction des mines antipersonnel (sous présidence cambodgienne)", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "Soutien au projet \"Souligner les défis transversaux posés par différentes familles d'armes à feu fabriquées de manière privée, en vue de la RevCon du PoA ALPC\"", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 168224.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "dont armes conventionnelles", "amount": 74000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont ADM et autres armes stratégiques", "amount": 47100.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont cyber/IA", "amount": 28624.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont contribution non fléchée", "amount": 18500.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "UNIDIR", "amount": 20000.0, "nature": "PoA ALPC: soutien à l’organisation d’un ou plusieurs évènements en vue de la prochaine Conférence d'examen du Programme d'action des Nations unies sur les ALPC", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 10000.0, "nature": "Munitions: élaboration d’un guide d’introduction pour le nouveau Cadre global sur les munitions conventionnelles (versement de fin de gestion)", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "DCAF", "amount": 50000.0, "nature": "Fonds fiduciaire Afrique du nord (TFNA) - P209", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "DCAF", "amount": 30000.0, "nature": "Contribution au profit de l’ISSAT - Reliquat P105 pour verser contribution à valoriser pour 2025, normalement versée via le P209", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "CIABT", "amount": 50000.0, "nature": "Contribution au fonds de roulement du secrétariat (ISU) de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2024}, {"organisme": "CIABT", "amount": 30000.0, "nature": "Contribution au programme de parrainage de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2024}, {"organisme": "UNODA", "amount": 215000.0, "nature": "Soutien au renforcement capacitaire et au dialogue institutionnel régulier afin de favoriser un engagement significatif au sein de l’OEWG cyber", "category": "ASD/Cyber - CV cybersécurité", "category_id": 3, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 40000.0, "nature": "Organisation d’activités relatives au dialogue institutionnel régulier sur le cyber à l’ONU", "category": "ASD/Cyber - CV cybersécurité", "category_id": 3, "is_breakdown": false, "year": 2024}, {"organisme": "Wilton Park", "amount": 50000.0, "nature": "Co-financement d'un séminaire Wilton Park sur un processus onusien de consolidation du droit international de l'espace pour garantir la sûreté spatiale", "category": "ASD/QA - CV espace", "category_id": 4, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 72637.45, "nature": "Fanny Sebban", "category": "JEA", "category_id": 5, "is_breakdown": false, "year": 2024}, {"organisme": "UNODA", "amount": 177707.79, "nature": "Clément Bailly", "category": "JEA", "category_id": 5, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Ottawa", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Ottawa - Sponsorship programme", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Oslo", "amount": 8000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ICBL-CMC - Landmine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "Mine Action Review", "amount": 6000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}], "totals": {"label": "TOTAL 2024 - RP DSMT", "amount": 1029569.24}}, {"year": 2025, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 190000.0}, {"id": 2, "name": "ASD/DT - CV biologiques", "amount": 30000.0}, {"id": 3, "name": "ASD/QA - CV nucléaires", "amount": 15000.0}, {"id": 4, "name": "JEA", "amount": 0.0}, {"id": 5, "name": "CNEMA", "amount": 49000.0}], "items": [{"organisme": "UNIDIR", "amount": 170000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2025}, {"organisme": "dont armes conventionnelles", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont ADM et autres armes stratégiques", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont cyber/IA", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont rencontres francophones", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "ALPC Ukraine - Traçage des trafics internes", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2025}, {"organisme": "CIABT", "amount": 100000.0, "nature": "\"Strengthening the universalization and implementation of the BWC with a focus on Africa, Southeast Asia and the Pacific\"", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2025}, {"organisme": "CIABT", "amount": 30000.0, "nature": "Contribution au fonds de roulement du secrétariat (ISU) de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2025}, {"organisme": "GCSP", "amount": 10000.0, "nature": "Organisation d'un séminaire de préparation de notre rapport national pour le cycle actuel du TNP", "category": "ASD/QA - CV nucléaires", "category_id": 3, "is_breakdown": false, "year": 2025}, {"organisme": "GCSP", "amount": 5000.0, "nature": "Organisation d'un atelier de travail sur les régimes de contrôle des exportations des matières et équipements sensibles => n'a pas eu lieu et crédits utilisés pour participer à des cours du GCSP", "category": "ASD/QA - CV nucléaires", "category_id": 3, "is_breakdown": false, "year": 2025}, {"organisme": "UNODA - Nucléaire (NY)", "amount": null, "nature": "", "category": "JEA", "category_id": 4, "is_breakdown": false, "year": 2025}, {"organisme": "ISU APMBC", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "ISU APMBC - Sponsorship program\"", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "ISU CCM", "amount": 1000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Land-Mine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Mine Action Review (via Norwegian people Aid)", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Side-event APMBC - Ecole du Génie d'Angers", "amount": 4000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}], "totals": {"label": "TOTAL 2025 - RP DSMT (hors JEA et hors CNEMA)", "amount": 235000.0}}, {"year": 2026, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 130000.0}, {"id": 2, "name": "JEA", "amount": 0.0}, {"id": 3, "name": "CNEMA", "amount": 45000.0}], "items": [{"organisme": "UNIDIR", "amount": 60000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "dont centre d'excellence IA", "amount": 10000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont IA", "amount": 10000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont Women in Cyber", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont non fléché", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "GICHD", "amount": 30000.0, "nature": "Financement d'action de formations à la lutte contre les mines et restes explosifs de guerre en Ukraine", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Oslo", "amount": 20000.0, "nature": "Soutien à la présidence laotienne dans l'organisation de la RevCon de Vientiane", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "ALPC Ukraine - Traçage des trafics internes", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "UNODA - Nucléaire (NY)", "amount": null, "nature": "", "category": "JEA", "category_id": 2, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Ottawa", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Ottawa - Sponsorship program\"", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Oslo", "amount": 1000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "Land-Mine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "Mine Action Review (via Norwegian people Aid)", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}], "totals": {"label": "TOTAL 2026 - RP DSMT", "amount": 175000.0}}], "generated_from": "Suivi_contributions_dsmt.xls"};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BLOC DE DONNÉES — Remplacez tout ce bloc pour mettre à jour la page
+// ═══════════════════════════════════════════════════════════════════════════════
+const PAGEBLOCK = {"mandatory": {"headers": ["Contributions obligatoires", "2023 ($)", "2024 (€)", "2024 ($)", "2025 ($)", "2026 ($)", "Reliquats ($)", "Montant 2026 à verser", "Date limite de versement souhaitée"], "items": [{"name": "1 - BWC - UNODA (CIABT)", "2023 ($)": 93212.0, "2024 (€)": 85509.76, "2024 ($)": 92423.0, "2025 ($)": 94380.0, "2026 ($)": 86205.0, "Reliquats ($)": 43642.94, "Montant 2026 à verser": 42562.06, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "2 - CCW - UNODA (CCAC)", "2023 ($)": 61777.0, "2024 (€)": 56340.17, "2024 ($)": 61777.0, "2025 ($)": 61237.0, "2026 ($)": 62719.0, "Reliquats ($)": 50197.93, "Montant 2026 à verser": 12521.07, "Date limite de versement souhaitée": "01/02/2026"}, {"name": "3 - APLC - UNODA (Ottawa)", "2023 ($)": 49961.0, "2024 (€)": 65032.75, "2024 ($)": 71497.0, "2025 ($)": 53993.0, "2026 ($)": 58264.0, "Reliquats ($)": 93237.93, "Montant 2026 à verser": 0.0, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "4 - CCM - UNODA (Oslo)", "2023 ($)": 38829.51, "2024 (€)": 47597.03, "2024 ($)": 39547.49, "2025 ($)": 46841.0, "2026 ($)": 67812.0, "Reliquats ($)": 6773.74, "Montant 2026 à verser": 61038.26, "Date limite de versement souhaitée": "01/01/2026"}, {"name": "5 - ATT - UNODA", "2023 ($)": null, "2024 (€)": 40561.58, "2024 ($)": 44475.77, "2025 ($)": 56818.69, "2026 ($)": 68183.69, "Reliquats ($)": null, "Montant 2026 à verser": 68183.69, "Date limite de versement souhaitée": "02/02/2026"}, {"name": "6 - NPT - UNODA", "2023 ($)": null, "2024 (€)": null, "2024 ($)": null, "2025 ($)": 86267.0, "2026 ($)": 268094.0, "Reliquats ($)": null, "Montant 2026 à verser": 268094.0, "Date limite de versement souhaitée": "23/03/2026"}]}, "voluntary": [{"year": 2024, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 348224.0}, {"id": 2, "name": "ASD/DT - CV biologiques", "amount": 80000.0}, {"id": 3, "name": "ASD/Cyber - CV cybersécurité", "amount": 255000.0}, {"id": 4, "name": "ASD/QA - CV espace", "amount": 50000.0}, {"id": 5, "name": "JEA", "amount": 250345.24}, {"id": 6, "name": "CNEMA", "amount": 46000.0}], "items": [{"organisme": "ISU Ottawa", "amount": 50000.0, "nature": "Participation à l’organisation de la Conférence d’examen de la convention d’Ottawa sur l’interdiction des mines antipersonnel (sous présidence cambodgienne)", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "Soutien au projet \"Souligner les défis transversaux posés par différentes familles d'armes à feu fabriquées de manière privée, en vue de la RevCon du PoA ALPC\"", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 168224.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "dont armes conventionnelles", "amount": 74000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont ADM et autres armes stratégiques", "amount": 47100.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont cyber/IA", "amount": 28624.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "dont contribution non fléchée", "amount": 18500.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2024}, {"organisme": "UNIDIR", "amount": 20000.0, "nature": "PoA ALPC: soutien à l’organisation d’un ou plusieurs évènements en vue de la prochaine Conférence d'examen du Programme d'action des Nations unies sur les ALPC", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 10000.0, "nature": "Munitions: élaboration d’un guide d’introduction pour le nouveau Cadre global sur les munitions conventionnelles (versement de fin de gestion)", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "DCAF", "amount": 50000.0, "nature": "Fonds fiduciaire Afrique du nord (TFNA) - P209", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "DCAF", "amount": 30000.0, "nature": "Contribution au profit de l’ISSAT - Reliquat P105 pour verser contribution à valoriser pour 2025, normalement versée via le P209", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2024}, {"organisme": "CIABT", "amount": 50000.0, "nature": "Contribution au fonds de roulement du secrétariat (ISU) de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2024}, {"organisme": "CIABT", "amount": 30000.0, "nature": "Contribution au programme de parrainage de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2024}, {"organisme": "UNODA", "amount": 215000.0, "nature": "Soutien au renforcement capacitaire et au dialogue institutionnel régulier afin de favoriser un engagement significatif au sein de l’OEWG cyber", "category": "ASD/Cyber - CV cybersécurité", "category_id": 3, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 40000.0, "nature": "Organisation d’activités relatives au dialogue institutionnel régulier sur le cyber à l’ONU", "category": "ASD/Cyber - CV cybersécurité", "category_id": 3, "is_breakdown": false, "year": 2024}, {"organisme": "Wilton Park", "amount": 50000.0, "nature": "Co-financement d'un séminaire Wilton Park sur un processus onusien de consolidation du droit international de l'espace pour garantir la sûreté spatiale", "category": "ASD/QA - CV espace", "category_id": 4, "is_breakdown": false, "year": 2024}, {"organisme": "UNIDIR", "amount": 72637.45, "nature": "Fanny Sebban", "category": "JEA", "category_id": 5, "is_breakdown": false, "year": 2024}, {"organisme": "UNODA", "amount": 177707.79, "nature": "Clément Bailly", "category": "JEA", "category_id": 5, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Ottawa", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Ottawa - Sponsorship programme", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ISU Oslo", "amount": 8000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "ICBL-CMC - Landmine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}, {"organisme": "Mine Action Review", "amount": 6000.0, "nature": "", "category": "CNEMA", "category_id": 6, "is_breakdown": false, "year": 2024}], "totals": {"label": "TOTAL 2024 - RP DSMT", "amount": 1029569.24}}, {"year": 2025, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 190000.0}, {"id": 2, "name": "ASD/DT - CV biologiques", "amount": 30000.0}, {"id": 3, "name": "ASD/QA - CV nucléaires", "amount": 15000.0}, {"id": 4, "name": "JEA", "amount": 0.0}, {"id": 5, "name": "CNEMA", "amount": 49000.0}], "items": [{"organisme": "UNIDIR", "amount": 170000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2025}, {"organisme": "dont armes conventionnelles", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont ADM et autres armes stratégiques", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont cyber/IA", "amount": 50000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "dont rencontres francophones", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2025}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "ALPC Ukraine - Traçage des trafics internes", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2025}, {"organisme": "CIABT", "amount": 100000.0, "nature": "\"Strengthening the universalization and implementation of the BWC with a focus on Africa, Southeast Asia and the Pacific\"", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2025}, {"organisme": "CIABT", "amount": 30000.0, "nature": "Contribution au fonds de roulement du secrétariat (ISU) de la CIABT", "category": "ASD/DT - CV biologiques", "category_id": 2, "is_breakdown": false, "year": 2025}, {"organisme": "GCSP", "amount": 10000.0, "nature": "Organisation d'un séminaire de préparation de notre rapport national pour le cycle actuel du TNP", "category": "ASD/QA - CV nucléaires", "category_id": 3, "is_breakdown": false, "year": 2025}, {"organisme": "GCSP", "amount": 5000.0, "nature": "Organisation d'un atelier de travail sur les régimes de contrôle des exportations des matières et équipements sensibles => n'a pas eu lieu et crédits utilisés pour participer à des cours du GCSP", "category": "ASD/QA - CV nucléaires", "category_id": 3, "is_breakdown": false, "year": 2025}, {"organisme": "UNODA - Nucléaire (NY)", "amount": null, "nature": "", "category": "JEA", "category_id": 4, "is_breakdown": false, "year": 2025}, {"organisme": "ISU APMBC", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "ISU APMBC - Sponsorship program\"", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "ISU CCM", "amount": 1000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Land-Mine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Mine Action Review (via Norwegian people Aid)", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}, {"organisme": "Side-event APMBC - Ecole du Génie d'Angers", "amount": 4000.0, "nature": "", "category": "CNEMA", "category_id": 5, "is_breakdown": false, "year": 2025}], "totals": {"label": "TOTAL 2025 - RP DSMT (hors JEA et hors CNEMA)", "amount": 235000.0}}, {"year": 2026, "categories": [{"id": 1, "name": "ASD/DT - CV conventionnel", "amount": 130000.0}, {"id": 2, "name": "JEA", "amount": 0.0}, {"id": 3, "name": "CNEMA", "amount": 45000.0}], "items": [{"organisme": "UNIDIR", "amount": 60000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "dont centre d'excellence IA", "amount": 10000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont IA", "amount": 10000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont Women in Cyber", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "dont non fléché", "amount": 20000.0, "nature": "", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": true, "year": 2026}, {"organisme": "GICHD", "amount": 30000.0, "nature": "Financement d'action de formations à la lutte contre les mines et restes explosifs de guerre en Ukraine", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Oslo", "amount": 20000.0, "nature": "Soutien à la présidence laotienne dans l'organisation de la RevCon de Vientiane", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "Small Arms Survey", "amount": 20000.0, "nature": "ALPC Ukraine - Traçage des trafics internes", "category": "ASD/DT - CV conventionnel", "category_id": 1, "is_breakdown": false, "year": 2026}, {"organisme": "UNODA - Nucléaire (NY)", "amount": null, "nature": "", "category": "JEA", "category_id": 2, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Ottawa", "amount": 15000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Ottawa - Sponsorship program\"", "amount": 5000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "ISU Oslo", "amount": 1000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "Land-Mine Monitor", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}, {"organisme": "Mine Action Review (via Norwegian people Aid)", "amount": 12000.0, "nature": "", "category": "CNEMA", "category_id": 3, "is_breakdown": false, "year": 2026}], "totals": {"label": "TOTAL 2026 - RP DSMT", "amount": 175000.0}}], "generated_from": "Suivi_contributions_dsmt.xls"};
+let DATA;
+
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+function loadFromPageblock() { DATA = deepClone(PAGEBLOCK); }
+loadFromPageblock();
 
 const COLORS = [
-  '#2c5f8a','#1a7a5e','#8a2c2c','#b07d2a','#5a7a9a','#3d8b6e',
-  '#a05050','#c49a3c','#6b8cae','#2e6b52','#9c7a5a','#4a6d8c'
+  '#4A90D9','#F28482','#5CB87A','#F5A623','#9B6DD7','#50C4C8',
+  '#FF8A65','#7E8CE0','#66BB6A','#EF5350','#42A5F5','#AB47BC'
 ];
 
-const CHART_DEFAULTS = {
-  color: '#6b6458',
-  borderColor: 'rgba(40,35,20,0.12)',
-  font: { family: "'Segoe UI', system-ui, sans-serif" }
-};
-Chart.defaults.color = CHART_DEFAULTS.color;
-Chart.defaults.borderColor = CHART_DEFAULTS.borderColor;
-Chart.defaults.font.family = CHART_DEFAULTS.font.family;
+Chart.defaults.color = '#6b6458';
+Chart.defaults.borderColor = 'rgba(40,35,20,0.12)';
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 
 const fmtEUR = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const fmtUSD = v => v == null ? '—' : new Intl.NumberFormat('fr-FR',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
 const shortName = s => s.replace(/^\d+\s*-\s*/,'').split(' - ')[0].trim();
 
 const charts = {};
+let allRows = [];
 
 function destroyChart(id) {
   if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function getGrandTotalVol(year) {
+  const yd = DATA.voluntary.find(v => v.year === year);
+  if (!yd) return null;
+  return yd.categories.reduce((s,c) => s + (c.amount||0), 0);
+}
+
+function mandatoryTotalYear(year) {
+  const col = year + ' ($)';
+  return DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i[col])||0), 0);
+}
+
+function getMandatoryUsdYears() {
+  return [...new Set(
+    DATA.mandatory.headers.filter(h => /\d{4} \(\$\)/.test(h)).map(h => h.match(/\d{4}/)[0])
+  )].sort();
+}
+
+function getValueColumns() {
+  return DATA.mandatory.headers.filter(h => h !== 'Contributions obligatoires' && !h.includes('Date limite'));
+}
+
+function buildLegendPills(containerId, labels, colors, chart) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = labels.map((label, i) =>
+    `<button type="button" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
+  ).join('');
+  container.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const meta = chart.getDatasetMeta(idx);
+      meta.hidden = !meta.hidden;
+      btn.classList.toggle('inactive', meta.hidden);
+      chart.update();
+    });
+  });
 }
 
 // --- Tabs ---
@@ -491,53 +654,7 @@ document.querySelectorAll('nav.tabs button').forEach(btn => {
   });
 });
 
-// --- KPI helpers ---
-function getGrandTotalVol(year) {
-  const yd = DATA.voluntary.find(v => v.year === year);
-  if (!yd) return null;
-  return yd.categories.reduce((s,c) => s + (c.amount||0), 0);
-}
-
-function mandatoryTotalYear(year) {
-  const col = year + ' ($)';
-  return DATA.mandatory.items.reduce((s,i) => s + (parseFloat(i[col])||0), 0);
-}
-
-const MANDATORY_YEARS = ['2023','2024','2025','2026'];
-
-function buildLegendPills(containerId, labels, colors, chart) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = labels.map((label, i) =>
-    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
-  ).join('');
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      const meta = chart.getDatasetMeta(idx);
-      meta.hidden = !meta.hidden;
-      btn.classList.toggle('inactive', meta.hidden);
-      chart.update();
-    });
-  });
-}
-
-function buildPieLegendPills(containerId, labels, colors, chart) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = labels.map((label, i) =>
-    `<button type="button" class="pill" data-idx="${i}" style="border-color:${colors[i % colors.length]};color:${colors[i % colors.length]}">${label}</button>`
-  ).join('');
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      chart.toggleDataVisibility(idx);
-      btn.classList.toggle('inactive', !chart.getDataVisibility(idx));
-      chart.update();
-    });
-  });
-}
-
-// --- Vue d'ensemble KPIs ---
-(function renderOverviewKPIs() {
+function renderOverviewKPIs() {
   const years = DATA.voluntary.map(v => v.year);
   const lastYear = Math.max(...years);
   const firstYear = Math.min(...years);
@@ -547,33 +664,23 @@ function buildPieLegendPills(containerId, labels, colors, chart) {
   const evolVol = totalVolFirst ? ((totalVolLast - totalVolFirst) / totalVolFirst * 100) : 0;
   const mand2024 = mandatoryTotalYear(2024);
   const evolMand = mand2024 ? ((mand2026 - mand2024) / mand2024 * 100) : 0;
-
   document.getElementById('kpi-cards').innerHTML = `
     <div class="kpi accent"><div class="kpi-label">Contributions volontaires ${lastYear}</div><div class="kpi-val">${fmtEUR(totalVolLast)}</div><div class="kpi-sub">Hors lignes « dont »</div></div>
     <div class="kpi vc"><div class="kpi-label">Contributions obligatoires 2026</div><div class="kpi-val">${fmtUSD(mand2026)}</div></div>
     <div class="kpi accent2"><div class="kpi-label">Évolution volontaire ${firstYear}→${lastYear}</div><div class="kpi-val">${evolVol >= 0 ? '+' : ''}${evolVol.toFixed(0)}%</div><div class="kpi-sub">${fmtEUR(totalVolFirst)} → ${fmtEUR(totalVolLast)}</div></div>
-    <div class="kpi vc"><div class="kpi-label">Évolution obligatoires 2024→2026</div><div class="kpi-val">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="kpi-sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>
-  `;
-})();
+    <div class="kpi vc"><div class="kpi-label">Évolution obligatoires 2024→2026</div><div class="kpi-val">${evolMand >= 0 ? '+' : ''}${evolMand.toFixed(0)}%</div><div class="kpi-sub">${fmtUSD(mand2024)} → ${fmtUSD(mand2026)}</div></div>`;
+}
 
-// --- Chart: voluntary totals over time ---
-(function() {
+function renderChartsOverview() {
   const years = DATA.voluntary.map(v => v.year);
   const totals = years.map(y => getGrandTotalVol(y));
   destroyChart('chart-totals-vol');
   charts['chart-totals-vol'] = new Chart(document.getElementById('chart-totals-vol'), {
     type: 'bar',
-    data: {
-      labels: years,
-      datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: COLORS[0] }]
-    },
+    data: { labels: years, datasets: [{ label: 'Total volontaire (€)', data: totals, backgroundColor: COLORS[0] }] },
     options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtEUR(v) } } } }
   });
-})();
 
-// --- Chart: compare obligatoire vs volontaire (vue d'ensemble) ---
-(function() {
-  const years = DATA.voluntary.map(v => v.year);
   destroyChart('chart-compare');
   charts['chart-compare'] = new Chart(document.getElementById('chart-compare'), {
     type: 'bar',
@@ -581,104 +688,82 @@ function buildPieLegendPills(containerId, labels, colors, chart) {
       labels: years,
       datasets: [
         { label: 'Volontaire (€)', data: years.map(y => getGrandTotalVol(y)), backgroundColor: COLORS[0] },
-        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: COLORS[2] }
+        { label: 'Obligatoire (USD)', data: years.map(y => mandatoryTotalYear(y) || null), backgroundColor: COLORS[1] }
       ]
     },
-    options: {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: ctx => ctx.dataset.label + ': ' + (ctx.dataset.label.includes('€') ? fmtEUR(ctx.raw) : fmtUSD(ctx.raw))
-          }
-        }
-      },
-      scales: { y: { ticks: { callback: v => new Intl.NumberFormat('fr-FR').format(v) } } }
-    }
+    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.dataset.label.includes('€') ? fmtEUR(ctx.raw) : fmtUSD(ctx.raw)) } } }, scales: { y: { ticks: { callback: v => new Intl.NumberFormat('fr-FR').format(v) } } } }
   });
-})();
 
-// --- Chart: mandatory overview stacked ---
-(function() {
-  const years = ['2023 ($)','2024 ($)','2025 ($)','2026 ($)'];
-  const labels = years.map(y => y.replace(' ($)',''));
-  const datasets = DATA.mandatory.items.map((item, i) => ({
-    label: shortName(item.name),
-    data: years.map(y => parseFloat(item[y]) || null),
-    backgroundColor: COLORS[i % COLORS.length],
-  }));
+  const mandYears = getMandatoryUsdYears().map(y => y + ' ($)');
+  const labels = mandYears.map(y => y.replace(' ($)',''));
   destroyChart('chart-mandatory-overview');
   charts['chart-mandatory-overview'] = new Chart(document.getElementById('chart-mandatory-overview'), {
     type: 'bar',
-    data: { labels, datasets },
-    options: {
-      plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } } },
-      scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => fmtUSD(v) } } }
-    }
+    data: {
+      labels,
+      datasets: DATA.mandatory.items.map((item, i) => ({
+        label: shortName(item.name),
+        data: mandYears.map(y => parseFloat(item[y]) || null),
+        backgroundColor: COLORS[i % COLORS.length],
+      }))
+    },
+    options: { plugins: { tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => fmtUSD(v) } } } }
   });
-})();
+}
 
-// --- Mandatory section ---
-const yearMandatorySelect = document.getElementById('year-mandatory');
-MANDATORY_YEARS.forEach(y => {
-  const opt = document.createElement('option');
-  opt.value = y; opt.textContent = y;
-  yearMandatorySelect.appendChild(opt);
-});
-yearMandatorySelect.value = '2026';
+function rebuildMandatoryYearSelect() {
+  const sel = document.getElementById('year-mandatory');
+  const cur = sel.value || '2026';
+  sel.innerHTML = '';
+  getMandatoryUsdYears().forEach(y => {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    sel.appendChild(opt);
+  });
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+  else sel.value = sel.options[sel.options.length - 1]?.value || '2026';
+}
 
 function updateMandatoryKPIAndBar(year) {
   const total = mandatoryTotalYear(parseInt(year));
   document.getElementById('kpi-mandatory').innerHTML = `
-    <div class="kpi vc"><div class="kpi-label">Total ${year} (USD)</div><div class="kpi-val">${fmtUSD(total)}</div></div>
-  `;
+    <div class="kpi vc"><div class="kpi-label">Total ${year} (USD)</div><div class="kpi-val">${fmtUSD(total)}</div></div>`;
   document.getElementById('mandatory-bar-title').textContent = `Montants ${year} par convention (USD)`;
-
   const col = year + ' ($)';
   destroyChart('chart-mandatory-year');
   charts['chart-mandatory-year'] = new Chart(document.getElementById('chart-mandatory-year'), {
     type: 'bar',
     data: {
       labels: DATA.mandatory.items.map(i => shortName(i.name)),
-      datasets: [{ label: year + ' ($)', data: DATA.mandatory.items.map(i => parseFloat(i[col])||0), backgroundColor: COLORS }]
+      datasets: [{ data: DATA.mandatory.items.map(i => parseFloat(i[col])||0), backgroundColor: COLORS }]
     },
-    options: {
-      indexAxis: 'y',
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUSD(ctx.raw) } } },
-      scales: { x: { ticks: { callback: v => fmtUSD(v) } } }
-    }
+    options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUSD(ctx.raw) } } }, scales: { x: { ticks: { callback: v => fmtUSD(v) } } } }
   });
 }
 
-yearMandatorySelect.addEventListener('change', () => updateMandatoryKPIAndBar(yearMandatorySelect.value));
-updateMandatoryKPIAndBar('2026');
-
-(function() {
-  const yearCols = MANDATORY_YEARS.map(y => y + ' ($)');
+function renderMandatorySection() {
+  rebuildMandatoryYearSelect();
+  const mandYears = getMandatoryUsdYears();
+  const yearCols = mandYears.map(y => y + ' ($)');
   const convLabels = DATA.mandatory.items.map(i => shortName(i.name));
 
   destroyChart('chart-mandatory-lines');
   const lineChart = new Chart(document.getElementById('chart-mandatory-lines'), {
     type: 'line',
     data: {
-      labels: MANDATORY_YEARS,
+      labels: mandYears,
       datasets: DATA.mandatory.items.map((item,i) => ({
         label: convLabels[i],
         data: yearCols.map(y => parseFloat(item[y]) || null),
         borderColor: COLORS[i % COLORS.length],
         backgroundColor: COLORS[i % COLORS.length],
-        tension: .3,
+        tension: 0.3,
         fill: false,
         pointRadius: 4,
-        pointHoverRadius: 6,
+        borderWidth: 2.5,
       }))
     },
-    options: {
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } }
-      },
-      scales: { y: { ticks: { callback: v => fmtUSD(v) } } }
-    }
+    options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUSD(ctx.raw) } } }, scales: { y: { ticks: { callback: v => fmtUSD(v) } } } }
   });
   charts['chart-mandatory-lines'] = lineChart;
   buildLegendPills('mandatory-legend-pills', convLabels, COLORS, lineChart);
@@ -694,49 +779,27 @@ updateMandatoryKPIAndBar('2026');
   });
   html += '</tbody>';
   document.getElementById('table-mandatory').innerHTML = html;
-})();
+  updateMandatoryKPIAndBar(document.getElementById('year-mandatory').value);
+}
 
-// --- Voluntary section ---
-const yearSelect = document.getElementById('year-vol');
-DATA.voluntary.forEach(v => {
-  const opt = document.createElement('option');
-  opt.value = v.year; opt.textContent = v.year;
-  yearSelect.appendChild(opt);
-});
-yearSelect.value = Math.max(...DATA.voluntary.map(v => v.year));
+function rebuildVoluntaryYearSelect() {
+  const sel = document.getElementById('year-vol');
+  const cur = parseInt(sel.value) || Math.max(...DATA.voluntary.map(v => v.year));
+  sel.innerHTML = '';
+  DATA.voluntary.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.year; opt.textContent = v.year;
+    sel.appendChild(opt);
+  });
+  if ([...sel.options].some(o => parseInt(o.value) === cur)) sel.value = cur;
+  else sel.value = Math.max(...DATA.voluntary.map(v => v.year));
+}
 
 function renderVoluntaryYear(year) {
   const yd = DATA.voluntary.find(v => v.year === year);
-  const total = getGrandTotalVol(year);
+  if (!yd) return;
   document.getElementById('kpi-voluntary').innerHTML = `
-    <div class="kpi accent"><div class="kpi-label">Total ${year}</div><div class="kpi-val">${fmtEUR(total)}</div></div>
-  `;
-
-  const catLabels = yd.categories.map(c => c.name);
-  const catValues = yd.categories.map(c => c.amount);
-
-  destroyChart('chart-vol-pie');
-  const pieChart = new Chart(document.getElementById('chart-vol-pie'), {
-    type: 'doughnut',
-    data: {
-      labels: catLabels,
-      datasets: [{ data: catValues, backgroundColor: COLORS }]
-    },
-    options: {
-      layout: { padding: 10 },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: items => catLabels[items[0].dataIndex],
-            label: ctx => fmtEUR(ctx.raw)
-          }
-        }
-      }
-    }
-  });
-  charts['chart-vol-pie'] = pieChart;
-  buildPieLegendPills('vol-legend-pills', catLabels, COLORS, pieChart);
+    <div class="kpi accent"><div class="kpi-label">Total ${year}</div><div class="kpi-val">${fmtEUR(getGrandTotalVol(year))}</div></div>`;
 
   const benef = {};
   yd.items.filter(i => !i.is_breakdown && i.amount).forEach(i => {
@@ -746,18 +809,12 @@ function renderVoluntaryYear(year) {
   destroyChart('chart-vol-benef');
   charts['chart-vol-benef'] = new Chart(document.getElementById('chart-vol-benef'), {
     type: 'bar',
-    data: {
-      labels: sorted.map(s => s[0]),
-      datasets: [{ data: sorted.map(s => s[1]), backgroundColor: COLORS[0] }]
-    },
+    data: { labels: sorted.map(s => s[0]), datasets: [{ data: sorted.map(s => s[1]), backgroundColor: COLORS[0] }] },
     options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtEUR(ctx.raw) } } }, scales: { x: { ticks: { callback: v => fmtEUR(v) } } } }
   });
 }
-yearSelect.addEventListener('change', () => renderVoluntaryYear(parseInt(yearSelect.value)));
-renderVoluntaryYear(parseInt(yearSelect.value));
 
-// --- Évolution catégories volontaires (onglet volontaires) ---
-(function() {
+function renderEvolCategoriesChart() {
   const years = DATA.voluntary.map(v => v.year);
   const allCats = [...new Set(DATA.voluntary.flatMap(v => v.categories.map(c => c.name)))];
   destroyChart('chart-evol-categories');
@@ -769,68 +826,81 @@ renderVoluntaryYear(parseInt(yearSelect.value));
         label: cat,
         data: years.map(y => {
           const yd = DATA.voluntary.find(v => v.year === y);
-          const c = yd.categories.find(c => c.name === cat);
+          const c = yd?.categories.find(c => c.name === cat);
           return c ? c.amount : null;
         }),
         borderColor: COLORS[i % COLORS.length],
-        tension: .3,
+        backgroundColor: COLORS[i % COLORS.length],
+        tension: 0.35,
         spanGaps: true,
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointStyle: 'circle',
       }))
     },
     options: {
+      layout: { padding: { right: 8 } },
       plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12, font: { size: 11 } } },
+        legend: {
+          position: 'right',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 10,
+            boxHeight: 10,
+            padding: 14,
+            font: { size: 11, weight: '500' },
+            sort: (a, b) => a.text.localeCompare(b.text, 'fr'),
+          }
+        },
         tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtEUR(ctx.raw) } }
       },
       scales: { y: { ticks: { callback: v => fmtEUR(v) } } }
     }
   });
-})();
-
-// --- Details table ---
-const filterYear = document.getElementById('filter-year');
-DATA.voluntary.forEach(v => {
-  const opt = document.createElement('option');
-  opt.value = v.year; opt.textContent = v.year;
-  filterYear.appendChild(opt);
-});
+}
 
 function buildDetailRows() {
   const rows = [];
+  const valueCols = getValueColumns();
   DATA.mandatory.items.forEach(item => {
-    ['2023 ($)','2024 (€)','2024 ($)','2025 ($)','2026 ($)'].forEach(col => {
+    valueCols.forEach(col => {
       const v = item[col];
       if (v == null || v === '') return;
-      const year = col.match(/\d{4}/)[0];
-      rows.push({
-        type: 'Obligatoire', year, category: shortName(item.name), organisme: item.name,
-        amount: v, currency: col.includes('€') ? 'EUR' : 'USD', nature: '', isBreakdown: false
-      });
+      const year = col.match(/\d{4}/)?.[0];
+      if (!year) return;
+      rows.push({ type: 'Obligatoire', year, category: shortName(item.name), organisme: item.name, amount: v, currency: col.includes('€') ? 'EUR' : 'USD', nature: '', isBreakdown: false, isCategory: false });
     });
   });
   DATA.voluntary.forEach(yd => {
     yd.categories.forEach(c => {
-      if (c.amount != null) rows.push({
-        type: 'Volontaire', year: yd.year, category: c.name, organisme: `— Total catégorie —`,
-        amount: c.amount, currency: 'EUR', nature: '', isBreakdown: false, isCategory: true
-      });
+      if (c.amount != null) rows.push({ type: 'Volontaire', year: yd.year, category: c.name, organisme: '— Total catégorie —', amount: c.amount, currency: 'EUR', nature: '', isBreakdown: false, isCategory: true });
     });
     yd.items.forEach(i => {
       if (i.amount == null) return;
-      rows.push({
-        type: 'Volontaire', year: yd.year, category: i.category || '', organisme: i.organisme,
-        amount: i.amount, currency: 'EUR', nature: i.nature, isBreakdown: i.is_breakdown
-      });
+      rows.push({ type: 'Volontaire', year: yd.year, category: i.category || '', organisme: i.organisme, amount: i.amount, currency: 'EUR', nature: i.nature, isBreakdown: i.is_breakdown, isCategory: false });
     });
   });
   return rows;
 }
 
-const allRows = buildDetailRows();
-const tbody = document.querySelector('#table-details tbody');
+function rebuildFilterYearSelect() {
+  const filterYear = document.getElementById('filter-year');
+  const cur = filterYear.value;
+  filterYear.querySelectorAll('option:not([value="all"])').forEach(o => o.remove());
+  DATA.voluntary.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.year; opt.textContent = v.year;
+    filterYear.appendChild(opt);
+  });
+  filterYear.value = cur;
+}
 
-function renderDetails() {
-  const yf = filterYear.value;
+function renderDetailsTable() {
+  const tbody = document.querySelector('#table-details tbody');
+  const yf = document.getElementById('filter-year').value;
   const tf = document.getElementById('filter-type').value;
   const q = document.getElementById('filter-search').value.toLowerCase();
   tbody.innerHTML = allRows.filter(r => {
@@ -840,20 +910,32 @@ function renderDetails() {
     if (q && !(r.organisme + r.category + r.nature).toLowerCase().includes(q)) return false;
     return true;
   }).map(r => {
-    const cls = [r.isBreakdown ? 'breakdown' : '', r.isCategory ? 'category-row' : ''].join(' ');
+    const cls = [r.isBreakdown ? 'breakdown' : '', r.isCategory ? 'category-row' : ''].filter(Boolean).join(' ');
     const amt = r.currency === 'EUR' ? fmtEUR(r.amount) : fmtUSD(r.amount);
     return `<tr class="${cls}"><td>${r.type}</td><td>${r.year}</td><td>${r.category}</td><td>${r.organisme}</td><td class="amount">${amt}</td><td>${r.nature}</td></tr>`;
   }).join('');
 }
 
-['filter-year','filter-type','filter-search'].forEach(id => {
-  document.getElementById(id).addEventListener('input', renderDetails);
-  document.getElementById(id).addEventListener('change', renderDetails);
-});
-renderDetails();
+function renderAll() {
+  renderOverviewKPIs();
+  renderChartsOverview();
+  renderMandatorySection();
+  rebuildVoluntaryYearSelect();
+  renderVoluntaryYear(parseInt(document.getElementById('year-vol').value));
+  renderEvolCategoriesChart();
+  allRows = buildDetailRows();
+  rebuildFilterYearSelect();
+  renderDetailsTable();
+}
 
+document.getElementById('year-mandatory').addEventListener('change', e => updateMandatoryKPIAndBar(e.target.value));
+document.getElementById('year-vol').addEventListener('change', e => renderVoluntaryYear(parseInt(e.target.value)));
+['filter-year','filter-type','filter-search'].forEach(id => {
+  document.getElementById(id).addEventListener('input', renderDetailsTable);
+  document.getElementById(id).addEventListener('change', renderDetailsTable);
+});
 document.getElementById('export-csv').addEventListener('click', () => {
-  const yf = filterYear.value;
+  const yf = document.getElementById('filter-year').value;
   const tf = document.getElementById('filter-type').value;
   const q = document.getElementById('filter-search').value.toLowerCase();
   const filtered = allRows.filter(r => {
@@ -873,6 +955,300 @@ document.getElementById('export-csv').addEventListener('click', () => {
   a.download = 'contributions_dsmt_export.csv';
   a.click();
 });
+
+renderAll();
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = 'admin2026';
+let adminAuthenticated = false;
+let adminWorkingData = null;
+
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  renderAdminPanel();
+}
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+
+function renderAdminPanel() {
+  const body = document.getElementById('adminBody');
+  if (!adminAuthenticated) {
+    body.innerHTML = `<div class="admin-login">
+      <p style="color:var(--text2);font-size:.88rem;">Accès réservé — saisissez le mot de passe</p>
+      <input type="password" id="adminPwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkAdminPassword()">
+      <button type="button" onclick="checkAdminPassword()">Accéder</button>
+      <p class="err" id="adminPwdErr">Mot de passe incorrect</p>
+    </div>`;
+    return;
+  }
+  if (!adminWorkingData) adminWorkingData = deepClone(PAGEBLOCK);
+  if (document.getElementById('adminMandatoryTable')) collectAdminFormData();
+  body.innerHTML = buildAdminHTML();
+}
+
+function checkAdminPassword() {
+  const pwd = document.getElementById('adminPwd').value;
+  if (pwd === ADMIN_PASSWORD) {
+    adminAuthenticated = true;
+    adminWorkingData = deepClone(PAGEBLOCK);
+    renderAdminPanel();
+  } else {
+    document.getElementById('adminPwdErr').style.display = 'block';
+  }
+}
+
+function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function buildAdminHTML() {
+  const wd = adminWorkingData;
+  const valueCols = wd.mandatory.headers.filter(h => h !== 'Contributions obligatoires' && !h.includes('Date limite'));
+  let mandHtml = `<thead><tr><th>Convention</th>`;
+  valueCols.forEach(h => { mandHtml += `<th>${esc(h)}</th>`; });
+  mandHtml += `</tr></thead><tbody>`;
+  wd.mandatory.items.forEach((item, ri) => {
+    mandHtml += `<tr><td>${esc(item.name)}</td>`;
+    valueCols.forEach(col => {
+      const v = item[col];
+      mandHtml += `<td><input type="text" data-mand-row="${ri}" data-mand-col="${esc(col)}" value="${v == null ? '' : v}" onchange="adminMandatoryChange(this)"></td>`;
+    });
+    mandHtml += `</tr>`;
+  });
+  mandHtml += `</tbody>`;
+
+  const volYear = parseInt(document.getElementById('adminVolYear')?.value) || wd.voluntary[wd.voluntary.length-1].year;
+  const yd = wd.voluntary.find(v => v.year === volYear) || wd.voluntary[0];
+
+  let catHtml = `<thead><tr><th>Catégorie</th><th>Montant (€)</th><th></th></tr></thead><tbody>`;
+  (yd.categories || []).forEach((c, ci) => {
+    catHtml += `<tr><td><input data-vol-year="${yd.year}" data-cat-idx="${ci}" data-field="name" value="${esc(c.name)}" onchange="adminVolCategoryChange(this)"></td>
+      <td><input data-vol-year="${yd.year}" data-cat-idx="${ci}" data-field="amount" value="${c.amount ?? ''}" onchange="adminVolCategoryChange(this)"></td>
+      <td><button type="button" class="admin-btn secondary" onclick="adminRemoveCategory(${yd.year},${ci})">×</button></td></tr>`;
+  });
+  catHtml += `</tbody>`;
+
+  let itemsHtml = `<thead><tr><th>Organisme</th><th>Montant (€)</th><th>Catégorie</th><th>Nature</th><th>Dont</th><th></th></tr></thead><tbody>`;
+  (yd.items || []).forEach((it, ii) => {
+    itemsHtml += `<tr>
+      <td><input data-vol-year="${yd.year}" data-item-idx="${ii}" data-field="organisme" value="${esc(it.organisme)}" onchange="adminVolItemChange(this)"></td>
+      <td><input data-vol-year="${yd.year}" data-item-idx="${ii}" data-field="amount" value="${it.amount ?? ''}" onchange="adminVolItemChange(this)"></td>
+      <td><input data-vol-year="${yd.year}" data-item-idx="${ii}" data-field="category" value="${esc(it.category||'')}" onchange="adminVolItemChange(this)"></td>
+      <td><input data-vol-year="${yd.year}" data-item-idx="${ii}" data-field="nature" value="${esc(it.nature||'')}" onchange="adminVolItemChange(this)"></td>
+      <td style="text-align:center"><input type="checkbox" data-vol-year="${yd.year}" data-item-idx="${ii}" data-field="is_breakdown" ${it.is_breakdown?'checked':''} onchange="adminVolItemChange(this)"></td>
+      <td><button type="button" class="admin-btn secondary" onclick="adminRemoveItem(${yd.year},${ii})">×</button></td></tr>`;
+  });
+  itemsHtml += `</tbody>`;
+
+  return `
+    <div class="admin-section">
+      <h3>Contributions obligatoires <span class="admin-badge">Conventions</span></h3>
+      <div class="admin-btn-row" style="margin-bottom:.8rem;">
+        <button type="button" class="admin-btn secondary" onclick="adminAddMandatoryColumn()">+ Ajouter une colonne année</button>
+        <button type="button" class="admin-btn secondary" onclick="adminAddConvention()">+ Ajouter une convention</button>
+      </div>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminMandatoryTable">${mandHtml}</table></div>
+    </div>
+    <div class="admin-section">
+      <h3>Contributions volontaires (DSMT)</h3>
+      <div class="admin-controls">
+        <label>Année
+          <select id="adminVolYear" onchange="renderAdminPanel()">
+            ${wd.voluntary.map(v => `<option value="${v.year}" ${v.year===volYear?'selected':''}>${v.year}</option>`).join('')}
+          </select>
+        </label>
+        <button type="button" class="admin-btn secondary" onclick="adminAddVoluntaryYear()">+ Ajouter une année</button>
+        <button type="button" class="admin-btn secondary" onclick="adminAddCategory()">+ Catégorie</button>
+        <button type="button" class="admin-btn secondary" onclick="adminAddItem()">+ Ligne de financement</button>
+      </div>
+      <h4 style="font-size:.85rem;margin:.5rem 0 .4rem;color:var(--text2);">Catégories</h4>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminCatTable">${catHtml}</table></div>
+      <h4 style="font-size:.85rem;margin:1rem 0 .4rem;color:var(--text2);">Lignes de financement</h4>
+      <div class="admin-table-wrap"><table class="admin-table" id="adminItemsTable">${itemsHtml}</table></div>
+    </div>
+    <div class="admin-section">
+      <h3>Exporter le bloc de données</h3>
+      <p style="font-size:.84rem;color:var(--text2);margin-bottom:.8rem;">Générez le nouveau bloc à copier-coller dans le fichier HTML source.</p>
+      <div class="admin-btn-row" style="margin-bottom:.8rem;">
+        <button type="button" class="admin-btn" onclick="adminGenerateExport()">Générer le bloc</button>
+        <button type="button" class="admin-btn secondary" onclick="adminCopyExport()">Copier</button>
+        <button type="button" class="admin-btn secondary" onclick="adminDownloadExport()">Télécharger (.txt)</button>
+        <button type="button" class="admin-btn secondary" onclick="adminPreview()">Prévisualiser</button>
+      </div>
+      <textarea id="adminExport" readonly placeholder="Cliquez sur « Générer le bloc »…"></textarea>
+    </div>
+    <div class="admin-section admin-tutorial">
+      <h3>Tutoriel — Mettre à jour la page en 4 étapes</h3>
+      <ol class="admin-steps">
+        <li><strong>Modifiez les données</strong> dans les tableaux ci-dessus (obligatoires et volontaires), puis cliquez sur <strong>Prévisualiser</strong> pour vérifier le rendu.</li>
+        <li>Cliquez sur <strong>Générer le bloc</strong>, puis <strong>Copier</strong> ou <strong>Télécharger (.txt)</strong>.</li>
+        <li>Ouvrez le fichier <code>contributions_dsmt.html</code> dans un éditeur de texte. Repérez la section <code>// ═══ BLOC DE DONNÉES</code> en haut du second bloc <code>&lt;script&gt;</code>.</li>
+        <li><strong>Remplacez</strong> tout le bloc (de <code>// ═══ BLOC DE DONNÉES</code> jusqu'à <code>loadFromPageblock();</code> inclus) par le contenu exporté. Enregistrez et rouvrez la page dans le navigateur.</li>
+      </ol>
+      <p style="font-size:.75rem;color:var(--text2);margin-top:1rem;">Astuce : vous pouvez aussi relancer <code>python3 generate_visualisation.py</code> après mise à jour du fichier Excel source.</p>
+    </div>`;
+}
+
+function adminMandatoryChange(input) {
+  const row = parseInt(input.dataset.mandRow);
+  const col = input.dataset.mandCol;
+  const raw = input.value.trim();
+  const val = raw === '' ? null : parseFloat(raw.replace(/\s/g,'').replace(',','.'));
+  if (raw !== '' && isNaN(val)) { input.classList.add('changed'); return; }
+  adminWorkingData.mandatory.items[row][col] = val;
+  input.classList.add('changed');
+}
+
+function adminVolCategoryChange(input) {
+  const year = parseInt(input.dataset.volYear);
+  const idx = parseInt(input.dataset.catIdx);
+  const field = input.dataset.field;
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  if (field === 'amount') {
+    const raw = input.value.trim();
+    yd.categories[idx].amount = raw === '' ? null : parseFloat(raw.replace(',','.'));
+  } else {
+    yd.categories[idx].name = input.value;
+  }
+  input.classList.add('changed');
+}
+
+function adminVolItemChange(input) {
+  const year = parseInt(input.dataset.volYear);
+  const idx = parseInt(input.dataset.itemIdx);
+  const field = input.dataset.field;
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  const it = yd.items[idx];
+  if (field === 'amount') {
+    const raw = input.value.trim();
+    it.amount = raw === '' ? null : parseFloat(raw.replace(',','.'));
+  } else if (field === 'is_breakdown') {
+    it.is_breakdown = input.checked;
+  } else {
+    it[field] = input.value;
+  }
+  input.classList.add('changed');
+}
+
+function adminAddMandatoryColumn() {
+  const year = prompt('Année (ex. 2027) :');
+  if (!year) return;
+  const cur = prompt('Devise ($ ou €) :', '$');
+  if (!cur) return;
+  const col = `${year} (${cur})`;
+  if (adminWorkingData.mandatory.headers.includes(col)) { alert('Colonne déjà existante.'); return; }
+  const idx = adminWorkingData.mandatory.headers.findIndex(h => h.includes('Reliquats'));
+  if (idx >= 0) adminWorkingData.mandatory.headers.splice(idx, 0, col);
+  else adminWorkingData.mandatory.headers.push(col);
+  adminWorkingData.mandatory.items.forEach(item => { item[col] = null; });
+  renderAdminPanel();
+}
+
+function adminAddConvention() {
+  const name = prompt('Nom de la convention :');
+  if (!name) return;
+  const item = { name };
+  adminWorkingData.mandatory.headers.forEach((h, i) => {
+    if (i > 0 && !h.includes('Date limite')) item[h] = null;
+  });
+  adminWorkingData.mandatory.items.push(item);
+  renderAdminPanel();
+}
+
+function adminAddVoluntaryYear() {
+  const newYear = prompt('Numéro de la nouvelle année :', String((adminWorkingData.voluntary.at(-1)?.year || 2026) + 1));
+  if (!newYear) return;
+  const y = parseInt(newYear);
+  if (isNaN(y) || adminWorkingData.voluntary.some(v => v.year === y)) { alert('Année invalide ou déjà existante.'); return; }
+  adminWorkingData.voluntary.push({ year: y, categories: [], items: [], totals: null });
+  adminWorkingData.voluntary.sort((a,b) => a.year - b.year);
+  renderAdminPanel();
+}
+
+function adminAddCategory() {
+  const year = parseInt(document.getElementById('adminVolYear')?.value) || adminWorkingData.voluntary.at(-1).year;
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  const id = (yd.categories.at(-1)?.id || 0) + 1;
+  yd.categories.push({ id, name: 'Nouvelle catégorie', amount: 0 });
+  renderAdminPanel();
+}
+
+function adminAddItem() {
+  const year = parseInt(document.getElementById('adminVolYear')?.value) || adminWorkingData.voluntary.at(-1).year;
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  yd.items.push({ organisme: 'Nouvel organisme', amount: 0, nature: '', category: '', category_id: null, is_breakdown: false, year });
+  renderAdminPanel();
+}
+
+function adminRemoveCategory(year, idx) {
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  yd.categories.splice(idx, 1);
+  renderAdminPanel();
+}
+
+function adminRemoveItem(year, idx) {
+  const yd = adminWorkingData.voluntary.find(v => v.year === year);
+  yd.items.splice(idx, 1);
+  renderAdminPanel();
+}
+
+function collectAdminFormData() {
+  document.querySelectorAll('#adminMandatoryTable input').forEach(adminMandatoryChange);
+  document.querySelectorAll('#adminCatTable input').forEach(adminVolCategoryChange);
+  document.querySelectorAll('#adminItemsTable input').forEach(el => {
+    if (el.type === 'checkbox') adminVolItemChange(el);
+    else adminVolItemChange(el);
+  });
+}
+
+function formatPagblockExport(wd) {
+  return `// ═══════════════════════════════════════════════════════════════════════════════
+// BLOC DE DONNÉES — Remplacez tout ce bloc pour mettre à jour la page
+// ═══════════════════════════════════════════════════════════════════════════════
+const PAGEBLOCK = ${JSON.stringify(wd, null, 2)};
+let DATA;
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+function loadFromPageblock() { DATA = deepClone(PAGEBLOCK); }
+loadFromPageblock();
+`;
+}
+
+function adminGenerateExport() {
+  collectAdminFormData();
+  document.getElementById('adminExport').value = formatPagblockExport(adminWorkingData);
+}
+
+function adminPreview() {
+  collectAdminFormData();
+  Object.assign(PAGEBLOCK, deepClone(adminWorkingData));
+  loadFromPageblock();
+  renderAll();
+  alert('Prévisualisation appliquée. Exportez le bloc pour rendre les changements permanents dans le fichier HTML.');
+}
+
+function adminCopyExport() {
+  if (!document.getElementById('adminExport').value) adminGenerateExport();
+  const ta = document.getElementById('adminExport');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => alert('Bloc copié !')).catch(() => {
+    document.execCommand('copy');
+    alert('Bloc copié !');
+  });
+}
+
+function adminDownloadExport() {
+  if (!document.getElementById('adminExport').value) adminGenerateExport();
+  const blob = new Blob([document.getElementById('adminExport').value], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bloc-donnees-contributions-dsmt.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+document.getElementById('adminOverlay').addEventListener('click', e => {
+  if (e.target.id === 'adminOverlay') closeAdmin();
+});
+
 </script>
 </body>
 </html>
